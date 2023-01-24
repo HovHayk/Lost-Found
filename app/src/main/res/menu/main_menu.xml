@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_person"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/nav_myPosts"
+            android:icon="@drawable/posts_icon"
+            android:title="My Posts" />
+
+    </group>
+
+
+    <item android:title="Categories">
+
+        <menu>
+
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/nav_animalCategory"
+                    android:icon="@drawable/ic_animal_paw"
+                    android:title="Animals" />
+
+
+                <item
+                    android:id="@+id/nav_documentsCategory"
+                    android:icon="@drawable/ic_documents_icon"
+                    android:title="Documents" />
+
+                <item
+                    android:id="@+id/nav_walletCategory"
+                    android:icon="@drawable/ic_wallet_icon"
+                    android:title="Wallets" />
+
+                <item
+                    android:id="@+id/nav_phoneCategory"
+                    android:icon="@drawable/ic_phone"
+                    android:title="Phones" />
+
+            </group>
+
+        </menu>
+
+    </item>
+
+
+</menu>
