@@ -19,14 +19,14 @@
         android:fontFamily="@font/almendra"
         android:text="Person's name will be placed here"
         android:textColor="@color/colorLightGrey"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/personEmail"
         android:text="Person's email will be placed here"
         android:textColor="@color/colorLightGrey"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

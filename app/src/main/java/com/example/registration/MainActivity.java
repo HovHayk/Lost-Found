@@ -26,14 +26,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //    TextView name, email;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    Button profile;
-
+    Button newPost;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
@@ -44,29 +45,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        /*navigationView = findViewById(R.id.nav_View);
-        toolbar = findViewById(R.id.toolbar);*/
-
+        navigationView = findViewById(R.id.nav_View);
+        toolbar = findViewById(R.id.toolbar);
+        newPost = findViewById(R.id.btnNewPost);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
 
         statusBarColor();
-
         setSupportActionBar(toolbar);
-
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        newPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
     } // End of OnCreate!!!!!!!!!!
@@ -99,12 +103,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void statusBarColor() {
-        if (Build.VERSION.SDK_INT >= 23) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
-        }
     }
 
 

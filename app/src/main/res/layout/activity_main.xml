@@ -10,16 +10,8 @@
     tools:context=".MainActivity"
     tools:openDrawer="start">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--<com.google.android.material.navigation.NavigationView
+    <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_View"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -29,68 +21,107 @@
         app:itemTextColor="@color/colorLightGrey"
         app:menu="@menu/main_menu" />
 
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:background="@color/cardview_dark_background"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/settingsmenuwhite">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/toolbarTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Lost"
-                        android:textColor="@color/colorLightGrey"
-                        android:textSize="40dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/toolbarTitle2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="wrap_content"
+                    android:background="@color/cardview_dark_background"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="?attr/actionBarTheme"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:navigationIcon="@drawable/settingsmenuwhite">
 
 
-                    <TextView
-                        android:id="@+id/toolbarTitle2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="&amp; Found"
-                        android:textColor="@color/colorLightGrey"
-                        android:textSize="40dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/toolbarTitle" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </androidx.appcompat.widget.Toolbar>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/toolbarTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Lost"
+                            android:textColor="@color/colorLightGrey"
+                            android:textSize="21dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/toolbarTitle2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-    </ScrollView>-->
+                        <TextView
+                            android:id="@+id/toolbarTitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="&amp; Found"
+                            android:textColor="@color/colorLightGrey"
+                            android:textSize="21dp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/toolbarTitle" />
 
+                        <Button
+                            android:id="@+id/btnNewPost"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/btn_bg_user"
+                            android:drawablePadding="5dp"
+                            android:text="+"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="30dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    </ScrollView>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
