@@ -2,4 +2,11 @@
     <string name="app_name">Registration</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <array name="categories">
+        <item>Animals</item>
+        <item>Documents</item>
+        <item>Wallets</item>
+        <item>Phones</item>
+    </array>
 </resources>

@@ -32,7 +32,9 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         btnLost = findViewById(R.id.btnPostTypeLost);
         btnFound = findViewById(R.id.btnPostTypeFound);
 
-
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_View);
+        toolbar = findViewById(R.id.toolbar);
         statusBarColor();
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
@@ -61,6 +63,7 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
 
     } // End of OnCreate !!!!!!!!!!!!!!!!!!
 
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -75,10 +78,12 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
+                Intent intentHome = new Intent(PostTypeActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intent = new Intent(PostTypeActivity.this, ProfileActivity.class);
-                startActivity(intent);
+                Intent intentProfile = new Intent(PostTypeActivity.this, ProfileActivity.class);
+                startActivity(intentProfile);
                 break;
         }
 
@@ -87,7 +92,7 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
     }
 
     public void openNewPostActivity() {
-        Intent intent = new Intent(PostTypeActivity.this,NewPostActivity.class);
+        Intent intent = new Intent(PostTypeActivity.this, NewPostActivity.class);
         startActivity(intent);
     }
 
