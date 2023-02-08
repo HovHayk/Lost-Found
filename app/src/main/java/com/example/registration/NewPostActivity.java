@@ -8,12 +8,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -21,14 +21,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.registration.databinding.ActivityMainBinding;
-import com.example.registration.databinding.ActivityNewPostBinding;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -38,29 +37,25 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class NewPostActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText postName, postPlace, postDescription;
     Spinner categories;
-    Button addNewPots;
+    Button addNewPots, btnLocation;
     ImageButton setImage;
 
     private static final int GALLERY_CODE = 1;
 
+    private static final String TAG = "MainActivity";
+    private static  final int ERROR_DIALOG_REQUEST = 9001;
+
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-
     ProgressDialog progressDialog;
 
     Uri imageUrl = null;
-//    ActivityNewPostBinding binding;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
     DatabaseReference postsDBRef;
@@ -71,9 +66,6 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
-        /*binding = ActivityNewPostBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());*/
-
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
@@ -83,7 +75,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         categories = findViewById(R.id.spinnerCategory);
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.postName);
-        postPlace = findViewById(R.id.postPlace);
+        btnLocation = findViewById(R.id.btnLocation);
         postDescription = findViewById(R.id.postDescription);
         setImage = findViewById(R.id.postImage);
 
@@ -119,15 +111,48 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
             }
         });
 
+        if (isServicesOK()) {
+            init();
+        }
+
 
     } // End of OnCreate !!!!!!!!!!!
 
+
+    private void init() {
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NewPostActivity.this, LocationActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    public boolean isServicesOK() {
+        Log.d(TAG, "isServicesOK: checking google services version ");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(NewPostActivity.this);
+
+        if (available == ConnectionResult.SUCCESS) {
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            // there is an error but you can fix it
+            Log.d(TAG, "isServicesOK: There is an error but you can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(NewPostActivity.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(NewPostActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
 
 
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent,GALLERY_CODE);
+        startActivityForResult(intent, GALLERY_CODE);
     }
 
     @Override
@@ -163,7 +188,6 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
                             String t = task.getResult().toString();
 
                             DatabaseReference newPost = postsDBRef.push();
-
                             newPost.child("Name").setValue(name);
                             newPost.child("Place").setValue(place);
                             newPost.child("Description").setValue(description);
@@ -177,104 +201,6 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*private void insertPostData() {
-
-        String name = postName.getText().toString();
-        String place = postPlace.getText().toString();
-        String description = postDescription.getText().toString();
-        String category = categories.getSelectedItem().toString();
-        String image = imageURI.toString();
-
-
-        NewPost newPost = new NewPost(name, place, description, category, image);
-
-        postsDBRef.push().setValue(newPost);
-        Toast.makeText(this, "Data inserted successfuly!", Toast.LENGTH_SHORT).show();
-    }
-
-
-    public void selectImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent,100);
-    }
-
-    private void uploadImage() {
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading is in progress...");
-        progressDialog.show();
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        String fileName = formatter.format(now);
-
-        storageReference = FirebaseStorage.getInstance().getReference().child("imagePost").child(imageURI.getPath());
-
-
-        storageReference.putFile(imageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        String t = task.getResult().toString();
-
-                        DatabaseReference newPost = postsDBRef.push();
-
-                        newPost.child("Name").setValue(postName);
-                        newPost.child("Place").setValue(postPlace);
-                        newPost.child("Description").setValue(postDescription);
-                        newPost.child("Image").setValue(task.getResult().toString());
-                        newPost.child("Category").setValue(categories.getSelectedItem().toString());
-                        progressDialog.dismiss();
-
-                    }
-                });
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-                if (progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Toast.makeText(NewPostActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 100 && resultCode == RESULT_OK) {
-            imageURI = data.getData();
-            setImage.setImageURI(imageURI);
-        }
-    }*/
 
     @Override
     public void onBackPressed() {

@@ -9,13 +9,22 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,10 +38,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    DatabaseReference databaseReference;
+        DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
+    DatabaseReference postsDBRef;
 
     RecyclerViewAdapter adapter;
     List<Posts> list;
@@ -42,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
 
     Button newPost;
-
 
 
     @Override
@@ -59,8 +67,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-
+        postsDBRef = firebaseDatabase.getReference().child("Posts");
         list = new ArrayList<Posts>();
+
+        /*postsDBRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    for(DataSnapshot dataSnapshot: task.getResult().getChildren()){
+                        Posts post = new Posts(dataSnapshot.child(""));
+                        list.add();
+                    }
+                }
+            }
+        });*/
+
+
         adapter = new RecyclerViewAdapter(this, list);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -89,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Posts posts = snapshot.getValue(Posts.class);
+                Posts posts = new Posts(snapshot.child("Name").getValue().toString(), snapshot.child("Place").getValue().toString(), snapshot.child("Description").getValue().toString(), snapshot.child("image").getValue().toString());
                 list.add(posts);
                 adapter.notifyDataSetChanged();
             }
@@ -114,11 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
-
-
-
-    } // End of OnCreate!!!!!!!!!!
+    }
 
 
     @Override
@@ -148,14 +166,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void statusBarColor() {
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
-
-
-}
 
 
 //  {  Getting information from user's email
@@ -176,12 +191,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //  SignOut Button
 
-/*void signOut () {
-            gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(Task<Void> task) {
-                    finish();
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                }
-            });
-        }*/
+/*   public void signOut() {
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(Task<Void> task) {
+                finish();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+    }*/
+
+}

@@ -106,28 +106,15 @@
 
 
         <EditText
-            android:id="@+id/postPlace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Last place you have seen it"
-            android:textColorHint="@color/colorLightGrey"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postName" />
-
-
-        <EditText
             android:id="@+id/postDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Write description of your item"
             android:textColorHint="@color/colorLightGrey"
-
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/postPlace"
-            app:layout_constraintTop_toBottomOf="@+id/postPlace" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/postName" />
 
         <Spinner
             android:id="@+id/spinnerCategory"
@@ -139,6 +126,19 @@
             android:outlineSpotShadowColor="@color/colorLightGrey"
             app:layout_constraintStart_toStartOf="@+id/postDescription"
             app:layout_constraintTop_toBottomOf="@+id/postDescription" />
+
+        <Button
+            android:id="@+id/btnLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Set Item's Location"
+            android:textAllCaps="false"
+            android:background="@drawable/btn_bg"
+            android:backgroundTint="@color/colorLightGrey"
+            android:padding="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
 
         <Button
             android:id="@+id/btnAddPost"

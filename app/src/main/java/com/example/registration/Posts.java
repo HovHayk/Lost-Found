@@ -10,14 +10,14 @@ public class Posts {
     String image;
 
 
-    /*public Posts(String name, String place, String description, String category, String image) {
+    public Posts(String name, String place, String description, String image) {
         this.name = name;
         this.place = place;
         this.description = description;
-        this.category = category;
+//        this.category = category;
         this.image = image;
     }
-*/
+
 
     public String getName() {
         return name;

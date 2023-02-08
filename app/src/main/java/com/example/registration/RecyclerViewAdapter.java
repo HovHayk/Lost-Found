@@ -1,6 +1,8 @@
 package com.example.registration;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.registration.databinding.RecyclerViewRowBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,6 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     Context context;
     List<Posts> list;
+
 
     public RecyclerViewAdapter(Context context, List<Posts> list) {
         this.context = context;
@@ -29,10 +34,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View v = LayoutInflater.from(context).inflate(R.layout.recycler_view_row,parent,false);
-        return new MyViewHolder(v);
-
+        RecyclerViewRowBinding recyclerViewRowBinding = RecyclerViewRowBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        return new MyViewHolder(recyclerViewRowBinding);
     }
 
 
@@ -40,17 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
-        Posts posts = list.get(position);
-        holder.postName.setText(posts.getName());
-        holder.postPlace.setText(posts.getPlace());
-        holder.postDescription.setText(posts.getDescription());
-//        holder.category.setText(posts.getCategory());
-
-        String imageUri = null;
-        imageUri = posts.getImage();
-        Picasso.get().load(imageUri).into(holder.imageForPost);
-
+        holder.setPost(list.get(position));
     }
 
 
@@ -58,11 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-
-
         return list.size();
-
-
     }
 
 
@@ -71,18 +60,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageForPost;
-        TextView postName, postPlace, postDescription, category;
+        RecyclerViewRowBinding binding;
 
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
+        public MyViewHolder(@NonNull RecyclerViewRowBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
 
-            imageForPost = itemView.findViewById(R.id.imageForPost);
-            postName = itemView.findViewById(R.id.postName);
-            postPlace = itemView.findViewById(R.id.postPlace);
-            postDescription = itemView.findViewById(R.id.postDescription);
-            category = itemView.findViewById(R.id.spinnerCategory);
-
+        public void setPost(Posts post){
+            Glide.with(itemView.getContext()).load(post.image).into(binding.imageForPost);
+            binding.postName.setText(post.name);
+            binding.postPlace.setText(post.place);
+            binding.postDescription.setText(post.description);
+            binding.postCategory.setText("Default category");
         }
     }
 
