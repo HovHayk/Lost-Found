@@ -137,6 +137,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
 
         if (available == ConnectionResult.SUCCESS) {
             Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
         } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             // there is an error but you can fix it
             Log.d(TAG, "isServicesOK: There is an error but you can fix it");
