@@ -123,7 +123,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewPostActivity.this, LocationActivity.class);
+                Intent intent = new Intent(NewPostActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });

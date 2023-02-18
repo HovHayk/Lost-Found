@@ -3,11 +3,11 @@ package com.example.registration;
 import android.widget.Spinner;
 
 public class Posts {
-    String name;
-    String place;
-    String description;
+    public String name;
+    public String place;
+    public String description;
 //    String category;
-    String image;
+    public String image;
 
 
     public Posts(String name, String place, String description, String image) {
@@ -43,5 +43,20 @@ public class Posts {
     }
 
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
 

@@ -2,6 +2,8 @@
     <string name="app_name">LostFound</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_location">LocationActivity</string>
+    <string name="api_key">AIzaSyDvJEfl2PjDSUXljYW5N_OQTufCIveaJA8</string>
 
     <array name="categories">
         <item>Animals</item>
@@ -9,7 +11,4 @@
         <item>Wallets</item>
         <item>Phones</item>
     </array>
-
-    <string name="title_activity_location">LocationActivity</string>
-
 </resources>

@@ -1,29 +1,31 @@
 package com.example.registration;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,29 +33,40 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
 
     private Boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
+    private PlacesClient mPlacesClient;
+    private AutocompleteSupportFragment mAutocompleteSupportFragment;
 
-    private static final String TAG = "LocationActivity";
-
+    private static final String TAG = "MapActivity";
+    private static final String apiKey = "AIzaSyDvJEfl2PjDSUXljYW5N_OQTufCIveaJA8";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    private EditText mSearchText;
     private ImageView mGps;
 
     @Override
@@ -61,16 +74,18 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        mSearchText = (EditText) findViewById(R.id.input_search);
+        mAutocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         mGps = (ImageView) findViewById(R.id.ic_gps);
 
+        placesAutoComplete();
         getLocationPermission();
+
     }
 
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        Toast.makeText(LocationActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
 
         if (mLocationPermissionGranted) {
@@ -82,11 +97,40 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            init();
+            //init();
         }
     }
 
-    private void init() {
+
+
+    private void placesAutoComplete() {
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+        mAutocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+
+        mAutocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final LatLng latLng = place.getLatLng();
+
+                Log.i(TAG, "onPlaceSelected: latitude: " + latLng.latitude + "\n" + latLng.longitude);
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.i(TAG, "onError: " + status);
+            }
+        });
+        mPlacesClient = Places.createClient(this);
+    }
+
+
+
+
+
+    /*private void init() {
         Log.d(TAG, "init: initializing");
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -118,50 +162,59 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         hideKeyboard();
     }
 
-    private void geoLocate() {
-        Log.d(TAG, "geoLocate: geolocationg");
+    private void geoLocate(){
+        Log.d(TAG, "geoLocate: geolocating");
 
         String searchString = mSearchText.getText().toString();
 
-        Geocoder geocoder = new Geocoder(LocationActivity.this);
-
+        Geocoder geocoder = new Geocoder(MapActivity.this);
         List<Address> list = new ArrayList<>();
-        try {
+        try{
             list = geocoder.getFromLocationName(searchString, 1);
-        } catch (IOException e) {
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
         }
 
-        if (list.size() > 0) {
+        if(list.size() > 0){
             Address address = list.get(0);
 
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
-            // Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
+                    address.getAddressLine(0));
         }
-    }
+    }*/
 
     private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting the device's current location");
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         try {
             if (mLocationPermissionGranted) {
 
-                final Task location  = mFusedLocationProviderClient.getLastLocation();
+                final Task location = mFusedLocationProviderClient.getLastLocation();
+
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
+                            Log.d("BLA",task.getResult()+"");
                             Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My location");
+                            (new Handler()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                                    moveCamera(latLng, DEFAULT_ZOOM, "My location");
+                                }
+                            },500);
 
                         } else {
-                            Log.d(TAG, "onComplete: cuurent location is null");
-                            Toast.makeText(LocationActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onComplete: current location is null");
+                            Toast.makeText(MapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -170,7 +223,6 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
         }
     }
-
 
 
     private void moveCamera(LatLng latLng, float zoom, String title) {
@@ -187,11 +239,9 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
-
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-        mapFragment.getMapAsync(LocationActivity.this);
+        mapFragment.getMapAsync(MapActivity.this);
     }
 
     private void getLocationPermission() {
@@ -211,12 +261,14 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         mLocationPermissionGranted = false;
 
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0) {
-                    for (int i = 0; i < grantResults.length ;i++ ) {
+                    for (int i = 0; i < grantResults.length; i++) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             mLocationPermissionGranted = false;
                             return;
@@ -230,11 +282,34 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
     private void hideKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }
 
 
