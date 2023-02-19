@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,12 +56,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
-    private PlacesClient mPlacesClient;
-    private AutocompleteSupportFragment mAutocompleteSupportFragment;
 
     private static final String TAG = "MapActivity";
-    private static final String apiKey = "AIzaSyDvJEfl2PjDSUXljYW5N_OQTufCIveaJA8";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
@@ -68,16 +65,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     private ImageView mGps;
+    private EditText mSearchText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        mAutocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        mSearchText = (EditText) findViewById(R.id.input_search);
         mGps = (ImageView) findViewById(R.id.ic_gps);
 
-        placesAutoComplete();
         getLocationPermission();
 
     }
@@ -97,40 +94,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            //init();
+            init();
         }
     }
 
 
 
-    private void placesAutoComplete() {
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), apiKey);
-        }
 
-        mAutocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
-
-        mAutocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                final LatLng latLng = place.getLatLng();
-
-                Log.i(TAG, "onPlaceSelected: latitude: " + latLng.latitude + "\n" + latLng.longitude);
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                Log.i(TAG, "onError: " + status);
-            }
-        });
-        mPlacesClient = Places.createClient(this);
-    }
-
-
-
-
-
-    /*private void init() {
+    private void init() {
         Log.d(TAG, "init: initializing");
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -184,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
                     address.getAddressLine(0));
         }
-    }*/
+    }
 
     private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting the device's current location");
@@ -199,6 +170,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
+
                         if (task.isSuccessful()) {
                             Log.d("BLA",task.getResult()+"");
                             Log.d(TAG, "onComplete: found location!");
@@ -217,6 +189,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             Toast.makeText(MapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
             }
         } catch (SecurityException e) {

@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_location">LocationActivity</string>
     <string name="api_key">AIzaSyDvJEfl2PjDSUXljYW5N_OQTufCIveaJA8</string>
+    <string name="settings">Settings</string>
 
     <array name="categories">
         <item>Animals</item>

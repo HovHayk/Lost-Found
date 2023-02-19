@@ -18,40 +18,4 @@
             android:title="My Posts" />
 
     </group>
-
-
-    <item android:title="Categories">
-
-        <menu>
-
-            <group android:checkableBehavior="single">
-
-                <item
-                    android:id="@+id/nav_animalCategory"
-                    android:icon="@drawable/ic_animal_paw"
-                    android:title="Animals" />
-
-
-                <item
-                    android:id="@+id/nav_documentsCategory"
-                    android:icon="@drawable/ic_documents_icon"
-                    android:title="Documents" />
-
-                <item
-                    android:id="@+id/nav_walletCategory"
-                    android:icon="@drawable/ic_wallet_icon"
-                    android:title="Wallets" />
-
-                <item
-                    android:id="@+id/nav_phoneCategory"
-                    android:icon="@drawable/ic_phone"
-                    android:title="Phones" />
-
-            </group>
-
-        </menu>
-
-    </item>
-
-
 </menu>

@@ -173,7 +173,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         String description = postDescription.getText().toString().trim();
         String category = categories.getSelectedItem().toString().trim();
 
-        if (!(name.isEmpty() && place.isEmpty() && description.isEmpty() && category.isEmpty() && imageUrl != null)) {
+        if (!(name.isEmpty() && place.isEmpty() && description.isEmpty() && category.isEmpty())) {
 
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
