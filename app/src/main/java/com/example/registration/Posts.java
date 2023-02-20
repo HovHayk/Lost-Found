@@ -1,62 +1,55 @@
 package com.example.registration;
 
-import android.widget.Spinner;
-
 public class Posts {
-    public String name;
-    public String place;
-    public String description;
-//    String category;
-    public String image;
+    public String postName;
+    public String postPlace;
+    public String postDescription;
+    public String postImage;
 
 
     public Posts(String name, String place, String description, String image) {
-        this.name = name;
-        this.place = place;
-        this.description = description;
+        this.postName = name;
+        this.postPlace = place;
+        this.postDescription = description;
 //        this.category = category;
-        this.image = image;
+        this.postImage = image;
     }
 
 
     public String getName() {
-        return name;
+        return postName;
     }
 
 
     public String getPlace() {
-        return place;
+        return postPlace;
     }
 
 
     public String getDescription() {
-        return description;
+        return postDescription;
     }
 
 
-    /*public String getCategory() {
-        return category;
-    }*/
-
     public String getImage() {
-        return image;
+        return postImage;
     }
 
 
     public void setName(String name) {
-        this.name = name;
+        this.postName = name;
     }
 
     public void setPlace(String place) {
-        this.place = place;
+        this.postPlace = place;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.postDescription = description;
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.postImage = image;
     }
 }
 

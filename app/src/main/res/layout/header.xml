@@ -8,6 +8,7 @@
     android:padding="20dp">
 
     <ImageView
+        android:id="@+id/personPhoto"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:src="@drawable/ic_person"/>
@@ -26,7 +27,7 @@
         android:id="@+id/personEmail"
         android:hint="Person's email will be placed here"
         android:textColor="@color/colorLightGrey"
-        android:textSize="10sp"
+        android:textSize="13sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

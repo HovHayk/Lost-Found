@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,26 +19,38 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.Objects;
 
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText userNameForRegistration, emailForRegistration, passwordForRegistration, confirmPassword;
+    EditText userNameForRegistration, emailForRegistration, phoneForRegistration, cityForRegistration, passwordForRegistration, confirmPassword;
     TextView haveAcc;
     Button signUp, google, facebook;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
     private ProgressDialog progressDialog;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+
+    FirebaseDatabase firebaseDatabase;
+    FirebaseStorage firebaseStorage;
+    DatabaseReference infoDBRef;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
 
     @Override
@@ -47,15 +60,21 @@ public class RegisterActivity extends AppCompatActivity {
 
         userNameForRegistration = findViewById(R.id.inputUsernameForRegistration);
         emailForRegistration = findViewById(R.id.inputEmailForRegistration);
+        phoneForRegistration = findViewById(R.id.inputPhoneForRegistration);
+        cityForRegistration = findViewById(R.id.inputCityForRegistration);
         passwordForRegistration = findViewById(R.id.inputPasswordForRegistration);
         confirmPassword = findViewById(R.id.inputConfirmPasswordForRegistration);
         signUp = findViewById(R.id.btnRegister);
         haveAcc = findViewById(R.id.alreadyHaveAccount);
         google = findViewById(R.id.btnGoogle);
+        facebook = findViewById(R.id.btnFacebook);
 
         progressDialog = new ProgressDialog(RegisterActivity.this);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
+        infoDBRef = firebaseDatabase.getReference().child("Users");
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(RegisterActivity.this, gso);
@@ -74,6 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 perforAuth();
+                insertUserData();
             }
         });
 
@@ -84,9 +104,6 @@ public class RegisterActivity extends AppCompatActivity {
                 signInGoogle();
             }
         });
-
-
-
 
 
     } // End of OnCreate
@@ -164,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
 
-                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        Objects.requireNonNull(mAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
@@ -181,12 +198,24 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         });
 
-                        }
+                    }
                 }
             });
         }
     }
 
+    public void insertUserData() {
+        String name = userNameForRegistration.getText().toString().trim();
+        String city = cityForRegistration.getText().toString().trim();
+        String phoneNumber = phoneForRegistration.getText().toString().trim();
+        int phone = Integer.parseInt(phoneNumber);
+
+        if (!(name.isEmpty())) {
+            UserInfo user = new UserInfo(name, city, phone);
+
+            infoDBRef.push().setValue(user);
+        }
+    }
 
     private void sendUserToNextActivity() {
         Intent intent = new Intent(this, LoginActivity.class);

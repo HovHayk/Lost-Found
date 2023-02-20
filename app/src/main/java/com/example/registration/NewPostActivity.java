@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,7 +59,8 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
     Uri imageUrl = null;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    DatabaseReference postsDBRef;
+    DatabaseReference infoDBRef;
+    FirebaseAuth mAuth;
 
 
     @Override
@@ -81,9 +83,10 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
 
         progressDialog = new ProgressDialog(this);
 
+        mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        postsDBRef = firebaseDatabase.getReference().child("Posts");
+        infoDBRef = firebaseDatabase.getReference().child("Posts");
 
 
         statusBarColor();
@@ -188,12 +191,13 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
                         public void onComplete(@NonNull Task<Uri> task) {
                             String t = task.getResult().toString();
 
-                            DatabaseReference newPost = postsDBRef.push();
+                            DatabaseReference newPost = infoDBRef.push();
                             newPost.child("Name").setValue(name);
                             newPost.child("Place").setValue(place);
                             newPost.child("Description").setValue(description);
                             newPost.child("Category").setValue(category);
-                            newPost.child("image").setValue(task.getResult().toString());
+                            newPost.child("UserID").setValue(mAuth.getUid());
+                            newPost.child("image").setValue(t);
                             progressDialog.dismiss();
                         }
                     });

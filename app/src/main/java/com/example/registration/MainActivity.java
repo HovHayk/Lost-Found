@@ -17,24 +17,30 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-        DatabaseReference databaseReference;
+    DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
     DatabaseReference postsDBRef;
+    FirebaseAuth mAuth;
 
     RecyclerViewAdapter adapter;
     List<Posts> list;
@@ -43,7 +49,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     Toolbar toolbar;
 
+    EditText nameRegister;
     Button newPost;
+    TextView name, email;
+    ImageView photo;
+    View view, registerView;
 
 
     @Override
@@ -51,29 +61,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
+        view = navigationView.getHeaderView(0);
         toolbar = findViewById(R.id.toolbar);
+        registerView = getLayoutInflater().inflate(R.layout.activity_register, null);
         newPost = findViewById(R.id.btnNewPost);
         recyclerView = findViewById(R.id.recyclerView);
+        name = view.findViewById(R.id.personName);
+        email = view.findViewById(R.id.personEmail);
+        nameRegister = registerView.findViewById(R.id.inputUsernameForRegistration);
 
+        mAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
         postsDBRef = firebaseDatabase.getReference().child("Posts");
         list = new ArrayList<Posts>();
-
-        /*postsDBRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    for(DataSnapshot dataSnapshot: task.getResult().getChildren()){
-                        Posts post = new Posts(dataSnapshot.child(""));
-                        list.add();
-                    }
-                }
-            }
-        });*/
 
 
         adapter = new RecyclerViewAdapter(this, list);
@@ -91,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
+        nameEmailPhotoSetter();
 
         newPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +169,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+    }
+
+    public void nameEmailPhotoSetter() {
+        name.setText(nameRegister.getText().toString());
+        email.setText(mAuth.getCurrentUser().getEmail());
     }
 
 
