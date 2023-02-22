@@ -35,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/appBarLayout"
                     android:layout_width="match_parent"
@@ -109,18 +110,25 @@
 
                 </com.google.android.material.appbar.AppBarLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+
+                <FrameLayout
+                    android:id="@+id/frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:breakStrategy="balanced"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                    tools:listitem="@layout/recycler_view_row">
+                    android:layout_marginTop="60dp">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:breakStrategy="balanced"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                        tools:listitem="@layout/recycler_view_row" />
 
-                </androidx.recyclerview.widget.RecyclerView>
+                </FrameLayout>
+
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -131,7 +139,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_margin="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/btmnavview_bg"
             android:elevation="2dp"
             app:itemIconSize="25sp"

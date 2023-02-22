@@ -15,8 +15,8 @@
         android:orientation="vertical"
         android:padding="5dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        tools:listitem="@layout/recycler_view_row">
+        tools:listitem="@layout/recycler_view_row"/>
 
-    </androidx.recyclerview.widget.RecyclerView>
+
 
 </FrameLayout>

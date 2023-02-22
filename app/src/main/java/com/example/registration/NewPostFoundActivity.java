@@ -172,11 +172,9 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
 
     public void insertPostData() {
         String name = postName.getText().toString().trim();
-        String place = postPlace.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
-        String category = categories.getSelectedItem().toString().trim();
 
-        if (!(name.isEmpty() && place.isEmpty() && description.isEmpty() && category.isEmpty())) {
+        if (!(name.isEmpty() && description.isEmpty())) {
 
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
@@ -193,9 +191,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
 
                             DatabaseReference newPost = postsDBRef.push();
                             newPost.child("Name").setValue(name);
-                            newPost.child("Place").setValue(place);
                             newPost.child("Description").setValue(description);
-                            newPost.child("Category").setValue(category);
                             newPost.child("UserID").setValue(mAuth.getUid());
                             newPost.child("image").setValue(t);
                             progressDialog.dismiss();

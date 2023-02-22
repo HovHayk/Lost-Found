@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,41 +25,57 @@ import java.util.List;
 
 public class FoundPostsFragment extends Fragment {
 
-    DatabaseReference databaseReference;
-    FirebaseDatabase firebaseDatabase;
-    FirebaseStorage firebaseStorage;
-    DatabaseReference postsDBRef;
-    FirebaseAuth mAuth;
 
+    DatabaseReference databaseReference;
+
+    View v;
     RecyclerViewAdapter adapter;
     List<Posts> list;
     RecyclerView recyclerView;
+
+
+    public FoundPostsFragment() {
+        // Required empty public constructor
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-        postsDBRef = firebaseDatabase.getReference().child("Posts");
 
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
         list = new ArrayList<Posts>();
-        adapter = new RecyclerViewAdapter(this, list);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        getPostData();
 
-        setPostData();
     }
 
-    public void setPostData() {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        v = inflater.inflate(R.layout.fragment_found_posts, container, false);
+
+        recyclerView = v.findViewById(R.id.recyclerView);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
+        list = new ArrayList<Posts>();
+
+        adapter = new RecyclerViewAdapter(getContext(), list);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        return v;
+    }
+
+    public void getPostData() {
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Posts posts = new Posts(snapshot.child("Name").getValue().toString()/*,snapshot.child("Place").getValue().toString()*/, snapshot.child("Description").getValue().toString(), snapshot.child("image").getValue().toString());
+                Posts posts = new Posts(snapshot.child("Name").getValue().toString()/*,snapshot.child("Place").getValue().toString()*/
+                        , snapshot.child("Description").getValue().toString()
+                        , snapshot.child("image").getValue().toString());
                 list.add(posts);
                 adapter.notifyDataSetChanged();
             }
@@ -82,5 +102,4 @@ public class FoundPostsFragment extends Fragment {
         });
 
     }
-
 }
