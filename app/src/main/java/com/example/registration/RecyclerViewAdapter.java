@@ -14,6 +14,8 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
+    LostPostsFragment lostPostsFragment;
+    FoundPostsFragment foundPostsFragment;
     Context context;
     List<Posts> list;
 
@@ -23,6 +25,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.list = list;
     }
 
+    public RecyclerViewAdapter(FoundPostsFragment foundPostsFragment, List<Posts> list) {
+        this.foundPostsFragment = foundPostsFragment;
+        this.list = list;
+    }
+
+
+    public RecyclerViewAdapter(LostPostsFragment lostPostsFragment, List<Posts> list) {
+        this.lostPostsFragment = lostPostsFragment;
+        this.list = list;
+    }
 
     @NonNull
     @Override
@@ -63,7 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void setPost(Posts post){
             Glide.with(itemView.getContext()).load(post.postImage).into(binding.imageForPost);
             binding.postName.setText(post.postName);
-            binding.postPlace.setText(post.postPlace);
+            //binding.postPlace.setText(post.postPlace);
             binding.postDescription.setText(post.postDescription);
             binding.postCategory.setText("Default category");
         }

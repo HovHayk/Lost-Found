@@ -29,7 +29,15 @@
 
 
         <activity
-            android:name=".NewPostActivity"
+            android:name=".NewPostFoundActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".NewPostLostActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

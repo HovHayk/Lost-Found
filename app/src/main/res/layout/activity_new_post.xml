@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:fitsSystemWindows="true"
-    tools:context=".NewPostActivity"
+    tools:context=".NewPostFoundActivity"
     tools:openDrawer="start">
 
 

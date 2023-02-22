@@ -5,21 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -29,8 +26,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.Objects;
 
@@ -41,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView haveAcc;
     Button signUp, google, facebook;
     private ProgressDialog progressDialog;
-    private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    private final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
@@ -74,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        infoDBRef = firebaseDatabase.getReference().child("Users");
+        infoDBRef = firebaseDatabase.getReference();
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(RegisterActivity.this, gso);
@@ -185,6 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    progressDialog.setTitle("Creating new user");
                                     progressDialog.dismiss();
                                     sendUserToNextActivity();
                                     Toast.makeText(RegisterActivity.this, "Registration Successful. Please verify your email id", Toast.LENGTH_SHORT).show();
@@ -204,16 +200,26 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+
     public void insertUserData() {
+        String id = mAuth.getUid();
         String name = userNameForRegistration.getText().toString().trim();
         String city = cityForRegistration.getText().toString().trim();
+        String email = emailForRegistration.getText().toString().trim();
         String phoneNumber = phoneForRegistration.getText().toString().trim();
         int phone = Integer.parseInt(phoneNumber);
 
-        if (!(name.isEmpty())) {
-            UserInfo user = new UserInfo(name, city, phone);
+        if (!(name.isEmpty() && city.isEmpty() && phoneNumber.isEmpty() && email.isEmpty())) {
 
-            infoDBRef.push().setValue(user);
+            /*DatabaseReference newUser = infoDBRef.push().child("Users");
+            newUser.child("Name").setValue(name);
+            newUser.child("City").setValue(city);
+            newUser.child("Email").setValue(email);
+            newUser.child("Phone").setValue(phone);
+            newUser.child("UserID").setValue(id);*/
+
+            UserInfo user = new UserInfo(name, city, id, email, phone);
+            infoDBRef.child("Users").push().setValue(user);
         }
     }
 

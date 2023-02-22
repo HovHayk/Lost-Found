@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -55,13 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView photo;
     View view, registerView;
 
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        bottomNavigationView = findViewById(R.id.btmNavView);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
         view = navigationView.getHeaderView(0);
@@ -97,6 +101,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         nameEmailPhotoSetter();
+        setBottomNavigationView();
+        getPostData();
+
 
         newPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,10 +114,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
+    }
+
+    public void setBottomNavigationView() {
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.btmnav_lost:
+
+                        setFragment(new LostPostsFragment());
+                        return true;
+
+                    case R.id.btmnav_found:
+
+                        setFragment(new FoundPostsFragment());
+                        return true;
+
+                    default:
+
+                        return false;
+
+                }
+            }
+        });
+
+    }
+
+
+
+    private void setFragment(Fragment fragment) {
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.recyclerView, fragment);
+        fragmentTransaction.commit();
+
+    }
+
+
+
+    public void getPostData() {
+
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Posts posts = new Posts(snapshot.child("Name").getValue().toString(), snapshot.child("Place").getValue().toString(), snapshot.child("Description").getValue().toString(), snapshot.child("image").getValue().toString());
+                Posts posts = new Posts(snapshot.child("Name").getValue().toString()/*,snapshot.child("Place").getValue().toString()*/
+                        , snapshot.child("Description").getValue().toString()
+                        , snapshot.child("image").getValue().toString());
                 list.add(posts);
                 adapter.notifyDataSetChanged();
             }
@@ -135,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-    }
 
+    }
 
     @Override
     public void onBackPressed() {
@@ -172,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void nameEmailPhotoSetter() {
-        name.setText(nameRegister.getText().toString());
         email.setText(mAuth.getCurrentUser().getEmail());
     }
 

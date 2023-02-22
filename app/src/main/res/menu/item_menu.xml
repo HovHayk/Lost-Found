@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/btmnav_lost" android:title="Lost" android:icon="@drawable/btmnavview_lost"/>
+    <item android:id="@+id/btmnav_found" android:title="Found" android:icon="@drawable/btmnavview_found"/>
+
+</menu>

@@ -48,7 +48,7 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         btnLost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openNewPostActivity();
+                openNewPostLostActivity();
             }
         });
 
@@ -56,7 +56,7 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         btnFound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openNewPostActivity();
+                openNewPostFoundActivity();
             }
         });
 
@@ -91,8 +91,13 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    public void openNewPostActivity() {
-        Intent intent = new Intent(PostTypeActivity.this, NewPostActivity.class);
+    public void openNewPostFoundActivity() {
+        Intent intent = new Intent(PostTypeActivity.this, NewPostFoundActivity.class);
+        startActivity(intent);
+    }
+
+    public void openNewPostLostActivity() {
+        Intent intent = new Intent(PostTypeActivity.this, NewPostLostActivity.class);
         startActivity(intent);
     }
 

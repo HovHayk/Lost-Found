@@ -39,7 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
-public class NewPostActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NewPostFoundActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText postName, postPlace, postDescription;
     Spinner categories;
@@ -59,7 +59,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
     Uri imageUrl = null;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    DatabaseReference infoDBRef;
+    DatabaseReference postsDBRef;
     FirebaseAuth mAuth;
 
 
@@ -86,7 +86,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        infoDBRef = firebaseDatabase.getReference().child("Posts");
+        postsDBRef = firebaseDatabase.getReference().child("Posts").child("Found");
 
 
         statusBarColor();
@@ -126,7 +126,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewPostActivity.this, MapActivity.class);
+                Intent intent = new Intent(NewPostFoundActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
@@ -136,7 +136,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
     public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version ");
 
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(NewPostActivity.this);
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(NewPostFoundActivity.this);
 
         if (available == ConnectionResult.SUCCESS) {
             Log.d(TAG, "isServicesOK: Google Play Services is working");
@@ -144,10 +144,10 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
         } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             // there is an error but you can fix it
             Log.d(TAG, "isServicesOK: There is an error but you can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(NewPostActivity.this, available, ERROR_DIALOG_REQUEST);
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(NewPostFoundActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         } else {
-            Toast.makeText(NewPostActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+            Toast.makeText(NewPostFoundActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -191,7 +191,7 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
                         public void onComplete(@NonNull Task<Uri> task) {
                             String t = task.getResult().toString();
 
-                            DatabaseReference newPost = infoDBRef.push();
+                            DatabaseReference newPost = postsDBRef.push();
                             newPost.child("Name").setValue(name);
                             newPost.child("Place").setValue(place);
                             newPost.child("Description").setValue(description);
@@ -221,11 +221,11 @@ public class NewPostActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intentHome = new Intent(NewPostActivity.this, MainActivity.class);
+                Intent intentHome = new Intent(NewPostFoundActivity.this, MainActivity.class);
                 startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intentProfile = new Intent(NewPostActivity.this, ProfileActivity.class);
+                Intent intentProfile = new Intent(NewPostFoundActivity.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
         }
