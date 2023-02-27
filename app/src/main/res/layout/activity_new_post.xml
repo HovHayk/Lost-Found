@@ -116,45 +116,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postName" />
 
-        <Spinner
-            android:id="@+id/spinnerCategory"
+        <MultiAutoCompleteTextView
+            android:id="@+id/posts_tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:entries="@array/categories"
-            android:outlineAmbientShadowColor="@color/colorLightGrey"
-            android:outlineSpotShadowColor="@color/colorLightGrey"
-            app:layout_constraintStart_toStartOf="@+id/postDescription"
-            app:layout_constraintTop_toBottomOf="@+id/postDescription" />
+            android:hint="Post's Tags"
+            android:ems="10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/postDescription"/>
+
+
+        <MultiAutoCompleteTextView
+            android:id="@+id/location_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Location Tags"
+            android:ems="10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/posts_tags" />
 
         <Button
             android:id="@+id/btnLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Set Item's Location"
-            android:textAllCaps="false"
+            android:layout_marginTop="32dp"
             android:background="@drawable/btn_bg"
             android:backgroundTint="@color/colorLightGrey"
             android:padding="15dp"
+            android:text="Set Item's Location"
+            android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
-
+            app:layout_constraintTop_toBottomOf="@+id/location_tags" />
         <Button
             android:id="@+id/btnAddPost"
-            android:backgroundTint="@color/colorLightGrey"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="250dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginBottom="100dp"
             android:background="@drawable/btn_bg"
+            android:backgroundTint="@color/colorLightGrey"
             android:drawablePadding="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="+      Add Post"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

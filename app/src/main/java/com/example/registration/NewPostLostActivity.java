@@ -5,13 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,14 +49,13 @@ import com.google.firebase.storage.UploadTask;
 public class NewPostLostActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText postName, postPlace, postDescription;
-    Spinner categories;
     Button addNewPots, btnLocation;
     ImageButton setImage;
 
     private static final int GALLERY_CODE = 1;
-
     private static final String TAG = "MainActivity";
     private static  final int ERROR_DIALOG_REQUEST = 9001;
+
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -74,7 +80,6 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         toolbar = findViewById(R.id.toolbar);
 
 
-        categories = findViewById(R.id.spinnerCategory);
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.postName);
         btnLocation = findViewById(R.id.btnLocation);
@@ -106,17 +111,18 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
             }
         });
 
-
         addNewPots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertPostData();
+                createNotify();
             }
         });
 
         if (isServicesOK()) {
             init();
         }
+
 
 
     } // End of OnCreate !!!!!!!!!!!
@@ -150,6 +156,37 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
             Toast.makeText(NewPostLostActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
+    }
+
+
+    private void createNotify(){
+        String id = "my_idd";
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = manager.getNotificationChannel(id);
+            if (channel == null){
+                channel = new NotificationChannel(id, "channel Title", NotificationManager.IMPORTANCE_HIGH);
+                channel.setDescription("inchvor description");
+                channel.enableVibration(true);
+                channel.setVibrationPattern(new long[]{100,200,300,340});
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                manager.createNotificationChannel(channel);
+            }
+        }
+        Intent notificationIntent = new Intent(this,MainActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,id)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(null)
+                .setContentTitle("Title")
+                .setContentText("Your text description")
+                .setVibrate(new long[]{100,200,300,340})
+                .setAutoCancel(false)
+                .setTicker("Notification");
+        builder.setContentIntent(contentIntent);
+        NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
+        m.notify(1,builder.build());
     }
 
 

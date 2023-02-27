@@ -5,23 +5,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,20 +40,25 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class NewPostFoundActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText postName, postPlace, postDescription;
-    Spinner categories;
     Button addNewPots, btnLocation;
     ImageButton setImage;
 
     private static final int GALLERY_CODE = 1;
-
     private static final String TAG = "MainActivity";
     private static  final int ERROR_DIALOG_REQUEST = 9001;
 
@@ -56,7 +67,12 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     Toolbar toolbar;
     ProgressDialog progressDialog;
 
+    MultiAutoCompleteTextView postTags, locationTags;
+    private ArrayList<String> postTagsList = new ArrayList<>();
+    private ArrayList<String> locationTagsList = new ArrayList<>();
+
     Uri imageUrl = null;
+    FirebaseFirestore database;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
     DatabaseReference postsDBRef;
@@ -68,13 +84,14 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
 
+        postTags = findViewById(R.id.posts_tags);
+        locationTags = findViewById(R.id.location_tags);
 
-        categories = findViewById(R.id.spinnerCategory);
+
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.postName);
         btnLocation = findViewById(R.id.btnLocation);
@@ -98,6 +115,43 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
+        /*database = FirebaseFirestore.getInstance();
+        HashMap<String, Object> t = new HashMap<>();
+        t.put("tagName", "phone");
+        database.collection("postTags").add(t);
+        Log.i("klor", "onCreate: hasnuma te che");
+        database.collection("postTags")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot snapshot: task.getResult()) {
+                        postTagsList.add(snapshot.get("tagName").toString());
+                    }
+                    ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, postTagsList);
+                    postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                    postTags.setAdapter(tagArrayAdapter);
+                }
+                Log.i("david", "onSuccess: " + postTagsList.size());
+            }
+        });
+
+
+        database.collection("locationTags")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot snapshot: queryDocumentSnapshots) {
+                    locationTagsList.add(snapshot.get("tagName").toString());
+                }
+                ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, locationTagsList);
+                locationTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                locationTags.setAdapter(tagArrayAdapter);
+            }
+        });*/
+
 
         setImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +172,13 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
             init();
         }
 
+        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(mAuth.getUid(), "Try", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+            notifyMethod();
+        }*/
+
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -131,6 +192,17 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
             }
         });
     }
+
+    /*public void notifyMethod() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(NewPostFoundActivity.this, "First Try");
+        builder.setContentTitle("Try");
+        builder.setContentText("Hey we found a new post that matches yours. Please takes a look");
+        builder.setSmallIcon(R.drawable.ic_email);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(NewPostFoundActivity.this);
+        managerCompat.notify(1, builder.build());
+    }*/
 
 
     public boolean isServicesOK() {

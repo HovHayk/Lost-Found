@@ -12,16 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class LostPostsFragment extends Fragment {
 
@@ -73,9 +72,9 @@ public class LostPostsFragment extends Fragment {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Posts posts = new Posts(snapshot.child("Name").getValue().toString()/*,snapshot.child("Place").getValue().toString()*/
-                        , snapshot.child("Description").getValue().toString()
-                        , snapshot.child("image").getValue().toString());
+                Posts posts = new Posts(Objects.requireNonNull(snapshot.child("Name").getValue()).toString()/*,snapshot.child("Place").getValue().toString()*/
+                        , Objects.requireNonNull(snapshot.child("Description").getValue()).toString()
+                        , Objects.requireNonNull(snapshot.child("image").getValue()).toString());
                 list.add(posts);
                 adapter.notifyDataSetChanged();
             }
