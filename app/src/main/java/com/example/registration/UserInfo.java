@@ -6,14 +6,14 @@ public class UserInfo {
     public String userCity;
     public String userId;
     public String userEmail;
-    public int userPhone;
+    public String userPhone;
 
-    public UserInfo(String userName, String userCity, String userId, String email, int userPhone) {
-        this.userName = userName;
-        this.userCity = userCity;
-        this.userId = userId;
+    public UserInfo(String name, String city, String id, String email, String phone) {
+        this.userName = name;
+        this.userCity = city;
+        this.userId = id;
         this.userEmail = email;
-        this.userPhone = userPhone;
+        this.userPhone = phone;
     }
 
 
@@ -21,25 +21,31 @@ public class UserInfo {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(String name) {
+        this.userName = name;
     }
+
+
 
     public String getUserCity() {
         return userCity;
     }
 
-    public void setUserCity(String userCity) {
-        this.userCity = userCity;
+    public void setUserCity(String city) {
+        this.userCity = city;
     }
+
+
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(String id) {
+        this.userId = id;
     }
+
+
 
     public String getEmail() {
         return userEmail;
@@ -49,11 +55,13 @@ public class UserInfo {
         this.userEmail = email;
     }
 
-    public int getUserPhone() {
+
+
+    public String getUserPhone() {
         return userPhone;
     }
 
-    public void setUserPhone(int userPhone) {
-        this.userPhone = userPhone;
+    public void setUserPhone(String phone) {
+        this.userPhone = phone;
     }
 }

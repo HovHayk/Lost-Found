@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button signUp, google, facebook;
     private ProgressDialog progressDialog;
     private final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    private final String phonePattern = "^([0-9\\+]|\\(\\d{1,3}\\))[0-9\\-\\. ]{3,15}$";
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
@@ -149,11 +151,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-
-
     private void perforAuth() {
         String user = userNameForRegistration.getText().toString();
         String email = emailForRegistration.getText().toString();
+        String phone = phoneForRegistration.getText().toString();
+        String city = cityForRegistration.getText().toString();
         String password = passwordForRegistration.getText().toString();
         String passwordConfirm = confirmPassword.getText().toString();
 
@@ -164,19 +166,20 @@ public class RegisterActivity extends AppCompatActivity {
             passwordForRegistration.setError("Enter Proper Password");
         } else if (user.equals("")) {
             userNameForRegistration.setError("Please enter username");
+        } else if (city.equals("")) {
+            cityForRegistration.setError("Please enter your city");
         } else if (!password.equals(passwordConfirm)) {
             confirmPassword.setError("Password Not match Both field  ");
+        } else if (!phone.matches(phonePattern)) {
+            phoneForRegistration.setError("Please enter correct number");
         } else {
-            //can be a problem with progress dialog
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
 
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
 
-                        Objects.requireNonNull(mAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
@@ -189,7 +192,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     progressDialog.dismiss();
                                     Toast.makeText(RegisterActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
-
                                 }
                             }
                         });
@@ -206,22 +208,18 @@ public class RegisterActivity extends AppCompatActivity {
         String name = userNameForRegistration.getText().toString().trim();
         String city = cityForRegistration.getText().toString().trim();
         String email = emailForRegistration.getText().toString().trim();
-        String phoneNumber = phoneForRegistration.getText().toString().trim();
-        int phone = Integer.parseInt(phoneNumber);
+        String phone = phoneForRegistration.getText().toString().trim();
 
-        if (!(name.isEmpty() && city.isEmpty() && phoneNumber.isEmpty() && email.isEmpty())) {
-
-            /*DatabaseReference newUser = infoDBRef.push().child("Users");
-            newUser.child("Name").setValue(name);
-            newUser.child("City").setValue(city);
-            newUser.child("Email").setValue(email);
-            newUser.child("Phone").setValue(phone);
-            newUser.child("UserID").setValue(id);*/
+        if (!(name.isEmpty() && city.isEmpty() && phone.isEmpty() && email.isEmpty())) {
 
             UserInfo user = new UserInfo(name, city, id, email, phone);
             infoDBRef.child("Users").push().setValue(user);
+
+        } else {
+            Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void sendUserToNextActivity() {
         Intent intent = new Intent(this, LoginActivity.class);

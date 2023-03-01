@@ -77,7 +77,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Person's Name"
+                            android:hint="Person's Name"
                             android:textColor="@color/colorWhite"
                             android:textSize="20sp"
                             android:textStyle="bold"
@@ -90,7 +90,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Person's Email"
+                            android:hint="Person's Email"
                             android:textColor="@color/colorWhite"
                             android:textSize="18sp"
                             android:textStyle="italic"
@@ -279,9 +279,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Davit"
+                                    android:hint="Davit"
                                     android:textAlignment="viewEnd"
                                     android:textColor="#5B5B5B"
+                                    android:textColorHint="@color/colorBlack"
                                     android:textSize="16sp" />
 
                             </LinearLayout>
@@ -313,9 +314,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="094111912"
+                                    android:hint="094111912"
                                     android:textAlignment="viewEnd"
                                     android:textColor="#5B5B5B"
+                                    android:textColorHint="@color/colorBlack"
                                     android:textSize="16sp" />
 
                             </LinearLayout>
@@ -347,9 +349,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Yerevan"
+                                    android:hint="Yerevan"
                                     android:textAlignment="viewEnd"
                                     android:textColor="#5B5B5B"
+                                    android:textColorHint="@color/colorBlack"
                                     android:textSize="16sp" />
 
                             </LinearLayout>
@@ -381,9 +384,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="12"
+                                    android:hint="12"
                                     android:textAlignment="viewEnd"
                                     android:textColor="#5B5B5B"
+                                    android:textColorHint="@color/colorBlack"
                                     android:textSize="16sp" />
 
                             </LinearLayout>
