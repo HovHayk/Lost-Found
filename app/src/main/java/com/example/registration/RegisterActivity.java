@@ -213,7 +213,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (!(name.isEmpty() && city.isEmpty() && phone.isEmpty() && email.isEmpty())) {
 
             UserInfo user = new UserInfo(name, city, id, email, phone);
-            infoDBRef.child("Users").push().setValue(user);
+            infoDBRef.child("Users").child(id).setValue(user);
 
         } else {
             Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show();

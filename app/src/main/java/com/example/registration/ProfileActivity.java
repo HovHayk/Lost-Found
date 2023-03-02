@@ -10,13 +10,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -41,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     TextView email;
     TextView phone;
     TextView city;
+    String id;
 
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
@@ -77,7 +82,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-        setUserInfo();
+
+        id = mAuth.getUid();
+        setUserInfo(id);
 
         newPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,33 +123,36 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     }
 
 
+
+    public void setUserInfo(String id) {
+
+        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    Log.i("Multo", "onComplete: " + id);
+
+
+                    DataSnapshot snapshot = task.getResult();
+
+                    name.setText(snapshot.child("userName").getValue()+"");
+                    namePhoto.setText(snapshot.child("userName").getValue()+"");
+                    email.setText(snapshot.child("userEmail").getValue()+"");
+                    city.setText(snapshot.child("userCity").getValue()+"");
+                    phone.setText(snapshot.child("userPhone").getValue()+"");
+
+                }
+
+            }
+        });
+    }
+
+
     public void statusBarColor() {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
-
-    public void setUserInfo() {
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    name.setText(snapshot.child("Users").child("userName").getValue().toString());
-                    namePhoto.setText(snapshot.child("Users").child("userName").getValue().toString());
-                    email.setText(snapshot.child("Users").child("email").getValue().toString());
-                    city.setText(snapshot.child("Users").child("userName").getValue().toString());
-                    phone.setText(snapshot.child("Users").child("userPhone").getValue().toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
 }

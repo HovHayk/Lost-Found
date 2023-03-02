@@ -66,6 +66,8 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        nameEmailPhotoSetter();
     }
 
     @Override

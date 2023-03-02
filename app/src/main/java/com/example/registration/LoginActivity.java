@@ -100,7 +100,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+        // starting app without login
+        if (mUser != null) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
 
     } // End of OnCreate !!!
 
