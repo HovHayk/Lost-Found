@@ -30,6 +30,7 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.Objects;
 
+// keytool -exportcert -alias androiddebugkey -keystore "C:\Users\User\.android\debug.keystore" | "C:\Users\User\.android\openssl-0.9.8e_X64\bin\openssl" sha1 -binary | "C:\Users\User\.android\openssl-0.9.8e_X64\bin\openssl" base64
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -101,6 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
                 signInGoogle();
             }
         });
+
 
 
     } // End of OnCreate
@@ -226,4 +228,30 @@ public class RegisterActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +49,7 @@ import com.google.firebase.storage.UploadTask;
 
 public class NewPostLostActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    TextView location;
     EditText postName, postPlace, postDescription;
     Button addNewPots, btnLocation;
     ImageButton setImage;
@@ -82,6 +84,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
 
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.postName);
+        location = findViewById(R.id.locationName);
         btnLocation = findViewById(R.id.btnLocation);
         postDescription = findViewById(R.id.postDescription);
         setImage = findViewById(R.id.postImage);
@@ -208,6 +211,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     }
 
     public void insertPostData() {
+        String id = mAuth.getUid();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
 
@@ -229,7 +233,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                             DatabaseReference newPost = postsDBRef.push();
                             newPost.child("Name").setValue(name);
                             newPost.child("Description").setValue(description);
-                            newPost.child("UserID").setValue(mAuth.getUid());
+                            newPost.child("UserID").setValue(id);
                             newPost.child("image").setValue(t);
                             progressDialog.dismiss();
                         }

@@ -9,19 +9,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
-public class PostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class FoundPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
@@ -54,7 +58,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         mAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
         postsDBRef = firebaseDatabase.getReference().child("Posts");
 
         statusBarColor();
@@ -85,7 +89,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.nav_home:
                 break;
             case R.id.nav_profile:
-                Intent intent = new Intent(PostPage.this, ProfileActivity.class);
+                Intent intent = new Intent(FoundPostPage.this, ProfileActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -94,6 +98,24 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         return true;
     }
 
+    public void setPostInfo(String id) {
+
+        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    Log.i("User", "onComplete: " + id);
+
+                    DataSnapshot snapshot = task.getResult();
+
+
+
+                }
+
+            }
+        });
+    }
 
     public void statusBarColor() {
         Window window = this.getWindow();

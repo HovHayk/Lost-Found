@@ -100,7 +100,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-
     private void init() {
         Log.d(TAG, "init: initializing");
 
@@ -262,10 +261,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
+
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
 
             }
             return;

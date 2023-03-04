@@ -22,6 +22,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -35,6 +40,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Arrays;
+
 public class LoginActivity extends AppCompatActivity {
 
     TextView register;
@@ -47,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+
+    CallbackManager callbackManager;
 
 
     @Override
@@ -69,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(LoginActivity.this, gso);
 
+        callbackManager = CallbackManager.Factory.create();
+
 
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +99,9 @@ public class LoginActivity extends AppCompatActivity {
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNotify();
+                firebaseAuthWithFacebook();
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
+
             }
         });
 
@@ -101,9 +114,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // starting app without login
-        if (mUser != null) {
+        /*if (mUser != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        }
+        }*/
 
     } // End of OnCreate !!!
 
@@ -117,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        //mCallbackManger.onActivityResult(requestCode,resultCode,data);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -130,37 +142,39 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Authentication Failed Poblems with " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void createNotify(){
+    private void createNotify() {
         String id = "my_idd";
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = manager.getNotificationChannel(id);
-            if (channel == null){
+            if (channel == null) {
                 channel = new NotificationChannel(id, "channel Title", NotificationManager.IMPORTANCE_HIGH);
                 channel.setDescription("inchvor description");
                 channel.enableVibration(true);
-                channel.setVibrationPattern(new long[]{100,200,300,340});
+                channel.setVibrationPattern(new long[]{100, 200, 300, 340});
                 channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
                 manager.createNotificationChannel(channel);
             }
         }
 
-        Intent notificationIntent = new Intent(this,LoginActivity.class);
+        Intent notificationIntent = new Intent(this, LoginActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,id)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(null)
                 .setContentTitle("Title")
                 .setContentText("Your text description")
-                .setVibrate(new long[]{100,200,300,340})
+                .setVibrate(new long[]{100, 200, 300, 340})
                 .setAutoCancel(false)
                 .setTicker("Notification");
         builder.setContentIntent(contentIntent);
         NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
-        m.notify(1,builder.build());
+        m.notify(1, builder.build());
     }
 
     private void perforLogin() {
@@ -217,17 +231,42 @@ public class LoginActivity extends AppCompatActivity {
 
         //trying to sign in user using signInWithCredential and passing above credentials of user.
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
+
+    private void firebaseAuthWithFacebook() {
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+    }
+
+
 }

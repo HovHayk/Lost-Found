@@ -1,7 +1,6 @@
 package com.example.registration;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,63 +14,53 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.util.Objects;
-
-public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    Toolbar toolbar;
-    Button newPost;
-    TextView namePhoto;
-    TextView name;
-    TextView email;
-    TextView phone;
-    TextView city;
-    String id;
+public class LostPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
+    DatabaseReference postsDBRef;
     FirebaseAuth mAuth;
+
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
+    View view;
+
+
+    TextView name, email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_post_page);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
-        newPost = findViewById(R.id.btnNewPost);
 
-        namePhoto = findViewById(R.id.persons_name);
-        email = findViewById(R.id.persons_email);
-        name = findViewById(R.id.personName);
-        phone = findViewById(R.id.personPhone);
-        city = findViewById(R.id.personCity);
+
+        view = navigationView.getHeaderView(0);
+        name = view.findViewById(R.id.personName);
+        email = view.findViewById(R.id.personEmail);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
+        postsDBRef = firebaseDatabase.getReference().child("Posts");
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -83,19 +72,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        id = mAuth.getUid();
-        setUserInfo(id);
-
-        newPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, PostTypeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-    } // End of OnCreate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        nameEmailPhotoSetter();
+    }
 
     @Override
     public void onBackPressed() {
@@ -107,14 +85,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     }
 
 
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                startActivity(intent);
                 break;
             case R.id.nav_profile:
+                Intent intent = new Intent(LostPostPage.this, ProfileActivity.class);
+                startActivity(intent);
                 break;
         }
 
@@ -122,8 +99,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
-
-    public void setUserInfo(String id) {
+    public void setPostInfo(String id) {
 
         databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -134,11 +110,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
                     DataSnapshot snapshot = task.getResult();
 
-                    name.setText(snapshot.child("userName").getValue() + "");
-                    namePhoto.setText(snapshot.child("userName").getValue() + "");
-                    email.setText(snapshot.child("userEmail").getValue() + "");
-                    city.setText(snapshot.child("userCity").getValue() + "");
-                    phone.setText(snapshot.child("userPhone").getValue() + "");
+
 
 
                 }
@@ -147,17 +119,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         });
     }
 
-
-                    /*name.setText(snapshot.child("userName").getValue().toString().trim());
-                    namePhoto.setText(snapshot.child("userName").getValue().toString().trim());
-                    email.setText(snapshot.child("userEmail").getValue().toString().trim());
-                    city.setText(snapshot.child("userCity").getValue().toString().trim());
-                    phone.setText(snapshot.child("userPhone").getValue().toString().trim());*/
-
     public void statusBarColor() {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
+
+    public void nameEmailPhotoSetter() {
+        email.setText(mAuth.getCurrentUser().getEmail());
+    }
+
 }

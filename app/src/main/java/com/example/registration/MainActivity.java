@@ -23,12 +23,25 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomNavigationView bottomNavigationView;
     FrameLayout frameLayout;
 
+    String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +92,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nameRegister = registerView.findViewById(R.id.inputUsernameForRegistration);
 
         mAuth = FirebaseAuth.getInstance();
+        id = mAuth.getCurrentUser().getUid();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
+        databaseReference = FirebaseDatabase.getInstance().getReference("User").child(id);
         postsDBRef = firebaseDatabase.getReference().child("Posts");
         list = new ArrayList<Posts>();
 
@@ -182,11 +198,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void nameEmailPhotoSetter() {
-        email.setText(mAuth.getCurrentUser().getEmail());
+
+        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    DataSnapshot snapshot = task.getResult();
+
+                    name.setText(snapshot.child("userName").getValue().toString());
+                    email.setText(snapshot.child("userEmail").getValue().toString());
+
+                }
+            }
+        });
     }
 
 
-//  {  Getting information from user's email
+//  {  Getting information from user's google email
 
 
         /*GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
@@ -202,9 +231,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //  }
 
 
-//  SignOut Button
+//  SignOut Buttons
 
-/*   public void signOut() {
+   /*public void signOut() {
         gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Task<Void> task) {
@@ -212,6 +241,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
+    }
+
+    private void facebookLogOut() {
+        LoginManager.getInstance().logOut();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void getUserInfoFromFacebook() {
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            // getting name
+                            String fullName = object.getString("name");
+                            name.setText(fullName);
+                            // getting photo
+                            String url = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                            Picasso.get().load(url).into("here will be imageView for photo");
+                        } catch (JSONException e) {
+                            e.getMessage();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,link,picture.type(large)");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+
+
+
+
+        //information you can get from user's facebook account
+
+        {
+            "id": "12345678",
+                "birthday": "1/1/1950",
+                "first_name": "Chris",
+                "gender": "male",
+                "last_name": "Colm",
+                "link": "http://www.facebook.com/12345678",
+                "location": {
+            "id": "110843418940484",
+                    "name": "Seattle, Washington"
+        },
+            "locale": "en_US",
+                "name": "Chris Colm",
+                "timezone": -8,
+                "updated_time": "2010-01-01T16:40:43+0000",
+                "verified": true
+        }
+
     }*/
+
 
 }

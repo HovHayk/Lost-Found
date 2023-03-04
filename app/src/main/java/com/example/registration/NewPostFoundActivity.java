@@ -115,43 +115,6 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*database = FirebaseFirestore.getInstance();
-        HashMap<String, Object> t = new HashMap<>();
-        t.put("tagName", "phone");
-        database.collection("postTags").add(t);
-        Log.i("klor", "onCreate: hasnuma te che");
-        database.collection("postTags")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot snapshot: task.getResult()) {
-                        postTagsList.add(snapshot.get("tagName").toString());
-                    }
-                    ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, postTagsList);
-                    postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-                    postTags.setAdapter(tagArrayAdapter);
-                }
-                Log.i("david", "onSuccess: " + postTagsList.size());
-            }
-        });
-
-
-        database.collection("locationTags")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (DocumentSnapshot snapshot: queryDocumentSnapshots) {
-                    locationTagsList.add(snapshot.get("tagName").toString());
-                }
-                ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, locationTagsList);
-                locationTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-                locationTags.setAdapter(tagArrayAdapter);
-            }
-        });*/
-
 
         setImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,13 +135,6 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
             init();
         }
 
-        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(mAuth.getUid(), "Try", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-            notifyMethod();
-        }*/
-
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -193,16 +149,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         });
     }
 
-    /*public void notifyMethod() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(NewPostFoundActivity.this, "First Try");
-        builder.setContentTitle("Try");
-        builder.setContentText("Hey we found a new post that matches yours. Please takes a look");
-        builder.setSmallIcon(R.drawable.ic_email);
-        builder.setAutoCancel(true);
 
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(NewPostFoundActivity.this);
-        managerCompat.notify(1, builder.build());
-    }*/
 
 
     public boolean isServicesOK() {
@@ -243,6 +190,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     }
 
     public void insertPostData() {
+        String id = mAuth.getUid();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
 
@@ -264,7 +212,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                             DatabaseReference newPost = postsDBRef.push();
                             newPost.child("Name").setValue(name);
                             newPost.child("Description").setValue(description);
-                            newPost.child("UserID").setValue(mAuth.getUid());
+                            newPost.child("UserID").setValue(id);
                             newPost.child("image").setValue(t);
                             progressDialog.dismiss();
                         }
