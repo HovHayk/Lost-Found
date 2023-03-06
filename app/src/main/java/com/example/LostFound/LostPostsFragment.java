@@ -1,4 +1,4 @@
-package com.example.registration;
+package com.example.LostFound;
 
 import android.os.Bundle;
 
@@ -12,19 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class FoundPostsFragment extends Fragment {
+public class LostPostsFragment extends Fragment {
 
 
     DatabaseReference databaseReference;
@@ -35,7 +32,7 @@ public class FoundPostsFragment extends Fragment {
     RecyclerView recyclerView;
 
 
-    public FoundPostsFragment() {
+    public LostPostsFragment() {
         // Required empty public constructor
     }
 
@@ -45,7 +42,7 @@ public class FoundPostsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
         list = new ArrayList<Posts>();
         getPostData();
 
@@ -54,11 +51,11 @@ public class FoundPostsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_found_posts, container, false);
+        v = inflater.inflate(R.layout.fragment_lost_posts, container, false);
 
         recyclerView = v.findViewById(R.id.recyclerView);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
         list = new ArrayList<Posts>();
 
         adapter = new RecyclerViewAdapter(getContext(), list);
@@ -74,11 +71,11 @@ public class FoundPostsFragment extends Fragment {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Posts posts = new Posts(Objects.requireNonNull(snapshot.child("Name").getValue()).toString()/*,snapshot.child("Place").getValue().toString()*/
+                /*Posts posts = new Posts(Objects.requireNonNull(snapshot.child("Name").getValue()).toString()*//*,snapshot.child("Place").getValue().toString()*//*
                         , Objects.requireNonNull(snapshot.child("Description").getValue()).toString()
                         , Objects.requireNonNull(snapshot.child("image").getValue()).toString());
                 list.add(posts);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
             }
 
             @Override

@@ -1,4 +1,4 @@
-package com.example.registration;
+package com.example.LostFound;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,8 +27,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.util.Objects;
 
 // keytool -exportcert -alias androiddebugkey -keystore "C:\Users\User\.android\debug.keystore" | "C:\Users\User\.android\openssl-0.9.8e_X64\bin\openssl" sha1 -binary | "C:\Users\User\.android\openssl-0.9.8e_X64\bin\openssl" base64
 

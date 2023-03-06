@@ -1,4 +1,4 @@
-package com.example.registration;
+package com.example.LostFound;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -9,58 +9,32 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.Button;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 
-public class FoundPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    DatabaseReference databaseReference;
-    FirebaseDatabase firebaseDatabase;
-    FirebaseStorage firebaseStorage;
-    DatabaseReference postsDBRef;
-    FirebaseAuth mAuth;
+public class PostTypeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    View view;
-
-
-    TextView name, email;
+    Button btnLost, btnFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_page);
+        setContentView(R.layout.activity_post_type);
+
+        btnLost = findViewById(R.id.btnPostTypeLost);
+        btnFound = findViewById(R.id.btnPostTypeFound);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
-
-
-        view = navigationView.getHeaderView(0);
-        name = view.findViewById(R.id.personName);
-        email = view.findViewById(R.id.personEmail);
-
-        mAuth = FirebaseAuth.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
-        postsDBRef = firebaseDatabase.getReference().child("Posts");
-
         statusBarColor();
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
@@ -71,8 +45,24 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        nameEmailPhotoSetter();
-    }
+        btnLost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNewPostLostActivity();
+            }
+        });
+
+
+        btnFound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNewPostFoundActivity();
+            }
+        });
+
+
+    } // End of OnCreate !!!!!!!!!!!!!!!!!!
+
 
     @Override
     public void onBackPressed() {
@@ -84,13 +74,16 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
     }
 
 
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
+                Intent intentHome = new Intent(PostTypeActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intent = new Intent(FoundPostPage.this, ProfileActivity.class);
-                startActivity(intent);
+                Intent intentProfile = new Intent(PostTypeActivity.this, ProfileActivity.class);
+                startActivity(intentProfile);
                 break;
         }
 
@@ -98,23 +91,14 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
-    public void setPostInfo(String id) {
+    public void openNewPostFoundActivity() {
+        Intent intent = new Intent(PostTypeActivity.this, NewPostFoundActivity.class);
+        startActivity(intent);
+    }
 
-        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    Log.i("User", "onComplete: " + id);
-
-                    DataSnapshot snapshot = task.getResult();
-
-
-
-                }
-
-            }
-        });
+    public void openNewPostLostActivity() {
+        Intent intent = new Intent(PostTypeActivity.this, NewPostLostActivity.class);
+        startActivity(intent);
     }
 
     public void statusBarColor() {
@@ -122,10 +106,6 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
-    }
-
-    public void nameEmailPhotoSetter() {
-        email.setText(mAuth.getCurrentUser().getEmail());
     }
 
 }

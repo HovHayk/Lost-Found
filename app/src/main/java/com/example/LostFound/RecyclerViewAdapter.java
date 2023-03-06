@@ -1,4 +1,4 @@
-package com.example.registration;
+package com.example.LostFound;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.registration.databinding.RecyclerViewRowBinding;
+import com.example.LostFound.databinding.RecyclerViewRowBinding;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.registration;
+package com.example.LostFound;
 
 import android.os.Bundle;
 
@@ -20,9 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class LostPostsFragment extends Fragment {
+public class FoundPostsFragment extends Fragment {
 
 
     DatabaseReference databaseReference;
@@ -33,7 +32,7 @@ public class LostPostsFragment extends Fragment {
     RecyclerView recyclerView;
 
 
-    public LostPostsFragment() {
+    public FoundPostsFragment() {
         // Required empty public constructor
     }
 
@@ -43,7 +42,7 @@ public class LostPostsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
         list = new ArrayList<Posts>();
         getPostData();
 
@@ -52,11 +51,11 @@ public class LostPostsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_lost_posts, container, false);
+        v = inflater.inflate(R.layout.fragment_found_posts, container, false);
 
         recyclerView = v.findViewById(R.id.recyclerView);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
         list = new ArrayList<Posts>();
 
         adapter = new RecyclerViewAdapter(getContext(), list);
@@ -72,11 +71,11 @@ public class LostPostsFragment extends Fragment {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Posts posts = new Posts(Objects.requireNonNull(snapshot.child("Name").getValue()).toString()/*,snapshot.child("Place").getValue().toString()*/
+                /*Posts posts = new Posts(Objects.requireNonNull(snapshot.child("Name").getValue()).toString()*//*,snapshot.child("Place").getValue().toString()*//*
                         , Objects.requireNonNull(snapshot.child("Description").getValue()).toString()
                         , Objects.requireNonNull(snapshot.child("image").getValue()).toString());
                 list.add(posts);
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
             }
 
             @Override

@@ -1,4 +1,4 @@
-package com.example.registration;
+package com.example.LostFound;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +12,6 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -84,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                perforLogin();
+                performLogin();
             }
         });
 
@@ -177,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
         m.notify(1, builder.build());
     }
 
-    private void perforLogin() {
+    private void performLogin() {
 
         String email = emailForLogin.getText().toString();
         String password = passwordForLogin.getText().toString();

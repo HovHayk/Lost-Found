@@ -6,7 +6,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "com.example.registration"
+        applicationId "com.example.LostFound"
         minSdkVersion 29
         targetSdkVersion 33
         versionCode 1
@@ -28,7 +28,7 @@ android {
 
     }
 
-    namespace 'com.example.registration'
+    namespace 'com.example.LostFound'
 
 }
 

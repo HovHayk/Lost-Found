@@ -1,4 +1,4 @@
-package com.example.registration;
+package com.example.LostFound;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,25 +23,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-        nameEmailPhotoSetter();
+        //nameEmailPhotoSetter();
         setBottomNavigationView();
 
 
@@ -178,11 +165,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
+                Intent intentHome = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
+                Intent intentProfile = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intentProfile);
                 break;
+            case R.id.nav_myPosts:
+                Intent intentMyPost = new Intent(MainActivity.this, MyPosts.class);
+                startActivity(intentMyPost);
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -197,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
 
-    public void nameEmailPhotoSetter() {
+   /* public void nameEmailPhotoSetter() {
 
         databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -212,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-    }
+    }*/
 
 
 //  {  Getting information from user's google email
