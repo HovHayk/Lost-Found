@@ -2,14 +2,14 @@ package com.example.LostFound;
 
 public class Posts {
     public String postName;
-    public String postPlace;
+    public String postLocation;
     public String postDescription;
     public String postImage;
 
 
-    public Posts(String name, String place, String description, String image) {
+    public Posts(String name, String location, String description, String image) {
         this.postName = name;
-        this.postPlace = place;
+        this.postLocation = location;
         this.postDescription = description;
         this.postImage = image;
     }
@@ -20,7 +20,7 @@ public class Posts {
     }
 
     public String getPlace() {
-        return postPlace;
+        return postLocation;
     }
 
     public String getDescription() {
@@ -36,7 +36,7 @@ public class Posts {
     }
 
     public void setPlace(String place) {
-        this.postPlace = place;
+        this.postLocation = place;
     }
 
     public void setDescription(String description) {

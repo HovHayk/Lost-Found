@@ -82,11 +82,11 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
 
 
         addNewPots = findViewById(R.id.btnAddPost);
-        postName = findViewById(R.id.postName);
-        location = findViewById(R.id.locationName);
-        btnLocation = findViewById(R.id.btnLocation);
-        postDescription = findViewById(R.id.postDescription);
-        setImage = findViewById(R.id.postImage);
+        postName = findViewById(R.id.post_name);
+        location = findViewById(R.id.post_location);
+        btnLocation = findViewById(R.id.btn_location);
+        postDescription = findViewById(R.id.post_description);
+        setImage = findViewById(R.id.post_image);
 
         progressDialog = new ProgressDialog(this);
 
@@ -126,6 +126,9 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         }
 
 
+        Intent intent = getIntent();
+        String myLocation = intent.getStringExtra("location");
+        location.setText(myLocation);
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -134,7 +137,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewPostLostActivity.this, MapActivity.class);
+                Intent intent = new Intent(NewPostLostActivity.this, LostMapActivity.class);
                 startActivity(intent);
             }
         });
@@ -213,6 +216,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         String id = mAuth.getUid();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
+        String myLocation = location.getText().toString().trim();
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -233,6 +237,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                             newPost.child("Name").setValue(name);
                             newPost.child("Description").setValue(description);
                             newPost.child("UserID").setValue(id);
+                            newPost.child("Location").setValue(myLocation);
                             newPost.child("image").setValue(t);
                             progressDialog.dismiss();
                         }

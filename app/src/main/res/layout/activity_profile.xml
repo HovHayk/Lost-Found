@@ -25,6 +25,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:background="@drawable/bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -38,6 +39,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/bg"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -45,7 +47,6 @@
                             android:id="@+id/constraintLayout"
                             android:layout_width="match_parent"
                             android:layout_height="360dp"
-                            android:background="@drawable/top_background_profile"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -98,16 +99,7 @@
                             app:layout_constraintStart_toStartOf="@+id/persons_name"
                             app:layout_constraintTop_toBottomOf="@+id/persons_name" />
 
-                        <ImageView
-                            android:id="@+id/bubbles_bg"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/circles" />
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -436,7 +428,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/toolbar_bg"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"

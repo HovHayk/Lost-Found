@@ -31,7 +31,7 @@
             android:layout_height="match_parent">
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:id="@+id/navview_body"
+                android:id="@+id/nav_view_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -48,7 +48,6 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/toolbar_bg"
                         android:minHeight="?attr/actionBarSize"
                         android:theme="?attr/actionBarTheme"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -149,7 +148,7 @@
                                         <androidx.cardview.widget.CardView
                                             android:layout_width="match_parent"
                                             android:layout_height="@dimen/_300sdp"
-                                            app:cardBackgroundColor="@color/imageBg"
+                                            app:cardBackgroundColor="#011845"
                                             app:cardElevation="@dimen/_20sdp">
 
 

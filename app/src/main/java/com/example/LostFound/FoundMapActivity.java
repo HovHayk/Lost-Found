@@ -44,7 +44,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
+public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
 
     private Boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
@@ -71,12 +71,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         getLocationPermission();
 
+
     }
 
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        Toast.makeText(MapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
+        Toast.makeText(FoundMapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
 
         if (mLocationPermissionGranted) {
@@ -129,7 +130,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         String searchString = mSearchText.getText().toString();
 
-        Geocoder geocoder = new Geocoder(MapActivity.this);
+        Geocoder geocoder = new Geocoder(FoundMapActivity.this);
         List<Address> list = new ArrayList<>();
         try {
             list = geocoder.getFromLocationName(searchString, 1);
@@ -174,14 +175,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                     myLocation = currentLocation.toString();
                                 }
                             },500);
-
                         } else {
                             Log.d("BLA", "onComplete: current location is null");
-                            Toast.makeText(MapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoundMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                 });
+                Intent intent = new Intent(FoundMapActivity.this, NewPostLostActivity.class);
+                intent.putExtra("location", myLocation);
+                startActivity(intent);
             }
         } catch (SecurityException e) {
             Log.e("BLA", "getDeviceLocation: SecurityException: " + e.getMessage());
@@ -204,7 +206,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(MapActivity.this);
+        mapFragment.getMapAsync(FoundMapActivity.this);
     }
 
     private void getLocationPermission() {

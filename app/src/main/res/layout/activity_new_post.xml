@@ -32,7 +32,6 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/cardview_dark_background"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="?attr/actionBarTheme"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -72,93 +71,75 @@
 
 
         <ImageButton
-            android:id="@+id/postImage"
+            android:id="@+id/post_image"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_marginTop="100dp"
-            android:src="@drawable/ic_person"
             android:background="@color/colorLightGrey"
+            android:src="@drawable/ic_person"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <!--<Button
-            android:id="@+id/btnSelectImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Select Image of your item"
-            android:textAllCaps="false"
-            android:backgroundTint="@color/colorLightGrey"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postImage" />-->
-
         <EditText
-            android:id="@+id/postName"
+            android:id="@+id/post_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Item/Animal/Name"
             android:textColorHint="@color/colorLightGrey"
             android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postImage" />
+            app:layout_constraintTop_toBottomOf="@+id/post_image" />
 
 
         <EditText
-            android:id="@+id/postDescription"
+            android:id="@+id/post_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Write description of your item"
             android:textColorHint="@color/colorLightGrey"
             android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postName" />
+            app:layout_constraintTop_toBottomOf="@+id/post_name" />
 
         <MultiAutoCompleteTextView
             android:id="@+id/posts_tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:ems="10"
             android:hint="Post's Tags"
-            android:ems="10"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postDescription"/>
+            app:layout_constraintTop_toBottomOf="@+id/post_description" />
 
-
-        <MultiAutoCompleteTextView
-            android:id="@+id/location_tags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Location Tags"
-            android:ems="10"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/posts_tags" />
 
         <Button
-            android:id="@+id/btnLocation"
+            android:id="@+id/btn_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:background="@drawable/btn_bg"
             android:backgroundTint="@color/colorLightGrey"
             android:padding="15dp"
             android:text="Set Item's Location"
             android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/location_tags" />
+            app:layout_constraintTop_toBottomOf="@+id/posts_tags" />
 
         <TextView
-            android:id="@+id/locationName"
+            android:id="@+id/post_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:hint="Location"
             android:textSize="@dimen/_15ssp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLocation" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_location" />
 
         <Button
             android:id="@+id/btnAddPost"

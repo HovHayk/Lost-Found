@@ -8,14 +8,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:432533890830:android:f898f4e616b12dd7ad595f",
+        "mobilesdk_app_id": "1:432533890830:android:48c01cd3da79badaad595f",
         "android_client_info": {
-          "package_name": "com.example.registration"
+          "package_name": "com.example.LostFound"
         }
       },
       "oauth_client": [
         {
-          "client_id": "432533890830-ui8l2ujginph00vf1tks9bcglldthv5a.apps.googleusercontent.com",
+          "client_id": "432533890830-d0f14jg2ie39eul22hcuprgsqiiqkems.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.LostFound",
+            "certificate_hash": "66e41a1506e33720267acb01a48a5c272fc511ca"
+          }
+        },
+        {
+          "client_id": "432533890830-6m9nu3fd4p4100j26a6455ce67nmsaps.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -28,7 +36,36 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "432533890830-ui8l2ujginph00vf1tks9bcglldthv5a.apps.googleusercontent.com",
+              "client_id": "432533890830-6m9nu3fd4p4100j26a6455ce67nmsaps.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432533890830:android:f898f4e616b12dd7ad595f",
+        "android_client_info": {
+          "package_name": "com.example.registration"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432533890830-6m9nu3fd4p4100j26a6455ce67nmsaps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzCb9EtEL1o6JzCvbQZgHEWnTA-hZqyW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432533890830-6m9nu3fd4p4100j26a6455ce67nmsaps.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

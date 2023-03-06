@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -44,7 +45,8 @@ import java.util.ArrayList;
 
 public class NewPostFoundActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    EditText postName, postPlace, postDescription;
+    TextView location;
+    EditText postName, postDescription;
     Button addNewPots, btnLocation;
     ImageButton setImage;
 
@@ -79,14 +81,23 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         toolbar = findViewById(R.id.toolbar);
 
         postTags = findViewById(R.id.posts_tags);
-        locationTags = findViewById(R.id.location_tags);
+
+
+        int a = 10;
+        a = 20;
+
+        if (a == 20) {
+            a += a;
+
+        }
 
 
         addNewPots = findViewById(R.id.btnAddPost);
-        postName = findViewById(R.id.postName);
-        btnLocation = findViewById(R.id.btnLocation);
-        postDescription = findViewById(R.id.postDescription);
-        setImage = findViewById(R.id.postImage);
+        postName = findViewById(R.id.post_name);
+        btnLocation = findViewById(R.id.btn_location);
+        location = findViewById(R.id.post_location);
+        postDescription = findViewById(R.id.post_description);
+        setImage = findViewById(R.id.post_image);
 
         progressDialog = new ProgressDialog(this);
 
@@ -125,6 +136,10 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
             init();
         }
 
+        Intent intent = getIntent();
+        String myLocation = intent.getStringExtra("location");
+        location.setText(myLocation);
+
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -133,7 +148,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewPostFoundActivity.this, MapActivity.class);
+                Intent intent = new Intent(NewPostFoundActivity.this, FoundMapActivity.class);
                 startActivity(intent);
             }
         });
@@ -183,6 +198,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         String id = mAuth.getUid();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
+        String myLocation = location.getText().toString().trim();
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -203,6 +219,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                             newPost.child("Name").setValue(name);
                             newPost.child("Description").setValue(description);
                             newPost.child("UserID").setValue(id);
+                            newPost.child("Location").setValue(myLocation);
                             newPost.child("image").setValue(t);
                             progressDialog.dismiss();
                         }
