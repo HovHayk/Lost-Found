@@ -60,6 +60,7 @@
                 android:ems="10"
                 android:hint="Username"
                 android:inputType="textPersonName"
+                android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
@@ -83,6 +84,7 @@
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
+                android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
@@ -105,6 +107,7 @@
                 android:ems="10"
                 android:hint="Phone"
                 android:inputType="phone"
+                android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
@@ -127,6 +130,7 @@
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
@@ -148,6 +152,7 @@
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:hint="City"
+                android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
@@ -170,6 +175,7 @@
                 android:ems="10"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
+                android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
@@ -209,43 +215,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
 
 
-            <Button
-                android:id="@+id/btnGoogle"
-                android:layout_width="166dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="60dp"
-                android:background="@drawable/btn_bg"
-                android:drawableStart="@drawable/ic_google"
-                android:drawablePadding="10dp"
-                android:paddingLeft="20dp"
-                android:text="Google"
-                android:textAlignment="textStart"
-                android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnFacebook"
-                app:layout_constraintStart_toStartOf="@+id/alreadyHaveAccount"
-                app:layout_constraintTop_toBottomOf="@+id/alreadyHaveAccount" />
 
-            <Button
-                android:id="@+id/btnFacebook"
-                android:layout_width="166dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/btn_bg"
-                android:drawableStart="@drawable/ic_facebook"
-                android:drawablePadding="10dp"
-                android:paddingLeft="20dp"
-                android:text="Facebook"
-                android:textAlignment="textStart"
-                android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintBottom_toBottomOf="@+id/btnGoogle"
-                app:layout_constraintEnd_toEndOf="@+id/alreadyHaveAccount"
-                app:layout_constraintStart_toEndOf="@+id/btnGoogle"
-                app:layout_constraintTop_toTopOf="@+id/btnGoogle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

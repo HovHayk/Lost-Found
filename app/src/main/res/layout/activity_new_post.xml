@@ -76,7 +76,7 @@
             android:layout_height="200dp"
             android:layout_marginTop="100dp"
             android:background="@color/colorLightGrey"
-            android:src="@drawable/ic_person"
+            android:src="@drawable/ic_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -84,10 +84,11 @@
         <EditText
             android:id="@+id/post_name"
             android:layout_width="@dimen/_90sdp"
-            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:gravity="center"
             android:hint="Name"
+            android:minHeight="48dp"
             android:textColorHint="@color/colorLightGrey"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="Write description of your item"
+            android:minHeight="48dp"
             android:textColorHint="@color/colorLightGrey"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -114,6 +116,7 @@
             android:layout_marginTop="24dp"
             android:ems="10"
             android:hint="Post's Tags"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_description" />
