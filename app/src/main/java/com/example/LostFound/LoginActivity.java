@@ -99,15 +99,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseAuthWithFacebook();
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
-
-            }
-        });
-
 
         google.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,9 +115,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // starting app without login
-        if (mUser != null) {
+        /*if (mUser != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        }
+        }*/
 
     } // End of OnCreate !!!
 
@@ -255,28 +246,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void firebaseAuthWithFacebook() {
-
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
-    }
 
     private void closeKeyboard() {
         View view = this.getCurrentFocus();

@@ -182,7 +182,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     }
 
     public void insertPostData() {
-        String id = mAuth.getUid();
+        String id = mAuth.getCurrentUser().getUid();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
         String myLocation = location.getText().toString().trim();

@@ -7,61 +7,95 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:fitsSystemWindows="true"
-    android:paddingBottom="5dp"
-    app:elevation="3dp"
-    tools:context=".ProfileActivity"
+    tools:context=".MainActivity"
     tools:openDrawer="start">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_View"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
-        android:background="#F5F5F5"
-        android:elevation="3dp">
+        android:layout_gravity="start"
+        android:background="@drawable/bg"
+        app:headerLayout="@layout/header"
+        app:itemTextColor="@color/colorLightGrey"
+        app:menu="@menu/main_menu" />
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:background="@drawable/bg"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/navview_body"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
+
+
+
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?attr/actionBarSize"
+                        android:theme="?attr/actionBarTheme"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:navigationIcon="@drawable/settingsmenuwhite">
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/toolbarTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/almendra"
+                                android:gravity="center"
+                                android:text="Profile"
+                                android:textColor="@color/colorLightGrey"
+                                android:textSize="25sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.appcompat.widget.Toolbar>
+
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="55dp"
+                    android:background="#F5F5F5"
+                    android:elevation="3dp">
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_height="match_parent"
                         android:background="@drawable/bg"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="360dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <!--<de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/persons_photo"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_marginTop="32dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/profile" />-->
+                       <!-- <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/persons_photo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/profile" />-->
 
                         <ImageView
                             android:id="@+id/persons_photo"
@@ -78,6 +112,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:gravity="center"
                             android:hint="Person's Name"
                             android:textColor="@color/colorWhite"
                             android:textSize="20sp"
@@ -91,6 +126,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:gravity="center"
                             android:hint="Person's Email"
                             android:textColor="@color/colorWhite"
                             android:textSize="18sp"
@@ -100,14 +136,12 @@
                             app:layout_constraintTop_toBottomOf="@+id/persons_name" />
 
 
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:layout_marginTop="60dp"
                             android:layout_marginEnd="24dp"
-                            android:layout_marginBottom="24dp"
+                            android:layout_marginBottom="100dp"
                             android:background="@drawable/white_background_profile"
                             android:orientation="vertical"
                             android:padding="5dp"
@@ -121,48 +155,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="10dp"
-                                    android:layout_weight="0.333"
-                                    android:background="@drawable/profile_grey_btn_bg"
-                                    android:elevation="5dp"
-                                    android:orientation="vertical">
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_gravity="center_horizontal"
-                                        android:layout_margin="12dp"
-                                        android:background="@drawable/circle_btn_bg">
-
-                                        <ImageView
-                                            android:id="@+id/settings_image"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            app:srcCompat="@drawable/settings" />
-
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                    <TextView
-                                        android:id="@+id/settings_text"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="8dp"
-                                        android:text="@string/settings"
-                                        android:textAlignment="center"
-                                        android:textColor="@color/colorBlack"
-                                        android:textSize="13sp"
-                                        android:textStyle="bold" />
-
-                                </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="0dp"
@@ -360,37 +352,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/postsNumber"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Posts"
-                                    android:textColor="#182693"
-                                    android:textSize="18sp" />
-
-                                <TextView
-                                    android:id="@+id/numberOfPosts"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:hint="number"
-                                    android:textAlignment="viewEnd"
-                                    android:textColor="#5B5B5B"
-                                    android:textColorHint="@color/colorBlack"
-                                    android:textSize="16sp" />
-
-                            </LinearLayout>
+                                android:orientation="horizontal" />
 
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <Button
+                    <!--<Button
                     android:id="@+id/editProfile_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -399,82 +368,14 @@
                     android:text="Edit Profile"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_View"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@drawable/toolbar_bg"
-        app:headerLayout="@layout/header"
-        app:itemTextColor="@color/colorLightGrey"
-        app:menu="@menu/main_menu" />
+                    android:textStyle="bold" />-->
 
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/settingsmenuwhite">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/toolbarTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Profile"
-                    android:textColor="@color/colorLightGrey"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btnNewPost"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/btn_bg_user"
-                    android:drawablePadding="5dp"
-                    android:gravity="center"
-                    android:text="+"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="TouchTargetSizeCheck" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </ScrollView>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
+
+

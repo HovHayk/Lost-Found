@@ -12,14 +12,12 @@
         android:id="@+id/imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/logo1"
-        app:layout_constraintBottom_toBottomOf="@id/textLogin"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/textLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textLogin"
@@ -122,8 +120,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dont have an Account?"
-            android:textColor="@color/colorWhite" />
+            android:text="Don't have an Account?"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_8ssp" />
 
         <TextView
             android:id="@+id/textViewSignUp"
@@ -131,7 +130,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="SignUp"
-            android:textColor="@color/colorRed" />
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/_8ssp" />
 
     </LinearLayout>
 

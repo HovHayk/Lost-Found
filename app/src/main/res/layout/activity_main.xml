@@ -31,24 +31,16 @@
             android:layout_height="match_parent">
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:id="@+id/navview_body"
+                android:id="@+id/nav_view_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/appBarLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/toolbar_bg"
                         android:minHeight="?attr/actionBarSize"
                         android:theme="?attr/actionBarTheme"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +58,7 @@
                                 android:id="@+id/toolbarTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:fontFamily="@font/almendra"
                                 android:text="Lost"
                                 android:textColor="@color/colorLightGrey"
                                 android:textSize="21sp"
@@ -79,6 +72,7 @@
                                 android:id="@+id/toolbarTitle2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:fontFamily="@font/almendra"
                                 android:text="&amp; Found"
                                 android:textColor="@color/colorLightGrey"
                                 android:textSize="21sp"
@@ -107,10 +101,6 @@
 
 
                     </androidx.appcompat.widget.Toolbar>
-
-
-                </com.google.android.material.appbar.AppBarLayout>
-
 
                 <FrameLayout
                     android:id="@+id/frameLayout"

@@ -8,12 +8,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +26,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoundPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,8 +43,11 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
     Toolbar toolbar;
     View view;
 
+    TextView name, email, postName, postLocation, postDescription;
+    ImageView postImage;
+    List<Posts> list;
 
-    TextView name, email;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +62,17 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         view = navigationView.getHeaderView(0);
         name = view.findViewById(R.id.personName);
         email = view.findViewById(R.id.personEmail);
+        postName = findViewById(R.id.post_name);
+        postLocation = findViewById(R.id.post_location);
+        postDescription = findViewById(R.id.post_description);
+        postImage = findViewById(R.id.post_image);
+
+        list = new ArrayList<Posts>();
 
         mAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
-        postsDBRef = firebaseDatabase.getReference().child("Posts");
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -70,7 +83,8 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        id = mAuth.getCurrentUser().getUid();
+        setPostInfo(id);
         nameEmailPhotoSetter();
     }
 
@@ -105,10 +119,19 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
 
-                    Log.i("User", "onComplete: " + id);
-
                     DataSnapshot snapshot = task.getResult();
 
+                    Posts posts = new Posts(snapshot.child("Name").getValue().toString()
+                            , snapshot.child("Location").getValue().toString()
+                            , snapshot.child("Description").getValue().toString()
+                            , snapshot.child("image").getValue().toString());
+
+
+
+                    postImage.setImageURI(Uri.parse(posts.getImage()));
+                    postName.setText(posts.getName());
+                    postLocation.setText(posts.getLocation());
+                    postDescription.setText(posts.getDescription());
 
 
                 }
@@ -126,6 +149,7 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
 
     public void nameEmailPhotoSetter() {
         email.setText(mAuth.getCurrentUser().getEmail());
+        name.setText(mAuth.getCurrentUser().getDisplayName());
     }
 
 }

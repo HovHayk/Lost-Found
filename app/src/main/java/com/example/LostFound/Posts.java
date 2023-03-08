@@ -19,7 +19,7 @@ public class Posts {
         return postName;
     }
 
-    public String getPlace() {
+    public String getLocation() {
         return postLocation;
     }
 
@@ -35,7 +35,7 @@ public class Posts {
         this.postName = name;
     }
 
-    public void setPlace(String place) {
+    public void setLocation(String place) {
         this.postLocation = place;
     }
 

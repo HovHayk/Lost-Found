@@ -47,11 +47,11 @@ public class UserInfo {
 
 
 
-    public String getEmail() {
+    public String getUserEmail() {
         return userEmail;
     }
 
-    public void setEmail(String email) {
+    public void setUserEmail(String email) {
         this.userEmail = email;
     }
 

@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,11 +33,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     NavigationView navigationView;
     Toolbar toolbar;
     Button newPost;
-    TextView namePhoto;
-    TextView name;
-    TextView email;
-    TextView phone;
-    TextView city;
+    TextView namePhoto, name, email, phone, city;
     String id;
 
     DatabaseReference databaseReference;
@@ -51,7 +49,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
-        newPost = findViewById(R.id.btnNewPost);
 
         namePhoto = findViewById(R.id.persons_name);
         email = findViewById(R.id.persons_email);
@@ -66,8 +63,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
 
-        id = mAuth.getUid();
+        id = mAuth.getCurrentUser().getUid();
         setUserInfo(id);
+
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -79,13 +77,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        newPost.setOnClickListener(new View.OnClickListener() {
+        /*newPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, PostTypeActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
     } // End of OnCreate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -123,7 +121,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             public void onComplete(@NonNull Task<DataSnapshot> task) {
 
                 if (task.isSuccessful()) {
-
                     DataSnapshot snapshot = task.getResult();
 
                     UserInfo user = new UserInfo(snapshot.child("userName").getValue().toString()
@@ -132,11 +129,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                             , snapshot.child("userEmail").getValue().toString()
                             , snapshot.child("userPhone").getValue().toString());
 
-                    name.setText(user.userName);
-                    namePhoto.setText(user.userName);
-                    email.setText(user.userEmail);
-                    city.setText(user.userCity);
-                    phone.setText(user.userPhone);
+                    name.setText(user.getUserName());
+                    namePhoto.setText(user.getUserName());
+                    email.setText(user.getUserEmail());
+                    city.setText(user.getUserCity());
+                    phone.setText(user.getUserPhone());
                 }
             }
         });

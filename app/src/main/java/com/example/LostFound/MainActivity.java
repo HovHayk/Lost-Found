@@ -115,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
+
+        setFragment(new LostPostsFragment());
+
+
     }
 
     public void setBottomNavigationView() {

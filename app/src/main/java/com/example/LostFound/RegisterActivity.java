@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                perforAuth();
+                performAuth();
                 insertUserData();
             }
         });
@@ -125,7 +125,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        //mCallbackManger.onActivityResult(requestCode,resultCode,data);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -163,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private void perforAuth() {
+    private void performAuth() {
         String user = userNameForRegistration.getText().toString();
         String email = emailForRegistration.getText().toString();
         String phone = phoneForRegistration.getText().toString();
@@ -216,7 +215,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     public void insertUserData() {
-        String id = mAuth.getUid();
+        String id = mAuth.getCurrentUser().getUid();
         String name = userNameForRegistration.getText().toString().trim();
         String city = cityForRegistration.getText().toString().trim();
         String email = emailForRegistration.getText().toString().trim();
