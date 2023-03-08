@@ -268,6 +268,10 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                 Intent intentProfile = new Intent(NewPostLostActivity.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
+            case R.id.nav_myPosts:
+                Intent intentMyPosts = new Intent(NewPostLostActivity.this, MyPosts.class);
+                startActivity(intentMyPosts);
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

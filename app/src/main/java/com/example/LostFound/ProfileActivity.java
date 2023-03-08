@@ -102,10 +102,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent intentHome = new Intent(ProfileActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 break;
             case R.id.nav_profile:
+                break;
+            case R.id.nav_myPosts:
+                Intent intentMyPosts = new Intent(ProfileActivity.this, MyPosts.class);
+                startActivity(intentMyPosts);
                 break;
         }
 

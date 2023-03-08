@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/cardview_dark_background"
+        android:background="@drawable/bg"
         app:headerLayout="@layout/header"
         app:itemTextColor="@color/colorLightGrey"
         app:menu="@menu/main_menu" />
@@ -72,8 +72,8 @@
 
         <ImageButton
             android:id="@+id/post_image"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_marginTop="100dp"
             android:background="@color/colorLightGrey"
             android:src="@drawable/ic_person"
@@ -83,10 +83,11 @@
 
         <EditText
             android:id="@+id/post_name"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_90sdp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Item/Animal/Name"
+            android:hint="Name"
             android:textColorHint="@color/colorLightGrey"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -122,8 +123,9 @@
             android:id="@+id/btn_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:background="@drawable/btn_bg"
-            android:backgroundTint="@color/colorLightGrey"
+            android:backgroundTint="@color/colorBlue"
             android:padding="15dp"
             android:text="Set Item's Location"
             android:textAllCaps="false"
@@ -150,7 +152,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="100dp"
             android:background="@drawable/btn_bg"
-            android:backgroundTint="@color/colorLightGrey"
+            android:backgroundTint="@color/colorBlue"
             android:drawablePadding="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"

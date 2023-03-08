@@ -1,6 +1,7 @@
 package com.example.LostFound;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,22 +9,27 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 public class LostPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,7 +45,8 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
     View view;
 
 
-    TextView name, email;
+    TextView name, email, postName, postLocation, postDescription;
+    ImageView postImage;
 
 
     @Override
@@ -55,6 +62,10 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
         view = navigationView.getHeaderView(0);
         name = view.findViewById(R.id.personName);
         email = view.findViewById(R.id.personEmail);
+        postName = findViewById(R.id.post_name);
+        postLocation = findViewById(R.id.post_location);
+        postDescription = findViewById(R.id.post_description);
+        postImage = findViewById(R.id.post_image);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -72,6 +83,7 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        setPostInfo();
         nameEmailPhotoSetter();
     }
 
@@ -88,10 +100,16 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
+                Intent intentHome = new Intent(LostPostPage.this, MainActivity.class);
+                startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intent = new Intent(LostPostPage.this, ProfileActivity.class);
-                startActivity(intent);
+                Intent intentProfile = new Intent(LostPostPage.this, ProfileActivity.class);
+                startActivity(intentProfile);
+                break;
+            case R.id.nav_myPosts:
+                Intent intentMyPosts = new Intent(LostPostPage.this, MyPosts.class);
+                startActivity(intentMyPosts);
                 break;
         }
 
@@ -99,21 +117,43 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void setPostInfo(String id) {
+    public void setPostInfo() {
 
-        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                    Log.i("User", "onComplete: " + id);
-
-                    DataSnapshot snapshot = task.getResult();
-
-
+                Posts posts = new Posts(snapshot.child("Name").getValue().toString()
+                        , snapshot.child("Location").getValue().toString()
+                        , snapshot.child("Description").getValue().toString()
+                        , snapshot.child("image").getValue().toString());
 
 
-                }
+
+                Picasso.get().load(posts.getImage()).into(postImage);
+                postName.setText(posts.getName());
+                postLocation.setText(posts.getLocation());
+                postDescription.setText(posts.getDescription());
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -127,6 +167,7 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
     }
 
     public void nameEmailPhotoSetter() {
+        name.setText(mAuth.getCurrentUser().getDisplayName());
         email.setText(mAuth.getCurrentUser().getEmail());
     }
 

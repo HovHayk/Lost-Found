@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-
         setFragment(new LostPostsFragment());
 
 
@@ -169,8 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intentHome = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intentHome);
+
                 break;
             case R.id.nav_profile:
                 Intent intentProfile = new Intent(MainActivity.this, ProfileActivity.class);
@@ -192,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
+}
 
    /* public void nameEmailPhotoSetter() {
 
@@ -239,62 +238,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void facebookLogOut() {
-        LoginManager.getInstance().logOut();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
 
-    private void getUserInfoFromFacebook() {
-
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-
-        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        try {
-                            // getting name
-                            String fullName = object.getString("name");
-                            name.setText(fullName);
-                            // getting photo
-                            String url = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                            Picasso.get().load(url).into("here will be imageView for photo");
-                        } catch (JSONException e) {
-                            e.getMessage();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link,picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
-
-
-
-
-
-        //information you can get from user's facebook account
-
-        {
-            "id": "12345678",
-                "birthday": "1/1/1950",
-                "first_name": "Chris",
-                "gender": "male",
-                "last_name": "Colm",
-                "link": "http://www.facebook.com/12345678",
-                "location": {
-            "id": "110843418940484",
-                    "name": "Seattle, Washington"
-        },
-            "locale": "en_US",
-                "name": "Chris Colm",
-                "timezone": -8,
-                "updated_time": "2010-01-01T16:40:43+0000",
-                "verified": true
-        }
-
-    }*/
-
-
-}
+}*/

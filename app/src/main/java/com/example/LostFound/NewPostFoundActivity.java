@@ -238,6 +238,10 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                 Intent intentProfile = new Intent(NewPostFoundActivity.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
+            case R.id.nav_myPosts:
+                Intent intentMyPosts = new Intent(NewPostFoundActivity.this, MyPosts.class);
+                startActivity(intentMyPosts);
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

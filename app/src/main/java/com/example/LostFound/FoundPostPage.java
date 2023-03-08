@@ -1,6 +1,7 @@
 package com.example.LostFound;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,10 +23,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +88,7 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
         id = mAuth.getCurrentUser().getUid();
-        setPostInfo(id);
+        setPostInfo();
         nameEmailPhotoSetter();
     }
 
@@ -101,10 +105,16 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
+                Intent intentHome = new Intent(FoundPostPage.this, MainActivity.class);
+                startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intent = new Intent(FoundPostPage.this, ProfileActivity.class);
-                startActivity(intent);
+                Intent intentProfile = new Intent(FoundPostPage.this, ProfileActivity.class);
+                startActivity(intentProfile);
+                break;
+            case R.id.nav_myPosts:
+                Intent intentMyPosts = new Intent(FoundPostPage.this, MyPosts.class);
+                startActivity(intentMyPosts);
                 break;
         }
 
@@ -112,29 +122,43 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
-    public void setPostInfo(String id) {
+    public void setPostInfo() {
 
-        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                    DataSnapshot snapshot = task.getResult();
-
-                    Posts posts = new Posts(snapshot.child("Name").getValue().toString()
-                            , snapshot.child("Location").getValue().toString()
-                            , snapshot.child("Description").getValue().toString()
-                            , snapshot.child("image").getValue().toString());
+                Posts posts = new Posts(snapshot.child("Name").getValue().toString()
+                        , snapshot.child("Location").getValue().toString()
+                        , snapshot.child("Description").getValue().toString()
+                        , snapshot.child("image").getValue().toString());
 
 
 
-                    postImage.setImageURI(Uri.parse(posts.getImage()));
-                    postName.setText(posts.getName());
-                    postLocation.setText(posts.getLocation());
-                    postDescription.setText(posts.getDescription());
+                Picasso.get().load(posts.getImage()).into(postImage);
+                postName.setText(posts.getName());
+                postLocation.setText(posts.getLocation());
+                postDescription.setText(posts.getDescription());
 
+            }
 
-                }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

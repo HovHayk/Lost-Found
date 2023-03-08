@@ -85,6 +85,10 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
                 Intent intentProfile = new Intent(PostTypeActivity.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
+            case R.id.nav_myPosts:
+                Intent intentMyPosts = new Intent(PostTypeActivity.this, MyPosts.class);
+                startActivity(intentMyPosts);
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
