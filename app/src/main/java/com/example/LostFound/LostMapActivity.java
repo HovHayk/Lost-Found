@@ -59,7 +59,7 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
     private ImageView mGps;
     private EditText mSearchText;
 
-    public String myLocation;
+    public String myLostLocation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,6 +146,12 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
 
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
+
+        myLostLocation = list.get(0).getLocality();
+
+        Intent lostIntent = new Intent(LostMapActivity.this, NewPostLostActivity.class);
+        lostIntent.putExtra("myLostLocation", myLostLocation);
+        startActivity(lostIntent);
     }
 
     private void getDeviceLocation() {
@@ -172,7 +178,6 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
                                 public void run() {
                                     LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                                     moveCamera(latLng, DEFAULT_ZOOM, "My location");
-                                    myLocation = currentLocation.toString();
                                 }
                             },500);
                         } else {
@@ -181,9 +186,6 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
                         }
                     }
                 });
-                Intent intent = new Intent(LostMapActivity.this, NewPostLostActivity.class);
-                intent.putExtra("location", myLocation);
-                startActivity(intent);
             }
         } catch (SecurityException e) {
             Log.e("BLA", "getDeviceLocation: SecurityException: " + e.getMessage());

@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +31,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
-// keytool -exportcert -alias androiddebugkey -keystore "C:\Users\User\.android\debug.keystore" | "C:\Users\User\.android\openssl-0.9.8e_X64\bin\openssl" sha1 -binary | "C:\Users\User\.android\openssl-0.9.8e_X64\bin\openssl" base64
 
 public class RegisterActivity extends AppCompatActivity {
+
+    LinearLayout main;
 
     EditText userNameForRegistration, emailForRegistration, phoneForRegistration, cityForRegistration, passwordForRegistration, confirmPassword;
     TextView haveAcc;
@@ -72,6 +76,8 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         infoDBRef = firebaseDatabase.getReference();
 
+        main = findViewById(R.id.register_main);
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(RegisterActivity.this, gso);
 
@@ -101,6 +107,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+            }
+        });
 
 
     } // End of OnCreate
@@ -227,6 +239,13 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void closeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
 }
 

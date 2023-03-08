@@ -43,6 +43,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
 
@@ -59,7 +60,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
     private ImageView mGps;
     private EditText mSearchText;
 
-    public String myLocation;
+    public String myFoundLocation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,7 +127,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void geoLocate() {
-        Log.d("BLA", "geoLocate: geolocating");
+        Log.d("BLA", "geoLocate: geoLocating");
 
         String searchString = mSearchText.getText().toString();
 
@@ -142,10 +143,15 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
             Address address = list.get(0);
 
             Log.d("BLA", "geoLocate: found a location: " + address.toString());
-            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
+
+        myFoundLocation = list.get(0).getLocality();
+
+        Intent foundIntent = new Intent(FoundMapActivity.this, NewPostFoundActivity.class);
+        foundIntent.putExtra("myFoundLocation", myFoundLocation);
+        startActivity(foundIntent);
     }
 
     private void getDeviceLocation() {
@@ -172,7 +178,6 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
                                 public void run() {
                                     LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                                     moveCamera(latLng, DEFAULT_ZOOM, "My location");
-                                    myLocation = currentLocation.toString();
                                 }
                             },500);
                         } else {
@@ -181,9 +186,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
                         }
                     }
                 });
-                Intent intent = new Intent(FoundMapActivity.this, NewPostLostActivity.class);
-                intent.putExtra("location", myLocation);
-                startActivity(intent);
+
             }
         } catch (SecurityException e) {
             Log.e("BLA", "getDeviceLocation: SecurityException: " + e.getMessage());

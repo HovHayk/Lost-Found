@@ -77,7 +77,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             binding.postName.setText(post.postName);
             //binding.postPlace.setText(post.postPlace);
             binding.postDescription.setText(post.postDescription);
-            binding.postCategory.setText("Default category");
         }
     }
 

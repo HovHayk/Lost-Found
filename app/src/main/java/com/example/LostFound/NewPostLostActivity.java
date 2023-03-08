@@ -125,9 +125,8 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
             init();
         }
 
-
         Intent intent = getIntent();
-        String myLocation = intent.getStringExtra("location");
+        String myLocation = intent.getStringExtra("myLostLocation");
         location.setText(myLocation);
 
     } // End of OnCreate !!!!!!!!!!!

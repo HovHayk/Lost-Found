@@ -2,6 +2,7 @@ package com.example.LostFound;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -10,11 +11,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
     CallbackManager callbackManager;
 
+    ConstraintLayout main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
+        main = findViewById(R.id.login_main);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(LoginActivity.this, gso);
@@ -111,10 +116,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+            }
+        });
+
         // starting app without login
-        /*if (mUser != null) {
+        if (mUser != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        }*/
+        }
 
     } // End of OnCreate !!!
 
@@ -266,5 +278,12 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void closeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
 }

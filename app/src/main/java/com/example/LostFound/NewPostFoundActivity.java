@@ -61,10 +61,8 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
 
     MultiAutoCompleteTextView postTags, locationTags;
     private ArrayList<String> postTagsList = new ArrayList<>();
-    private ArrayList<String> locationTagsList = new ArrayList<>();
 
     Uri imageUrl = null;
-    FirebaseFirestore database;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
     DatabaseReference postsDBRef;
@@ -81,16 +79,6 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         toolbar = findViewById(R.id.toolbar);
 
         postTags = findViewById(R.id.posts_tags);
-
-
-        int a = 10;
-        a = 20;
-
-        if (a == 20) {
-            a += a;
-
-        }
-
 
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.post_name);
@@ -137,9 +125,8 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         }
 
         Intent intent = getIntent();
-        String myLocation = intent.getStringExtra("location");
+        String myLocation = intent.getStringExtra("myFoundLocation");
         location.setText(myLocation);
-
 
     } // End of OnCreate !!!!!!!!!!!
 
