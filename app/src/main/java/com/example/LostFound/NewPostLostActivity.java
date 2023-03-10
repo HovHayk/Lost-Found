@@ -25,9 +25,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,21 +43,33 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class NewPostLostActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView location;
-    EditText postName, postPlace, postDescription;
+    MultiAutoCompleteTextView postTags;
+    TextView postLocation;
+    EditText postName, postDescription;
     Button addNewPots, btnLocation;
-    ImageButton setImage;
+    ImageView setImage;
 
     private static final int GALLERY_CODE = 1;
-    private static final String TAG = "MainActivity";
-    private static  final int ERROR_DIALOG_REQUEST = 9001;
+    private static final String TAG = "HomeActivity";
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+
+
+    private List<String> itemTags;
+    private ArrayList<String> tags = new ArrayList<>();
 
 
     DrawerLayout drawerLayout;
@@ -66,7 +80,8 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     Uri imageUrl = null;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    DatabaseReference postsDBRef;
+    DatabaseReference databaseReference;
+    FirebaseFirestore firebaseFirestore;
     FirebaseAuth mAuth;
 
 
@@ -80,21 +95,21 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
 
-
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.post_name);
-        location = findViewById(R.id.post_location);
+        postLocation = findViewById(R.id.post_location);
         btnLocation = findViewById(R.id.btn_location);
         postDescription = findViewById(R.id.post_description);
         setImage = findViewById(R.id.post_image);
+        postTags = findViewById(R.id.post_tags);
 
         progressDialog = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        postsDBRef = firebaseDatabase.getReference().child("Posts").child("Lost");
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Posts").child("Lost");
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -127,7 +142,9 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
 
         Intent intent = getIntent();
         String myLocation = intent.getStringExtra("myLostLocation");
-        location.setText(myLocation);
+        postLocation.setText(myLocation);
+
+        tagsAutoComplete();
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -163,34 +180,34 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     }
 
 
-    private void createNotify(){
+    private void createNotify() {
         String id = "my_idd";
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = manager.getNotificationChannel(id);
-            if (channel == null){
+            if (channel == null) {
                 channel = new NotificationChannel(id, "channel Title", NotificationManager.IMPORTANCE_HIGH);
                 channel.setDescription("inchvor description");
                 channel.enableVibration(true);
-                channel.setVibrationPattern(new long[]{100,200,300,340});
+                channel.setVibrationPattern(new long[]{100, 200, 300, 340});
                 channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
                 manager.createNotificationChannel(channel);
             }
         }
-        Intent notificationIntent = new Intent(this,MainActivity.class);
+        Intent notificationIntent = new Intent(this, HomeActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,id)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(null)
                 .setContentTitle("Title")
                 .setContentText("Your text description")
-                .setVibrate(new long[]{100,200,300,340})
+                .setVibrate(new long[]{100, 200, 300, 340})
                 .setAutoCancel(false)
                 .setTicker("Notification");
         builder.setContentIntent(contentIntent);
         NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
-        m.notify(1,builder.build());
+        m.notify(1, builder.build());
     }
 
 
@@ -215,7 +232,9 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         String id = mAuth.getCurrentUser().getUid();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
-        String myLocation = location.getText().toString().trim();
+        String location = postLocation.getText().toString().trim();
+        String tags = postTags.getText().toString();
+        itemTags = Arrays.asList(tags.split(","));
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -232,20 +251,37 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                         public void onComplete(@NonNull Task<Uri> task) {
                             String t = task.getResult().toString();
 
-                            DatabaseReference newPost = postsDBRef.push();
+                            DatabaseReference newPost = databaseReference.push();
                             newPost.child("Name").setValue(name);
                             newPost.child("Description").setValue(description);
                             newPost.child("UserID").setValue(id);
-                            newPost.child("Location").setValue(myLocation);
+                            newPost.child("Location").setValue(location);
                             newPost.child("image").setValue(t);
+                            newPost.child("tags").setValue(itemTags);
                             progressDialog.dismiss();
                         }
                     });
                 }
             });
+
+
         }
     }
 
+    private void tagsAutoComplete() {
+        firebaseFirestore.collection("Tags").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                    tags.add(snapshot.get("tag").toString());
+                }
+
+                ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, tags);
+                postTags.setAdapter(tagArrayAdapter);
+                postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -261,7 +297,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intentHome = new Intent(NewPostLostActivity.this, MainActivity.class);
+                Intent intentHome = new Intent(NewPostLostActivity.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
             case R.id.nav_profile:

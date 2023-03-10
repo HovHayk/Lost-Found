@@ -20,7 +20,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
@@ -36,7 +35,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -52,7 +50,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     ImageView setImage;
 
     private static final int GALLERY_CODE = 1;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "HomeActivity";
     private static  final int ERROR_DIALOG_REQUEST = 9001;
 
     DrawerLayout drawerLayout;
@@ -232,7 +230,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intentHome = new Intent(NewPostFoundActivity.this, MainActivity.class);
+                Intent intentHome = new Intent(NewPostFoundActivity.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
             case R.id.nav_profile:

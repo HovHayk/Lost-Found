@@ -1,10 +1,14 @@
 package com.example.LostFound;
 
+import java.util.ArrayList;
+
 public class Posts {
+    public String id;
     public String postName;
     public String postLocation;
     public String postDescription;
     public String postImage;
+    public ArrayList<String> tags;
 
 
     public Posts(String name, String location, String description, String image) {

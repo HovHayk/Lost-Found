@@ -70,145 +70,152 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_50sdp"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/_20sdp">
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="600"
             android:foregroundGravity="bottom"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="@dimen/_40sdp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-                <FrameLayout
+
+                <LinearLayout
+                    android:id="@+id/linear_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/post_image"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_200sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Click to choose image"
-                        android:textColor="@color/colorLightGrey" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
+                            <ImageView
+                                android:id="@+id/post_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_200sdp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                </FrameLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="Click to choose image"
+                                android:textColor="@color/colorLightGrey"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/post_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:hint="Name"
-                android:minHeight="48dp"
-                android:padding="@dimen/_5sdp"
-                android:textColorHint="@color/colorLightGrey"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_image" />
+                    </FrameLayout>
 
+                </LinearLayout>
 
-            <EditText
-                android:id="@+id/post_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Write description of your item"
-                android:minHeight="48dp"
-                android:padding="@dimen/_5sdp"
-                android:textColorHint="@color/colorLightGrey"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_name" />
-
-            <MultiAutoCompleteTextView
-                android:id="@+id/post_tags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="Enter tags(break with commas)"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:padding="@dimen/_5sdp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorLightGrey"
-                android:textSize="@dimen/_15sdp"
-                app:layout_constraintEnd_toEndOf="@+id/post_description"
-                app:layout_constraintStart_toStartOf="@+id/post_description"
-                app:layout_constraintTop_toBottomOf="@+id/post_description" />
+                <EditText
+                    android:id="@+id/post_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:hint="Name"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/_5sdp"
+                    android:textColorHint="@color/colorLightGrey"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
 
 
-            <Button
-                android:id="@+id/btn_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/btn_bg"
-                android:backgroundTint="@color/colorBlue"
-                android:padding="15dp"
-                android:text="Set Item's Location"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tagsACTV" />
+                <EditText
+                    android:id="@+id/post_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="Write description of your item"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/_5sdp"
+                    android:textColorHint="@color/colorLightGrey"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintTop_toBottomOf="@+id/post_name" />
 
-            <TextView
-                android:id="@+id/post_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:hint="Location"
-                android:textSize="@dimen/_15ssp"
-                app:layout_constraintEnd_toEndOf="@+id/btn_location"
-                app:layout_constraintStart_toStartOf="@+id/btn_location"
-                app:layout_constraintTop_toBottomOf="@+id/btn_location" />
+                <MultiAutoCompleteTextView
+                    android:id="@+id/post_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:ems="10"
+                    android:hint="Enter tags(break with commas)"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="@color/colorLightGrey"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintTop_toBottomOf="@id/post_description" />
 
+
+                <Button
+                    android:id="@+id/btn_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/btn_bg"
+                    android:backgroundTint="@color/colorBlue"
+                    android:padding="15dp"
+                    android:text="Set Item's Location"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/post_tags" />
+
+                <TextView
+                    android:id="@+id/post_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:hint="Location"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_15ssp"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_location"
+                    app:layout_constraintStart_toStartOf="@+id/btn_location"
+                    app:layout_constraintTop_toBottomOf="@id/btn_location" />
+
+                <Button
+                    android:id="@+id/btnAddPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_30sdp"
+                    android:background="@drawable/btn_bg"
+                    android:backgroundTint="@color/colorBlue"
+                    android:text="Publish"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/post_location" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/midleBar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:layout_weight="3">
-
-            <Button
-                android:id="@+id/btnAddPost"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/btn_bg"
-                android:backgroundTint="@color/colorBlue"
-                android:text="Publish"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_12sdp" />
-
-        </FrameLayout>
 
     </LinearLayout>
 

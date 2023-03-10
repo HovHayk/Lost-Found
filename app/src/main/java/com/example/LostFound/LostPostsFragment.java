@@ -1,5 +1,6 @@
 package com.example.LostFound;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,15 @@ public class LostPostsFragment extends Fragment {
 
         return v;
     }
+
+    /*private final PostListener postListener = new PostListener() {
+        @Override
+        public void onPostClicked(Posts posts) {
+            Intent intent = new Intent(getContext(), LostPostPage.class);
+            intent.putExtra("postId", posts.id);
+            startActivity(intent);
+        }
+    };*/
 
     public void getPostData() {
 

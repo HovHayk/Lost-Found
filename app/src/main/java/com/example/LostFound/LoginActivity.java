@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // starting app without login
         /*if (user != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }*/
 
     } // End of OnCreate !!!
@@ -151,7 +151,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void createNotify() {
@@ -226,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendUserToNextActivity() {
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
@@ -259,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
 
                 } else {

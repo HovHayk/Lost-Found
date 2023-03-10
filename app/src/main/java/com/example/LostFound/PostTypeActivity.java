@@ -78,7 +78,7 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intentHome = new Intent(PostTypeActivity.this, MainActivity.class);
+                Intent intentHome = new Intent(PostTypeActivity.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
             case R.id.nav_profile:

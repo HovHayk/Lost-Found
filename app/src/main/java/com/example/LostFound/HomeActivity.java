@@ -23,24 +23,23 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    FirebaseAuth auth;
     DatabaseReference databaseReference;
-    FirebaseDatabase firebaseDatabase;
-    FirebaseStorage firebaseStorage;
-    DatabaseReference postsDBRef;
-    FirebaseAuth mAuth;
 
     RecyclerViewAdapter adapter;
     List<Posts> list;
@@ -78,11 +77,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         email = view.findViewById(R.id.personEmail);
         nameRegister = registerView.findViewById(R.id.inputUsernameForRegistration);
 
-        mAuth = FirebaseAuth.getInstance();
-        id = mAuth.getCurrentUser().getUid();
-        firebaseStorage = FirebaseStorage.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("User").child(id);
+
+        auth = FirebaseAuth.getInstance();
+        id = auth.getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         list = new ArrayList<Posts>();
 
 
@@ -108,13 +106,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         newPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PostTypeActivity.class);
+                Intent intent = new Intent(HomeActivity.this, PostTypeActivity.class);
                 startActivity(intent);
             }
         });
 
 
         setFragment(new LostPostsFragment());
+        nameEmailPhotoSetter();
 
 
     }
@@ -145,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
+
     private void setFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -170,11 +171,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_profile:
-                Intent intentProfile = new Intent(MainActivity.this, ProfileActivity.class);
+                Intent intentProfile = new Intent(HomeActivity.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPost = new Intent(MainActivity.this, MyPosts.class);
+                Intent intentMyPost = new Intent(HomeActivity.this, MyPosts.class);
                 startActivity(intentMyPost);
         }
 
@@ -189,26 +190,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
-}
 
-   /* public void nameEmailPhotoSetter() {
 
-        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
+    public void nameEmailPhotoSetter() {
 
-                    DataSnapshot snapshot = task.getResult();
+        email.setText(auth.getCurrentUser().getEmail());
 
-                    name.setText(snapshot.child("userName").getValue().toString());
-                    email.setText(snapshot.child("userEmail").getValue().toString());
+        if (auth.getCurrentUser().getDisplayName() == null) {
+            databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
 
+                    if (task.isSuccessful()) {
+                        DataSnapshot snapshot = task.getResult();
+
+                        name.setText(snapshot.child("userName").getValue().toString());
+
+                    }
                 }
-            }
-        });
-    }*/
-
-
+            });
+        } else {
+            name.setText(auth.getCurrentUser().getDisplayName());
+        }
+    }
+}
 //  {  Getting information from user's google email
 
 
@@ -232,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onComplete(Task<Void> task) {
                 finish();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
             }
         });
     }
