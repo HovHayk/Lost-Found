@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.Login;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,8 +40,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText userNameForRegistration, emailForRegistration, phoneForRegistration, cityForRegistration, passwordForRegistration, confirmPassword;
     TextView haveAcc;
-    Button signUp, google, facebook;
-    private ProgressDialog progressDialog;
+    Button signUp;
+
+    ProgressDialog progressDialog;
+
     private final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private final String phonePattern = "^([0-9\\+]|\\(\\d{1,3}\\))[0-9\\-\\. ]{3,15}$";
 
@@ -47,10 +51,9 @@ public class RegisterActivity extends AppCompatActivity {
     GoogleSignInClient gsc;
 
     FirebaseDatabase firebaseDatabase;
-    FirebaseStorage firebaseStorage;
-    DatabaseReference infoDBRef;
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
+    DatabaseReference databaseReference;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
 
     @Override
@@ -66,15 +69,12 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassword = findViewById(R.id.inputConfirmPasswordForRegistration);
         signUp = findViewById(R.id.btnRegister);
         haveAcc = findViewById(R.id.alreadyHaveAccount);
-        google = findViewById(R.id.btnGoogle);
-        facebook = findViewById(R.id.btnFacebook);
 
         progressDialog = new ProgressDialog(RegisterActivity.this);
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        infoDBRef = firebaseDatabase.getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         main = findViewById(R.id.register_main);
 
@@ -95,17 +95,11 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 performAuth();
-                insertUserData();
+                sendUserInfoToLoginActivity();
             }
         });
 
 
-        google.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signInGoogle();
-            }
-        });
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,13 +109,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+
+
+
     } // End of OnCreate
 
 
-    void signInGoogle() {
-        Intent signInIntent = gsc.getSignInIntent();
-        startActivityForResult(signInIntent, 100);
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -146,7 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
 
         //trying to sign in user using signInWithCredential and passing above credentials of user.
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -185,18 +178,17 @@ public class RegisterActivity extends AppCompatActivity {
             phoneForRegistration.setError("Please enter correct number");
         } else {
 
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
 
-                        mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     progressDialog.setTitle("Creating new user");
                                     progressDialog.dismiss();
-                                    sendUserToNextActivity();
                                     Toast.makeText(RegisterActivity.this, "Registration Successful. Please verify your email id", Toast.LENGTH_SHORT).show();
                                     emailForRegistration.setText("");
                                     passwordForRegistration.setText("");
@@ -214,21 +206,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void insertUserData() {
-        String id = mAuth.getCurrentUser().getUid();
+    private void sendUserInfoToLoginActivity() {
         String name = userNameForRegistration.getText().toString().trim();
         String city = cityForRegistration.getText().toString().trim();
         String email = emailForRegistration.getText().toString().trim();
         String phone = phoneForRegistration.getText().toString().trim();
 
-        if (!(name.isEmpty() && city.isEmpty() && phone.isEmpty() && email.isEmpty())) {
-
-            UserInfo user = new UserInfo(name, city, id, email, phone);
-            infoDBRef.child("Users").child(id).setValue(user);
-
-        } else {
-            Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.putExtra("NAME", name);
+        intent.putExtra("CITY", city);
+        intent.putExtra("EMAIL", email);
+        intent.putExtra("PHONE", phone);
+        startActivity(intent);
     }
 
 
@@ -247,27 +236,3 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

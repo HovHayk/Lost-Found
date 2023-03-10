@@ -24,10 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,21 +36,25 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.util.Arrays;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
     TextView register;
     EditText emailForLogin, passwordForLogin;
     Button logIn, google, facebook;
+
     private ProgressDialog progressDialog;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
+
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
     CallbackManager callbackManager;
 
@@ -67,27 +67,31 @@ public class LoginActivity extends AppCompatActivity {
 
 
         google = findViewById(R.id.btnGoogle);
-        facebook = findViewById(R.id.btnFacebook);
         emailForLogin = findViewById(R.id.inputEmail);
         passwordForLogin = findViewById(R.id.inputPassword);
         logIn = findViewById(R.id.btnLogin);
         register = findViewById(R.id.textViewSignUp);
         progressDialog = new ProgressDialog(LoginActivity.this);
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+
+
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         main = findViewById(R.id.login_main);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(LoginActivity.this, gso);
 
-        callbackManager = CallbackManager.Factory.create();
+
 
 
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performLogin();
+                //insertUserData();
             }
         });
 
@@ -114,8 +118,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         // starting app without login
-        /*if (mUser != null) {
+        /*if (user != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }*/
 
@@ -194,11 +201,11 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        if (mAuth.getCurrentUser().isEmailVerified()) {
+                        if (auth.getCurrentUser().isEmailVerified()) {
                             progressDialog.dismiss();
                             sendUserToNextActivity();
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
@@ -218,9 +225,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendUserToNextActivity() {
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+
+    }
+
+
+    public void insertUserData() {
+
+        String id = auth.getCurrentUser().getUid();
+
+        Bundle bundle = getIntent().getExtras();
+        String name = bundle.getString("NAME");
+        String city = bundle.getString("CITY");
+        String email = bundle.getString("EMAIL");
+        String phone = bundle.getString("PHONE");
+
+        UserInfo user = new UserInfo(name, city, id, email, phone);
+        databaseReference.child("Users").child(id).setValue(user);
 
     }
 
@@ -231,7 +255,7 @@ public class LoginActivity extends AppCompatActivity {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
 
         //trying to sign in user using signInWithCredential and passing above credentials of user.
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {

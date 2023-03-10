@@ -16,9 +16,9 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#032365"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#032365">
 
         <ImageView
             android:id="@+id/imageForPost"
@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_documents_icon"/>
+            app:srcCompat="@drawable/ic_documents_icon" />
 
         <TextView
             android:id="@+id/postName"

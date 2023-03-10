@@ -120,6 +120,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     public void setUserInfo(String id) {
 
+        Log.i("LFL", "setUserInfo: " + id);
+
         databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

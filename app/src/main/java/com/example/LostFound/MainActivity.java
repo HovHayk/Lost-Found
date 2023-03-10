@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("User").child(id);
-        postsDBRef = firebaseDatabase.getReference().child("Posts");
         list = new ArrayList<Posts>();
 
 

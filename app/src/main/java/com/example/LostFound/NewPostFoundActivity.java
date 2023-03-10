@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     TextView location;
     EditText postName, postDescription;
     Button addNewPots, btnLocation;
-    ImageButton setImage;
+    ImageView setImage;
 
     private static final int GALLERY_CODE = 1;
     private static final String TAG = "MainActivity";
@@ -78,7 +79,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
 
-        postTags = findViewById(R.id.posts_tags);
+        postTags = findViewById(R.id.post_tags);
 
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.post_name);

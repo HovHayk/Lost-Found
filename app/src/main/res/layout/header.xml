@@ -7,11 +7,12 @@
     android:gravity="bottom"
     android:padding="20dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/personPhoto"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:src="@drawable/ic_person"/>
+        android:src="@drawable/logo"
+        android:layout_marginBottom="@dimen/_25sdp"/>
 
     <TextView
         android:id="@+id/personName"
