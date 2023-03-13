@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
     TextView register;
     EditText emailForLogin, passwordForLogin;
-    Button logIn, google, facebook;
+    Button logIn, google;
 
     private ProgressDialog progressDialog;
 
@@ -55,8 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseAuth auth;
     FirebaseUser user;
-
-    CallbackManager callbackManager;
 
     ConstraintLayout main;
 

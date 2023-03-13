@@ -113,45 +113,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account.getIdToken());
-                Toast.makeText(RegisterActivity.this, "Sign in Complete ", Toast.LENGTH_SHORT).show();
-            } catch (ApiException e) {
-
-                Toast.makeText(RegisterActivity.this, "Authentication Failed Poblems with " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
-    private void firebaseAuthWithGoogle(String idToken) {
-
-        //getting user credentials with the help of AuthCredential method and also passing user Token Id.
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-
-        //trying to sign in user using signInWithCredential and passing above credentials of user.
-        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                    startActivity(intent);
-
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(RegisterActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-
     private void performAuth() {
         String user = userNameForRegistration.getText().toString();
         String email = emailForRegistration.getText().toString();
@@ -217,12 +178,6 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    private void sendUserToNextActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
 
     private void closeKeyboard() {
         View view = this.getCurrentFocus();

@@ -65,6 +65,10 @@
 
     </ScrollView>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -78,12 +82,11 @@
             android:layout_height="match_parent"
             android:foregroundGravity="bottom"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/_40sdp">
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
 
                 <LinearLayout
@@ -132,8 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:hint="Name"
+                    android:hint="Lost item name"
                     android:minHeight="48dp"
                     android:padding="@dimen/_5sdp"
                     android:textColorHint="@color/colorLightGrey"

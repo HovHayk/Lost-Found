@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         frameLayout = findViewById(R.id.frameLayout);
         bottomNavigationView = findViewById(R.id.btmNavView);
@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         newPost = findViewById(R.id.btnNewPost);
         recyclerView = findViewById(R.id.recyclerView);
         name = view.findViewById(R.id.personName);
-        email = view.findViewById(R.id.personEmail);
+        email = view.findViewById(R.id.person_email);
         nameRegister = registerView.findViewById(R.id.inputUsernameForRegistration);
 
 
@@ -188,7 +188,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorBlue));
     }
 
 

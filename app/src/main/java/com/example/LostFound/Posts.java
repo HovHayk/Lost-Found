@@ -8,7 +8,8 @@ public class Posts {
     public String postLocation;
     public String postDescription;
     public String postImage;
-    public ArrayList<String> tags;
+    public String postTags;
+
 
 
     public Posts(String name, String location, String description, String image) {
@@ -18,37 +19,52 @@ public class Posts {
         this.postImage = image;
     }
 
+    public String getId() {
+        return id;
+    }
 
-    public String getName() {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPostName() {
         return postName;
     }
 
-    public String getLocation() {
+    public void setPostName(String postName) {
+        this.postName = postName;
+    }
+
+    public String getPostLocation() {
         return postLocation;
     }
 
-    public String getDescription() {
+    public void setPostLocation(String postLocation) {
+        this.postLocation = postLocation;
+    }
+
+    public String getPostDescription() {
         return postDescription;
     }
 
-    public String getImage() {
+    public void setPostDescription(String postDescription) {
+        this.postDescription = postDescription;
+    }
+
+    public String getPostImage() {
         return postImage;
     }
 
-    public void setName(String name) {
-        this.postName = name;
+    public void setPostImage(String postImage) {
+        this.postImage = postImage;
     }
 
-    public void setLocation(String place) {
-        this.postLocation = place;
+    public String getTags() {
+        return postTags;
     }
 
-    public void setDescription(String description) {
-        this.postDescription = description;
-    }
-
-    public void setImage(String image) {
-        this.postImage = image;
+    public void setTags(String tags) {
+        this.postTags = tags;
     }
 }
 

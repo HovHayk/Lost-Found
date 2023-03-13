@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    FirebaseAuth mAuth;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +55,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         city = findViewById(R.id.personCity);
 
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
 
-        id = mAuth.getCurrentUser().getUid();
+        id = auth.getCurrentUser().getUid();
         setUserInfo(id);
 
 
@@ -118,29 +118,35 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     public void setUserInfo(String id) {
 
-        Log.i("LFL", "setUserInfo: " + id);
+        if (auth.getCurrentUser().getEmail() != null) {
+            name.setText(auth.getCurrentUser().getDisplayName());
+            namePhoto.setText(auth.getCurrentUser().getDisplayName());
+            email.setText(auth.getCurrentUser().getEmail());
+            city.setText(auth.getCurrentUser().getUid());
+            phone.setText(auth.getCurrentUser().getPhoneNumber());
+        } else  {
+            databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
 
-        databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DataSnapshot snapshot = task.getResult();
 
-                if (task.isSuccessful()) {
-                    DataSnapshot snapshot = task.getResult();
+                        UserInfo user = new UserInfo(snapshot.child("userName").getValue().toString()
+                                , snapshot.child("userCity").getValue().toString()
+                                , snapshot.child("userId").getValue().toString()
+                                , snapshot.child("userEmail").getValue().toString()
+                                , snapshot.child("userPhone").getValue().toString());
 
-                    UserInfo user = new UserInfo(snapshot.child("userName").getValue().toString()
-                            , snapshot.child("userCity").getValue().toString()
-                            , snapshot.child("userId").getValue().toString()
-                            , snapshot.child("userEmail").getValue().toString()
-                            , snapshot.child("userPhone").getValue().toString());
-
-                    name.setText(user.getUserName());
-                    namePhoto.setText(user.getUserName());
-                    email.setText(user.getUserEmail());
-                    city.setText(user.getUserCity());
-                    phone.setText(user.getUserPhone());
+                        name.setText(user.getUserName());
+                        namePhoto.setText(user.getUserName());
+                        email.setText(user.getUserEmail());
+                        city.setText(user.getUserCity());
+                        phone.setText(user.getUserPhone());
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 

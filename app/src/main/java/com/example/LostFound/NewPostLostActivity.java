@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,8 +42,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -66,7 +71,6 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     private static final int GALLERY_CODE = 1;
     private static final String TAG = "HomeActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
-
 
     private List<String> itemTags;
     private ArrayList<String> tags = new ArrayList<>();
@@ -120,6 +124,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
+        tagsAutoComplete();
 
         setImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,8 +148,6 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         Intent intent = getIntent();
         String myLocation = intent.getStringExtra("myLostLocation");
         postLocation.setText(myLocation);
-
-        tagsAutoComplete();
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -180,37 +183,6 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     }
 
 
-    private void createNotify() {
-        String id = "my_idd";
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = manager.getNotificationChannel(id);
-            if (channel == null) {
-                channel = new NotificationChannel(id, "channel Title", NotificationManager.IMPORTANCE_HIGH);
-                channel.setDescription("inchvor description");
-                channel.enableVibration(true);
-                channel.setVibrationPattern(new long[]{100, 200, 300, 340});
-                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-                manager.createNotificationChannel(channel);
-            }
-        }
-        Intent notificationIntent = new Intent(this, HomeActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(null)
-                .setContentTitle("Title")
-                .setContentText("Your text description")
-                .setVibrate(new long[]{100, 200, 300, 340})
-                .setAutoCancel(false)
-                .setTicker("Notification");
-        builder.setContentIntent(contentIntent);
-        NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
-        m.notify(1, builder.build());
-    }
-
-
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -241,6 +213,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
+
             StorageReference filePath = firebaseStorage.getReference().child("images").child(imageUrl.toString());
             filePath.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -263,24 +236,38 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                     });
                 }
             });
+        }
 
+        for (int i = 0; i <= itemTags.size(); i++) {
 
+            firebaseFirestore.collection("Tags").add(itemTags.get(i)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    progressDialog.dismiss();
+                    Toast.makeText(NewPostLostActivity.this, "Published successfully", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
-    private void tagsAutoComplete() {
-        firebaseFirestore.collection("Tags").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                    tags.add(snapshot.get("tag").toString());
-                }
 
-                ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, tags);
-                postTags.setAdapter(tagArrayAdapter);
-                postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-            }
-        });
+    private void tagsAutoComplete() {
+
+        firebaseFirestore.collection("Tags")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                            tags.add(snapshot.get("tag").toString());
+                        }
+
+                        Log.i("POMODORO", "onSuccess: " + tags);
+                        ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, tags);
+                        postTags.setAdapter(tagArrayAdapter);
+                        postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                    }
+                });
     }
 
     @Override
@@ -319,4 +306,37 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
+
+    private void createNotify() {
+        String id = "my_idd";
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = manager.getNotificationChannel(id);
+            if (channel == null) {
+                channel = new NotificationChannel(id, "channel Title", NotificationManager.IMPORTANCE_HIGH);
+                channel.setDescription("inchvor description");
+                channel.enableVibration(true);
+                channel.setVibrationPattern(new long[]{100, 200, 300, 340});
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                manager.createNotificationChannel(channel);
+            }
+        }
+        Intent notificationIntent = new Intent(this, HomeActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(null)
+                .setContentTitle("Title")
+                .setContentText("Your text description")
+                .setVibrate(new long[]{100, 200, 300, 340})
+                .setAutoCancel(false)
+                .setTicker("Notification");
+        builder.setContentIntent(contentIntent);
+        NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
+        m.notify(1, builder.build());
+    }
 }
+
+
+

@@ -57,7 +57,7 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
 
         view = navigationView.getHeaderView(0);
         name = view.findViewById(R.id.personName);
-        email = view.findViewById(R.id.personEmail);
+        email = view.findViewById(R.id.person_email);
         postName = findViewById(R.id.post_name);
         postLocation = findViewById(R.id.post_location);
         postDescription = findViewById(R.id.post_description);
@@ -126,10 +126,10 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
 
 
 
-                Picasso.get().load(posts.getImage()).into(postImage);
-                postName.setText(posts.getName());
-                postLocation.setText(posts.getLocation());
-                postDescription.setText(posts.getDescription());
+                Picasso.get().load(posts.getPostImage()).into(postImage);
+                postName.setText(posts.getPostName());
+                postLocation.setText(posts.getPostLocation());
+                postDescription.setText(posts.getPostDescription());
 
             }
 

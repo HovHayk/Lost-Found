@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.LostFound.databinding.RecyclerViewRowBinding;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.lostPostsFragment = lostPostsFragment;
         this.list = list;
     }
+
+
 
     @NonNull
     @Override
@@ -75,8 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void setPost(Posts post){
             Glide.with(itemView.getContext()).load(post.postImage).into(binding.imageForPost);
             binding.postName.setText(post.postName);
-            //binding.postPlace.setText(post.postPlace);
-            binding.postDescription.setText(post.postDescription);
+            binding.postLocation.setText(post.postLocation);            binding.postDescription.setText(post.postDescription);
         }
     }
 
