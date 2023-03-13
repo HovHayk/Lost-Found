@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Maps;
 
 import android.Manifest;
 import android.content.Intent;
@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.LostFound.NewPost.NewPostFoundActivity;
+import com.example.LostFound.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
@@ -44,10 +46,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LostMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
+public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
 
-    private Boolean mLocationPermissionGranted = false;
-    private GoogleMap mMap;
+    private Boolean locationPermissionGranted = false;
+    private GoogleMap map;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -56,18 +58,18 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
     private static final float DEFAULT_ZOOM = 15f;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    private ImageView mGps;
-    private EditText mSearchText;
+    private ImageView gps;
+    private EditText searchText;
 
-    public String myLostLocation;
+    public String myFoundLocation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        mSearchText = (EditText) findViewById(R.id.input_search);
-        mGps = (ImageView) findViewById(R.id.ic_gps);
+        searchText = (EditText) findViewById(R.id.input_search);
+        gps = (ImageView) findViewById(R.id.ic_gps);
 
         getLocationPermission();
 
@@ -77,17 +79,17 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        Toast.makeText(LostMapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
-        mMap = googleMap;
+        Toast.makeText(FoundMapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
+        map = googleMap;
 
-        if (mLocationPermissionGranted) {
+        if (locationPermissionGranted) {
             getDeviceLocation();
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(false);
 
             init();
         }
@@ -98,7 +100,7 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
     private void init() {
         Log.d("BLA", "init: initializing");
 
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
@@ -114,7 +116,7 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
-        mGps.setOnClickListener(new View.OnClickListener() {
+        gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("BLA", "onClick: clicked gps icon");
@@ -126,11 +128,11 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void geoLocate() {
-        Log.d("BLA", "geoLocate: geolocating");
+        Log.d("BLA", "geoLocate: geoLocating");
 
-        String searchString = mSearchText.getText().toString();
+        String searchString = searchText.getText().toString();
 
-        Geocoder geocoder = new Geocoder(LostMapActivity.this);
+        Geocoder geocoder = new Geocoder(FoundMapActivity.this);
         List<Address> list = new ArrayList<>();
         try {
             list = geocoder.getFromLocationName(searchString, 1);
@@ -142,16 +144,15 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
             Address address = list.get(0);
 
             Log.d("BLA", "geoLocate: found a location: " + address.toString());
-            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
 
-        myLostLocation = list.get(0).getLocality();
+        myFoundLocation = list.get(0).getLocality();
 
-        Intent lostIntent = new Intent(LostMapActivity.this, NewPostLostActivity.class);
-        lostIntent.putExtra("myLostLocation", myLostLocation);
-        startActivity(lostIntent);
+        Intent foundIntent = new Intent(FoundMapActivity.this, NewPostFoundActivity.class);
+        foundIntent.putExtra("myFoundLocation", myFoundLocation);
+        startActivity(foundIntent);
     }
 
     private void getDeviceLocation() {
@@ -160,7 +161,7 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         try {
-            if (mLocationPermissionGranted) {
+            if (locationPermissionGranted) {
 
                 final Task location = mFusedLocationProviderClient.getLastLocation();
 
@@ -182,10 +183,11 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
                             },500);
                         } else {
                             Log.d("BLA", "onComplete: current location is null");
-                            Toast.makeText(LostMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoundMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
             }
         } catch (SecurityException e) {
             Log.e("BLA", "getDeviceLocation: SecurityException: " + e.getMessage());
@@ -196,11 +198,11 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
     private void moveCamera(LatLng latLng, float zoom, String title) {
         Log.d("BLA", "moveCamera: moving camera to: lat:" + latLng.latitude + ", lng: " + latLng.longitude);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
         if (!title.equals("My location")) {
             MarkerOptions options = new MarkerOptions().position(latLng).title(title);
-            mMap.addMarker(options);
+            map.addMarker(options);
         }
         hideKeyboard();
     }
@@ -208,7 +210,7 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(LostMapActivity.this);
+        mapFragment.getMapAsync(FoundMapActivity.this);
     }
 
     private void getLocationPermission() {
@@ -216,7 +218,7 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
 
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mLocationPermissionGranted = true;
+                locationPermissionGranted = true;
                 initMap();
             } else {
                 ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
@@ -230,18 +232,18 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        mLocationPermissionGranted = false;
+        locationPermissionGranted = false;
 
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < grantResults.length; i++) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            mLocationPermissionGranted = false;
+                            locationPermissionGranted = false;
                             return;
                         }
                     }
-                    mLocationPermissionGranted = true;
+                    locationPermissionGranted = true;
                     //Initialize the map
                     initMap();
                 }
@@ -277,5 +279,17 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 

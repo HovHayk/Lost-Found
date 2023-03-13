@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,9 +20,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.LostFound.Adapters.Adapter;
+import com.example.LostFound.Fragments.FoundPostsFragment;
+import com.example.LostFound.Fragments.LostPostsFragment;
+import com.example.LostFound.Models.Posts;
+import com.example.LostFound.R;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,7 +46,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth auth;
     DatabaseReference databaseReference;
 
-    RecyclerViewAdapter adapter;
     List<Posts> list;
     RecyclerView recyclerView;
     DrawerLayout drawerLayout;
@@ -51,7 +55,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     EditText nameRegister;
     Button newPost;
     TextView name, email;
-    ImageView photo;
     View view, registerView;
 
     BottomNavigationView bottomNavigationView;
@@ -83,8 +86,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         list = new ArrayList<Posts>();
 
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
+                .setQuery(databaseReference, Posts.class)
+                .build();
 
-        adapter = new RecyclerViewAdapter(this, list);
+
+        Adapter adapter = new Adapter(options);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -99,8 +106,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //nameEmailPhotoSetter();
         setBottomNavigationView();
+
 
 
         newPost.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +123,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         nameEmailPhotoSetter();
 
 
-    }
+    } // End of onCreate
+
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setIconified(true);
+
+        SearchManager searchManager = (SearchManager) getApplicationContext().getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchMain(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                searchMain(query);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
 
     public void setBottomNavigationView() {
 

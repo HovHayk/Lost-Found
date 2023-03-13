@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:fitsSystemWindows="true"
-    tools:context=".HomeActivity"
+    tools:context=".Activities.HomeActivity"
     tools:openDrawer="start">
 
 
@@ -27,8 +27,6 @@
                 android:id="@+id/navview_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-
 
 
                     <androidx.appcompat.widget.Toolbar

@@ -1,34 +1,25 @@
-package com.example.LostFound;
+package com.example.LostFound.Fragments;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
+import com.example.LostFound.Adapters.Adapter;
+import com.example.LostFound.Adapters.PostAdapter;
+import com.example.LostFound.Adapters.RecyclerViewAdapter;
+import com.example.LostFound.Models.Posts;
+import com.example.LostFound.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +31,13 @@ public class LostPostsFragment extends Fragment {
     FirebaseRecyclerOptions<Posts> options;
 
     View v;
-    RecyclerViewAdapter adapter;
-    PostAdapter postAdapter;
     List<Posts> list;
     RecyclerView recyclerView;
+
+
+    Adapter adapter;
+    RecyclerViewAdapter recyclerViewAdapter;
+    PostAdapter postAdapter;
 
     MenuItem menuItem;
     SearchView searchView;
@@ -65,7 +59,6 @@ public class LostPostsFragment extends Fragment {
         //getPostData();
 
 
-
     }
 
     @Override
@@ -74,21 +67,15 @@ public class LostPostsFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_lost_posts, container, false);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
-
         recyclerView = v.findViewById(R.id.recyclerView);
 
         list = new ArrayList<Posts>();
 
-        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
-                .setQuery(databaseReference, Posts.class)
-                .build();
 
+        options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").child("Lost"), Posts.class).build();
 
-
-        //adapter = new RecyclerViewAdapter(getContext(), list);
-        postAdapter = new PostAdapter(options);
-        recyclerView.setAdapter(postAdapter);
-        recyclerView.setHasFixedSize(true);
+        adapter = new Adapter(options);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return v;
@@ -96,34 +83,22 @@ public class LostPostsFragment extends Fragment {
     }
 
 
-    /*@Override
+    @Override
     public void onStart() {
 
         super.onStart();
+        adapter.startListening();
 
-        if (databaseReference != null) {
+    }
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            list.add(ds.getValue(Posts.class));
-                        }
-                        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), list);
-                    }
-                }
+    @Override
+    public void onStop() {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
+        super.onStop();
+        adapter.stopListening();
     }
 
 
-*/
 
 
 
@@ -140,22 +115,42 @@ public class LostPostsFragment extends Fragment {
 
 
 
+    /*@Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+        menuItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setIconified(true);
 
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mainSearch(query);
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mainSearch(query);
+                return true;
+            }
+        });
 
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    private void mainSearch(String query) {
 
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
+                .setQuery(databaseReference.orderByChild("tags").startAt(query).endAt(query + "\uf8ff"), Posts.class)
+                .build();
 
-
-
-
-
-
-
-
-
-
-
+        PostAdapter mainAdapter = new PostAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }*/
 
 
 

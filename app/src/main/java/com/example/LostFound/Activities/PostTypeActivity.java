@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,6 +15,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.LostFound.NewPost.NewPostFoundActivity;
+import com.example.LostFound.NewPost.NewPostLostActivity;
+import com.example.LostFound.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class PostTypeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

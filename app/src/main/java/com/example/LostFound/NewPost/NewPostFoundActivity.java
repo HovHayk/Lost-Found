@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.NewPost;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +25,11 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.LostFound.Activities.HomeActivity;
+import com.example.LostFound.Maps.FoundMapActivity;
+import com.example.LostFound.Activities.MyPosts;
+import com.example.LostFound.Activities.ProfileActivity;
+import com.example.LostFound.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;

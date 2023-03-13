@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.LostFound.Fragments.FoundPostsFragment;
+import com.example.LostFound.Fragments.LostPostsFragment;
+import com.example.LostFound.Models.Posts;
 import com.example.LostFound.databinding.RecyclerViewRowBinding;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
@@ -15,6 +18,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
+    FirebaseRecyclerOptions<Posts> options;
     LostPostsFragment lostPostsFragment;
     FoundPostsFragment foundPostsFragment;
     Context context;
@@ -37,6 +41,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.list = list;
     }
 
+    public RecyclerViewAdapter(FirebaseRecyclerOptions<Posts> options) {
+        this.options = options;
+    }
 
 
     @NonNull
@@ -76,9 +83,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         public void setPost(Posts post){
-            Glide.with(itemView.getContext()).load(post.postImage).into(binding.imageForPost);
-            binding.postName.setText(post.postName);
-            binding.postLocation.setText(post.postLocation);            binding.postDescription.setText(post.postDescription);
+            Glide.with(itemView.getContext()).load(post.postImage).into(binding.imageOfPost);
+            binding.nameOfPost.setText(post.postName);
+            binding.locationOfPost.setText(post.postLocation);
+            binding.descriptionOfPost.setText(post.postDescription);
         }
     }
 

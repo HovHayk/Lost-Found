@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Models;
 
 public class UserInfo {
 

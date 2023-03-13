@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.CallbackManager;
+import com.example.LostFound.Activities.HomeActivity;
+import com.example.LostFound.Models.UserInfo;
+import com.example.LostFound.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -120,9 +122,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // starting app without login
-        /*if (user != null) {
+        if (user != null) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-        }*/
+        }
 
     } // End of OnCreate !!!
 

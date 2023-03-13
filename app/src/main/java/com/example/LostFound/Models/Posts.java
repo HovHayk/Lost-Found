@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Models;
 
 import java.util.ArrayList;
 
@@ -8,8 +8,11 @@ public class Posts {
     public String postLocation;
     public String postDescription;
     public String postImage;
-    public String postTags;
+    public ArrayList<String> postTags;
 
+    public Posts() {
+
+    }
 
 
     public Posts(String name, String location, String description, String image) {
@@ -59,11 +62,11 @@ public class Posts {
         this.postImage = postImage;
     }
 
-    public String getTags() {
+    public ArrayList<String> getTags() {
         return postTags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(ArrayList<String> tags) {
         this.postTags = tags;
     }
 }

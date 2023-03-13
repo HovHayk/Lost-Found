@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.LostFound.R;
 
 public class MyPosts extends AppCompatActivity {
 
@@ -21,7 +23,7 @@ public class MyPosts extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyPosts.this, FoundPostPage.class);
+                Intent intent = new Intent(MyPosts.this, LostPostPage.class);
                 startActivity(intent);
             }
         });

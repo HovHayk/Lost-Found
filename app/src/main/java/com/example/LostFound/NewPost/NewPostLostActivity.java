@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.NewPost;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,13 +20,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +32,11 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.LostFound.Activities.HomeActivity;
+import com.example.LostFound.Maps.LostMapActivity;
+import com.example.LostFound.Activities.MyPosts;
+import com.example.LostFound.Activities.ProfileActivity;
+import com.example.LostFound.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,21 +45,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -73,7 +68,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
     private List<String> itemTags;
-    private ArrayList<String> tags = new ArrayList<>();
+//    private ArrayList<String> tags = new ArrayList<>();
 
 
     DrawerLayout drawerLayout;
@@ -124,7 +119,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-        tagsAutoComplete();
+        //tagsAutoComplete();
 
         setImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,12 +132,11 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View v) {
                 insertPostData();
-                createNotify();
             }
         });
 
         if (isServicesOK()) {
-            init();
+            openMap();
         }
 
         Intent intent = getIntent();
@@ -152,7 +146,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     } // End of OnCreate !!!!!!!!!!!
 
 
-    private void init() {
+    private void openMap() {
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,7 +200,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         String description = postDescription.getText().toString().trim();
         String location = postLocation.getText().toString().trim();
         String tags = postTags.getText().toString();
-        itemTags = Arrays.asList(tags.split(","));
+//        itemTags = Arrays.asList(tags.split(","));
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -230,7 +224,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                             newPost.child("UserID").setValue(id);
                             newPost.child("Location").setValue(location);
                             newPost.child("image").setValue(t);
-                            newPost.child("tags").setValue(itemTags);
+//                            newPost.child("tags").setValue(itemTags);
                             progressDialog.dismiss();
                         }
                     });
@@ -238,7 +232,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
             });
         }
 
-        for (int i = 0; i <= itemTags.size(); i++) {
+        /*for (int i = 0; i <= itemTags.size(); i++) {
 
             firebaseFirestore.collection("Tags").add(itemTags.get(i)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
@@ -247,11 +241,11 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                     Toast.makeText(NewPostLostActivity.this, "Published successfully", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
+        }*/
     }
 
 
-    private void tagsAutoComplete() {
+    /*private void tagsAutoComplete() {
 
         firebaseFirestore.collection("Tags")
                 .get()
@@ -262,13 +256,12 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                             tags.add(snapshot.get("tag").toString());
                         }
 
-                        Log.i("POMODORO", "onSuccess: " + tags);
                         ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, tags);
                         postTags.setAdapter(tagArrayAdapter);
                         postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
                     }
                 });
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

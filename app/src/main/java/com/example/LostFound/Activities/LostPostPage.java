@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.LostFound.Models.Posts;
+import com.example.LostFound.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -27,27 +29,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class FoundPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class LostPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    DatabaseReference postsDBRef;
-    FirebaseAuth mAuth;
+    FirebaseAuth auth;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
     View view;
 
+
     TextView name, email, postName, postLocation, postDescription;
     ImageView postImage;
-    List<Posts> list;
 
-    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +64,10 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         postDescription = findViewById(R.id.post_description);
         postImage = findViewById(R.id.post_image);
 
-        list = new ArrayList<Posts>();
-
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -83,7 +78,7 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-        id = mAuth.getCurrentUser().getUid();
+
         setPostInfo();
         nameEmailPhotoSetter();
     }
@@ -101,15 +96,15 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intentHome = new Intent(FoundPostPage.this, HomeActivity.class);
+                Intent intentHome = new Intent(LostPostPage.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intentProfile = new Intent(FoundPostPage.this, ProfileActivity.class);
+                Intent intentProfile = new Intent(LostPostPage.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPosts = new Intent(FoundPostPage.this, MyPosts.class);
+                Intent intentMyPosts = new Intent(LostPostPage.this, MyPosts.class);
                 startActivity(intentMyPosts);
                 break;
         }
@@ -168,8 +163,8 @@ public class FoundPostPage extends AppCompatActivity implements NavigationView.O
     }
 
     public void nameEmailPhotoSetter() {
-        email.setText(mAuth.getCurrentUser().getEmail());
-        name.setText(mAuth.getCurrentUser().getDisplayName());
+        name.setText(auth.getCurrentUser().getDisplayName());
+        email.setText(auth.getCurrentUser().getEmail());
     }
 
 }

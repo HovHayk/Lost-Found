@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.LostFound.Models.Posts;
+import com.example.LostFound.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.squareup.picasso.Picasso;
@@ -22,12 +24,11 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.pers
 
 
     protected void
-    onBindViewHolder(@NonNull personsViewholder holder, int position, @NonNull Posts model) {
-
-        holder.name.setText(model.getPostName());
-        holder.description.setText(model.getPostDescription());
-        holder.location.setText(model.getPostLocation());
-        Picasso.get().load(model.getPostImage()).into(holder.image);
+    onBindViewHolder(@NonNull personsViewholder holder, int position, @NonNull Posts posts) {
+        holder.name.setText(posts.getPostName());
+        holder.description.setText(posts.getPostDescription());
+        holder.location.setText(posts.getPostLocation());
+        Picasso.get().load(posts.getPostImage()).into(holder.image);
     }
 
     @NonNull
@@ -48,10 +49,10 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.pers
 
             super(itemView);
 
-            name = itemView.findViewById(R.id.post_name);
-            description = itemView.findViewById(R.id.post_description);
-            location = itemView.findViewById(R.id.post_location);
-            image = itemView.findViewById(R.id.post_image);
+            name = itemView.findViewById(R.id.name_of_post);
+            description = itemView.findViewById(R.id.description_of_post);
+            location = itemView.findViewById(R.id.location_of_post);
+            image = itemView.findViewById(R.id.image_of_post);
         }
     }
 }

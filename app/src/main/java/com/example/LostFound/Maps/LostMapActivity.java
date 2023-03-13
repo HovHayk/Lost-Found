@@ -1,4 +1,4 @@
-package com.example.LostFound;
+package com.example.LostFound.Maps;
 
 import android.Manifest;
 import android.content.Intent;
@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.LostFound.NewPost.NewPostLostActivity;
+import com.example.LostFound.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
@@ -43,9 +45,8 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
+public class LostMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnConnectionFailedListener {
 
     private Boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
@@ -57,18 +58,18 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
     private static final float DEFAULT_ZOOM = 15f;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    private ImageView mGps;
-    private EditText mSearchText;
+    private ImageView gps;
+    private EditText searchText;
 
-    public String myFoundLocation;
+    public String myLostLocation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        mSearchText = (EditText) findViewById(R.id.input_search);
-        mGps = (ImageView) findViewById(R.id.ic_gps);
+        searchText = (EditText) findViewById(R.id.input_search);
+        gps = (ImageView) findViewById(R.id.ic_gps);
 
         getLocationPermission();
 
@@ -78,7 +79,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        Toast.makeText(FoundMapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
+        Toast.makeText(LostMapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
 
         if (mLocationPermissionGranted) {
@@ -99,7 +100,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
     private void init() {
         Log.d("BLA", "init: initializing");
 
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
@@ -115,7 +116,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-        mGps.setOnClickListener(new View.OnClickListener() {
+        gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("BLA", "onClick: clicked gps icon");
@@ -127,11 +128,11 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void geoLocate() {
-        Log.d("BLA", "geoLocate: geoLocating");
+        Log.d("BLA", "geoLocate: geolocating");
 
-        String searchString = mSearchText.getText().toString();
+        String searchString = searchText.getText().toString();
 
-        Geocoder geocoder = new Geocoder(FoundMapActivity.this);
+        Geocoder geocoder = new Geocoder(LostMapActivity.this);
         List<Address> list = new ArrayList<>();
         try {
             list = geocoder.getFromLocationName(searchString, 1);
@@ -143,15 +144,16 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
             Address address = list.get(0);
 
             Log.d("BLA", "geoLocate: found a location: " + address.toString());
+            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
 
-        myFoundLocation = list.get(0).getLocality();
+        myLostLocation = list.get(0).getLocality();
 
-        Intent foundIntent = new Intent(FoundMapActivity.this, NewPostFoundActivity.class);
-        foundIntent.putExtra("myFoundLocation", myFoundLocation);
-        startActivity(foundIntent);
+        Intent lostIntent = new Intent(LostMapActivity.this, NewPostLostActivity.class);
+        lostIntent.putExtra("myLostLocation", myLostLocation);
+        startActivity(lostIntent);
     }
 
     private void getDeviceLocation() {
@@ -182,11 +184,10 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
                             },500);
                         } else {
                             Log.d("BLA", "onComplete: current location is null");
-                            Toast.makeText(FoundMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LostMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
             }
         } catch (SecurityException e) {
             Log.e("BLA", "getDeviceLocation: SecurityException: " + e.getMessage());
@@ -209,7 +210,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(FoundMapActivity.this);
+        mapFragment.getMapAsync(LostMapActivity.this);
     }
 
     private void getLocationPermission() {
@@ -278,17 +279,5 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
