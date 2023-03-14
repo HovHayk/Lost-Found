@@ -25,10 +25,10 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.pers
 
     protected void
     onBindViewHolder(@NonNull personsViewholder holder, int position, @NonNull Posts posts) {
-        holder.name.setText(posts.getPostName());
-        holder.description.setText(posts.getPostDescription());
-        holder.location.setText(posts.getPostLocation());
-        Picasso.get().load(posts.getPostImage()).into(holder.image);
+        holder.name.setText(posts.getName());
+        holder.description.setText(posts.getDescription());
+        holder.location.setText(posts.getLocation());
+        Picasso.get().load(posts.getImage()).into(holder.image);
     }
 
     @NonNull

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Posts {
     public String id;
-    public String postName;
-    public String postLocation;
-    public String postDescription;
-    public String postImage;
-    public ArrayList<String> postTags;
+    public String name;
+    public String location;
+    public String description;
+    public String image;
+    public ArrayList<String> tags;
 
     public Posts() {
 
@@ -16,10 +16,10 @@ public class Posts {
 
 
     public Posts(String name, String location, String description, String image) {
-        this.postName = name;
-        this.postLocation = location;
-        this.postDescription = description;
-        this.postImage = image;
+        this.name = name;
+        this.location = location;
+        this.description = description;
+        this.image = image;
     }
 
     public String getId() {
@@ -30,44 +30,44 @@ public class Posts {
         this.id = id;
     }
 
-    public String getPostName() {
-        return postName;
+    public String getName() {
+        return name;
     }
 
-    public void setPostName(String postName) {
-        this.postName = postName;
+    public void setName(String Name) {
+        this.name = Name;
     }
 
-    public String getPostLocation() {
-        return postLocation;
+    public String getLocation() {
+        return location;
     }
 
-    public void setPostLocation(String postLocation) {
-        this.postLocation = postLocation;
+    public void setLocation(String Location) {
+        this.location = Location;
     }
 
-    public String getPostDescription() {
-        return postDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPostDescription(String postDescription) {
-        this.postDescription = postDescription;
+    public void setDescription(String Description) {
+        this.description = Description;
     }
 
-    public String getPostImage() {
-        return postImage;
+    public String getImage() {
+        return image;
     }
 
-    public void setPostImage(String postImage) {
-        this.postImage = postImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public ArrayList<String> getTags() {
-        return postTags;
+        return tags;
     }
 
     public void setTags(ArrayList<String> tags) {
-        this.postTags = tags;
+        this.tags = tags;
     }
 }
 

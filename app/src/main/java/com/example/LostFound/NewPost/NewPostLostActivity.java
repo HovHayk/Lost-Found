@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,11 +48,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -68,7 +73,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
     private List<String> itemTags;
-//    private ArrayList<String> tags = new ArrayList<>();
+    private ArrayList<String> tags = new ArrayList<>();
 
 
     DrawerLayout drawerLayout;
@@ -119,7 +124,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //tagsAutoComplete();
+        tagsAutoComplete();
 
         setImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +137,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View v) {
                 insertPostData();
+                sendUserToNextActivity();
             }
         });
 
@@ -200,7 +206,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         String description = postDescription.getText().toString().trim();
         String location = postLocation.getText().toString().trim();
         String tags = postTags.getText().toString();
-//        itemTags = Arrays.asList(tags.split(","));
+        itemTags = Arrays.asList(tags.split(","));
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -219,12 +225,12 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                             String t = task.getResult().toString();
 
                             DatabaseReference newPost = databaseReference.push();
-                            newPost.child("Name").setValue(name);
-                            newPost.child("Description").setValue(description);
-                            newPost.child("UserID").setValue(id);
-                            newPost.child("Location").setValue(location);
+                            newPost.child("name").setValue(name);
+                            newPost.child("description").setValue(description);
+                            newPost.child("id").setValue(id);
+                            newPost.child("location").setValue(location);
                             newPost.child("image").setValue(t);
-//                            newPost.child("tags").setValue(itemTags);
+                            newPost.child("tags").setValue(itemTags);
                             progressDialog.dismiss();
                         }
                     });
@@ -245,7 +251,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     }
 
 
-    /*private void tagsAutoComplete() {
+    private void tagsAutoComplete() {
 
         firebaseFirestore.collection("Tags")
                 .get()
@@ -261,7 +267,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                         postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
                     }
                 });
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -328,6 +334,11 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         builder.setContentIntent(contentIntent);
         NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
         m.notify(1, builder.build());
+    }
+
+    public void sendUserToNextActivity() {
+        Intent intent = new Intent(NewPostLostActivity.this, HomeActivity.class);
+        startActivity(intent);
     }
 }
 

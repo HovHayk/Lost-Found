@@ -83,10 +83,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         public void setPost(Posts post){
-            Glide.with(itemView.getContext()).load(post.postImage).into(binding.imageOfPost);
-            binding.nameOfPost.setText(post.postName);
-            binding.locationOfPost.setText(post.postLocation);
-            binding.descriptionOfPost.setText(post.postDescription);
+            Glide.with(itemView.getContext()).load(post.image).into(binding.imageOfPost);
+            binding.nameOfPost.setText(post.name);
+            binding.locationOfPost.setText(post.location);
+            binding.descriptionOfPost.setText(post.description);
         }
     }
 

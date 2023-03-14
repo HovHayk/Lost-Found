@@ -2,22 +2,27 @@ package com.example.LostFound.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.LostFound.Adapters.Adapter;
-import com.example.LostFound.Adapters.PostAdapter;
 import com.example.LostFound.Adapters.RecyclerViewAdapter;
 import com.example.LostFound.Models.Posts;
 import com.example.LostFound.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,7 +33,6 @@ public class LostPostsFragment extends Fragment {
 
 
     DatabaseReference databaseReference;
-    FirebaseRecyclerOptions<Posts> options;
 
     View v;
     List<Posts> list;
@@ -36,11 +40,11 @@ public class LostPostsFragment extends Fragment {
 
 
     Adapter adapter;
-    RecyclerViewAdapter recyclerViewAdapter;
-    PostAdapter postAdapter;
 
     MenuItem menuItem;
     SearchView searchView;
+
+
 
 
     public LostPostsFragment() {
@@ -56,8 +60,6 @@ public class LostPostsFragment extends Fragment {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
         list = new ArrayList<Posts>();
-        //getPostData();
-
 
     }
 
@@ -66,17 +68,24 @@ public class LostPostsFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_lost_posts, container, false);
 
+
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
         recyclerView = v.findViewById(R.id.recyclerView);
 
         list = new ArrayList<Posts>();
 
 
-        options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").child("Lost"), Posts.class).build();
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").child("Lost"), Posts.class)
+                        .build();
+
+        Log.i("POMODORO", "onCreateView: " + options);
+
 
         adapter = new Adapter(options);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         return v;
 
@@ -161,7 +170,7 @@ public class LostPostsFragment extends Fragment {
 
 
 
-    /*public void getPostData() {
+    public void getPostData() {
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -195,5 +204,5 @@ public class LostPostsFragment extends Fragment {
             }
         });
 
-    }*/
+    }
 }

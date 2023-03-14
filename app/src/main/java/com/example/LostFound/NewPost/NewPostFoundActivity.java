@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,11 +41,16 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class NewPostFoundActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,6 +63,8 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     private static final int GALLERY_CODE = 1;
     private static final String TAG = "HomeActivity";
     private static  final int ERROR_DIALOG_REQUEST = 9001;
+    private List<String> itemTags;
+    private ArrayList<String> tags = new ArrayList<>();
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -69,7 +77,8 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     Uri imageUrl = null;
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    DatabaseReference postsDBRef;
+    DatabaseReference databaseReference;
+    FirebaseFirestore firebaseFirestore;
     FirebaseAuth mAuth;
 
 
@@ -96,7 +105,8 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        postsDBRef = firebaseDatabase.getReference().child("Posts").child("Found");
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Posts").child("Found");
 
 
         statusBarColor();
@@ -108,6 +118,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
+        tagsAutoComplete();
 
         setImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +132,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
             @Override
             public void onClick(View v) {
                 insertPostData();
+                sendUserToNextActivity();
             }
         });
 
@@ -190,6 +202,8 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
         String myLocation = location.getText().toString().trim();
+        String tags = postTags.getText().toString();
+        itemTags = Arrays.asList(tags.split(","));
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -206,12 +220,13 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                         public void onComplete(@NonNull Task<Uri> task) {
                             String t = task.getResult().toString();
 
-                            DatabaseReference newPost = postsDBRef.push();
-                            newPost.child("Name").setValue(name);
-                            newPost.child("Description").setValue(description);
-                            newPost.child("UserID").setValue(id);
-                            newPost.child("Location").setValue(myLocation);
+                            DatabaseReference newPost = databaseReference.push();
+                            newPost.child("name").setValue(name);
+                            newPost.child("description").setValue(description);
+                            newPost.child("id").setValue(id);
+                            newPost.child("location").setValue(myLocation);
                             newPost.child("image").setValue(t);
+                            newPost.child("tags").setValue(itemTags);
                             progressDialog.dismiss();
                         }
                     });
@@ -220,6 +235,23 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         }
     }
 
+    private void tagsAutoComplete() {
+
+        firebaseFirestore.collection("Tags")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                            tags.add(snapshot.get("tag").toString());
+                        }
+
+                        ArrayAdapter<String> tagArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, tags);
+                        postTags.setAdapter(tagArrayAdapter);
+                        postTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                    }
+                });
+    }
 
     @Override
     public void onBackPressed() {
@@ -256,5 +288,10 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+    }
+
+    public void sendUserToNextActivity() {
+        Intent intent = new Intent(NewPostFoundActivity.this, HomeActivity.class);
+        startActivity(intent);
     }
 }

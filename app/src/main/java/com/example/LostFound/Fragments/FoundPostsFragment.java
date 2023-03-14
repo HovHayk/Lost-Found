@@ -1,26 +1,20 @@
 package com.example.LostFound.Fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.LostFound.Adapters.RecyclerViewAdapter;
+import com.example.LostFound.Adapters.Adapter;
 import com.example.LostFound.Models.Posts;
 import com.example.LostFound.R;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +24,16 @@ public class FoundPostsFragment extends Fragment {
     DatabaseReference databaseReference;
 
     View v;
-    RecyclerViewAdapter adapter;
     List<Posts> list;
     RecyclerView recyclerView;
+
+
+    Adapter adapter;
+
+    MenuItem menuItem;
+    SearchView searchView;
+
+
 
 
     public FoundPostsFragment() {
@@ -42,34 +43,77 @@ public class FoundPostsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
         list = new ArrayList<Posts>();
-        getPostData();
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_found_posts, container, false);
 
-        recyclerView = v.findViewById(R.id.recyclerView);
+        v = inflater.inflate(R.layout.fragment_lost_posts, container, false);
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Found");
+        recyclerView = v.findViewById(R.id.recyclerView);
+
         list = new ArrayList<Posts>();
 
-        adapter = new RecyclerViewAdapter(getContext(), list);
+
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").child("Found"), Posts.class)
+                .build();
+
+
+        adapter = new Adapter(options);
         recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return v;
+
     }
 
-    public void getPostData() {
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+        adapter.startListening();
+
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+        adapter.stopListening();
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*public void getPostData() {
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -103,5 +147,4 @@ public class FoundPostsFragment extends Fragment {
             }
         });
 
-    }
-}
+    }*/
