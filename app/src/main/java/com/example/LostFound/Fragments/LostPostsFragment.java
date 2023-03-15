@@ -1,21 +1,27 @@
 package com.example.LostFound.Fragments;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.LostFound.Adapters.Adapter;
+import com.example.LostFound.Adapters.PostAdapter;
 import com.example.LostFound.Adapters.RecyclerViewAdapter;
 import com.example.LostFound.Models.Posts;
 import com.example.LostFound.R;
@@ -25,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +45,10 @@ public class LostPostsFragment extends Fragment {
     List<Posts> list;
     RecyclerView recyclerView;
 
-
     Adapter adapter;
 
     MenuItem menuItem;
     SearchView searchView;
-
-
 
 
     public LostPostsFragment() {
@@ -76,8 +80,8 @@ public class LostPostsFragment extends Fragment {
 
 
         FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").child("Lost"), Posts.class)
-                        .build();
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("Posts").child("Lost"), Posts.class)
+                .build();
 
         Log.i("POMODORO", "onCreateView: " + options);
 
@@ -93,38 +97,6 @@ public class LostPostsFragment extends Fragment {
 
 
     @Override
-    public void onStart() {
-
-        super.onStart();
-        adapter.startListening();
-
-    }
-
-    @Override
-    public void onStop() {
-
-        super.onStop();
-        adapter.stopListening();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*@Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
         menuItem = menu.findItem(R.id.action_search);
@@ -153,56 +125,70 @@ public class LostPostsFragment extends Fragment {
     private void mainSearch(String query) {
 
         FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
-                .setQuery(databaseReference.orderByChild("tags").startAt(query).endAt(query + "\uf8ff"), Posts.class)
+                .setQuery(databaseReference.orderByChild("name").startAt(query).endAt(query + "\uf8ff"), Posts.class)
                 .build();
 
-        PostAdapter mainAdapter = new PostAdapter(options);
+        Adapter mainAdapter = new Adapter(options);
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
-    }*/
-
-
-
-
-
-
-
-
-
-
-    public void getPostData() {
-
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Posts posts = new Posts(snapshot.child("Name").getValue().toString()
-                        , snapshot.child("Location").getValue().toString()
-                        , snapshot.child("Description").getValue().toString()
-                        , snapshot.child("image").getValue().toString());
-                list.add(posts);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
     }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+        adapter.startListening();
+
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+        adapter.stopListening();
+    }
 }
+
+
+
+
+
+
+
+/*
+public void getPostData() {
+
+    databaseReference.addChildEventListener(new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            Posts posts = new Posts(snapshot.child("Name").getValue().toString()
+                    , snapshot.child("Location").getValue().toString()
+                    , snapshot.child("Description").getValue().toString()
+                    , snapshot.child("image").getValue().toString());
+            list.add(posts);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    });
+
+}*/
