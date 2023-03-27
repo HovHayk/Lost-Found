@@ -17,6 +17,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.LostFound.Activities.HomeActivity;
-import com.example.LostFound.Models.UserInfo;
 import com.example.LostFound.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,8 +39,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -53,8 +52,6 @@ public class LoginActivity extends AppCompatActivity {
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
     FirebaseAuth auth;
     FirebaseUser user;
 
@@ -76,16 +73,13 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         main = findViewById(R.id.login_main);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         gsc = GoogleSignIn.getClient(LoginActivity.this, gso);
 
-
-
+        statusBarColor();
 
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,13 +112,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-        // starting app without login
-        if (user != null) {
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-        }
 
     } // End of OnCreate !!!
 
@@ -232,21 +219,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void insertUserData() {
-
-        String id = auth.getCurrentUser().getUid();
-
-        Bundle bundle = getIntent().getExtras();
-        String name = bundle.getString("NAME");
-        String city = bundle.getString("CITY");
-        String email = bundle.getString("EMAIL");
-        String phone = bundle.getString("PHONE");
-
-        UserInfo user = new UserInfo(name, city, id, email, phone);
-        databaseReference.child("Users").child(id).setValue(user);
-
-    }
-
 
     private void firebaseAuthWithGoogle(String idToken) {
 
@@ -267,6 +239,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void statusBarColor() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
     }
 
 

@@ -4,10 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,12 +25,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -44,8 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    FirebaseFirestore firebaseFirestore;
     FirebaseAuth auth;
     FirebaseUser user;
 
@@ -67,8 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(RegisterActivity.this);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         main = findViewById(R.id.register_main);
 
@@ -89,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 performAuth();
-                sendUserInfoToLoginActivity();
+                sendUserToNextActivity();
             }
         });
 
@@ -103,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-
+        statusBarColor();
 
 
     } // End of OnCreate
@@ -111,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void performAuth() {
-        String user = userNameForRegistration.getText().toString();
+        String uName = userNameForRegistration.getText().toString();
         String email = emailForRegistration.getText().toString();
         String phone = phoneForRegistration.getText().toString();
         String city = cityForRegistration.getText().toString();
@@ -123,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
             emailForRegistration.setError("Enter Context Email");
         } else if (password.isEmpty() || password.length() < 6) {
             passwordForRegistration.setError("Enter Proper Password");
-        } else if (user.equals("")) {
+        } else if (uName.equals("")) {
             userNameForRegistration.setError("Please enter username");
         } else if (city.equals("")) {
             cityForRegistration.setError("Please enter your city");
@@ -147,31 +154,35 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.makeText(RegisterActivity.this, "Registration Successful. Please verify your email id", Toast.LENGTH_SHORT).show();
                                     emailForRegistration.setText("");
                                     passwordForRegistration.setText("");
+
+                                    HashMap<String,Object> user = new HashMap<>();
+                                    user.put("user",uName);
+                                    user.put("email",email);
+                                    user.put("phone",phone);
+                                    user.put("city",city);
+
+                                    firebaseFirestore.collection("Users").add(user);
                                 } else {
                                     progressDialog.dismiss();
                                     Toast.makeText(RegisterActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-
                     }
                 }
             });
         }
     }
 
+    public void statusBarColor() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+    }
 
-    private void sendUserInfoToLoginActivity() {
-        String name = userNameForRegistration.getText().toString().trim();
-        String city = cityForRegistration.getText().toString().trim();
-        String email = emailForRegistration.getText().toString().trim();
-        String phone = phoneForRegistration.getText().toString().trim();
-
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.putExtra("NAME", name);
-        intent.putExtra("CITY", city);
-        intent.putExtra("EMAIL", email);
-        intent.putExtra("PHONE", phone);
+    private void sendUserToNextActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 

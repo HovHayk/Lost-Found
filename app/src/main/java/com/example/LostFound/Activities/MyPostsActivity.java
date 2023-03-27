@@ -8,10 +8,10 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -21,12 +21,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.LostFound.Fragments.FoundPostsFragment;
-import com.example.LostFound.Fragments.LostPostsFragment;
+import com.example.LostFound.Models.Post;
 import com.example.LostFound.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,12 +31,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+public class MyPostsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth auth;
     FirebaseFirestore firebaseFirestore;
 
+    List<Post> list;
+    RecyclerView recyclerView;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_my_posts);
 
         frameLayout = findViewById(R.id.frameLayout);
         bottomNavigationView = findViewById(R.id.btmNavView);
@@ -67,12 +69,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
         registerView = getLayoutInflater().inflate(R.layout.activity_register, null);
         newPost = findViewById(R.id.btnNewPost);
+        recyclerView = findViewById(R.id.recyclerView);
         name = view.findViewById(R.id.personName);
         email = view.findViewById(R.id.person_email);
+        nameRegister = registerView.findViewById(R.id.inputUsernameForRegistration);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         id = auth.getCurrentUser().getUid();
+        list = new ArrayList<Post>();
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -85,23 +90,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setBottomNavigationView();
 
-
-
         newPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, PostTypeActivity.class);
+                Intent intent = new Intent(MyPostsActivity.this, PostTypeActivity.class);
                 startActivity(intent);
             }
         });
 
 
-        setFragment(new LostPostsFragment());
+        //setFragment(new MyLostPostsFragment());
         nameEmailPhotoSetter();
 
 
     } // End of onCreate
-
 
 
     public void setBottomNavigationView() {
@@ -110,11 +112,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.btmnav_lost:
-                        setFragment(new LostPostsFragment());
+                    /*case R.id.btmnav_lost:
+                        setFragment(new MyLostPostsFragment());
                         return true;
-                    /*case R.id.btmnav_found:
-                        setFragment(new FoundPostsFragment());
+                    case R.id.btmnav_found:
+                        setFragment(new MyFoundPostsFragment());
                         return true;*/
                     default:
                         return false;
@@ -128,7 +130,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void setFragment(Fragment fragment) {
-        Log.i("MHER", "setFragment called from home activity");
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
@@ -152,11 +153,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 break;
             case R.id.nav_profile:
-                Intent intentProfile = new Intent(HomeActivity.this, ProfileActivity.class);
+                Intent intentProfile = new Intent(MyPostsActivity.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPost = new Intent(HomeActivity.this, MyPostsActivity.class);
+                Intent intentMyPost = new Intent(MyPostsActivity.this, MyPostsActivity.class);
                 startActivity(intentMyPost);
         }
 
@@ -217,7 +218,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onComplete(Task<Void> task) {
                 finish();
-                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                startActivity(new Intent(MyPostsActivity.this, LoginActivity.class));
             }
         });
     }

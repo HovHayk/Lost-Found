@@ -9,21 +9,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.LostFound.Models.UserInfo;
 import com.example.LostFound.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,9 +36,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     TextView namePhoto, name, email, phone, city;
     String id;
 
-    DatabaseReference databaseReference;
-    FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
+    FirebaseFirestore firebaseFirestore;
     FirebaseAuth auth;
 
     @Override
@@ -58,12 +58,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         id = auth.getCurrentUser().getUid();
         setUserInfo(id);
+        nameEmailPhotoSetter();
 
 
         statusBarColor();
@@ -75,14 +74,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        /*newPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, PostTypeActivity.class);
-                startActivity(intent);
-            }
-        });*/
 
 
     } // End of OnCreate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -107,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_profile:
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPosts = new Intent(ProfileActivity.this, MyPosts.class);
+                Intent intentMyPosts = new Intent(ProfileActivity.this, MyPostsActivity.class);
                 startActivity(intentMyPosts);
                 break;
         }
@@ -119,34 +110,42 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     public void setUserInfo(String id) {
 
-        if (auth.getCurrentUser().getEmail() != null) {
-            name.setText(auth.getCurrentUser().getDisplayName());
-            namePhoto.setText(auth.getCurrentUser().getDisplayName());
-            email.setText(auth.getCurrentUser().getEmail());
-            city.setText(auth.getCurrentUser().getUid());
-            phone.setText(auth.getCurrentUser().getPhoneNumber());
-        } else  {
-            databaseReference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        String uEmail = auth.getCurrentUser().getEmail();
+
+        firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot snapshot : task.getResult()) {
+                        name.setText(snapshot.get("user").toString());
+                        namePhoto.setText(snapshot.get("user").toString());
+                        email.setText(snapshot.get("email").toString());
+                        city.setText(snapshot.get("city").toString());
+                        phone.setText(snapshot.get("phone").toString());
+                    }
+                }
+            }
+        });
+    }
+
+    public void nameEmailPhotoSetter() {
+
+        String uEmail = auth.getCurrentUser().getEmail();
+        email.setText(uEmail);
+
+        if (auth.getCurrentUser().getDisplayName() == null) {
+            firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                    if (task.isSuccessful()) {
-                        DataSnapshot snapshot = task.getResult();
-
-                        UserInfo user = new UserInfo(snapshot.child("userName").getValue().toString()
-                                , snapshot.child("userCity").getValue().toString()
-                                , snapshot.child("userId").getValue().toString()
-                                , snapshot.child("userEmail").getValue().toString()
-                                , snapshot.child("userPhone").getValue().toString());
-
-                        name.setText(user.getUserName());
-                        namePhoto.setText(user.getUserName());
-                        email.setText(user.getUserEmail());
-                        city.setText(user.getUserCity());
-                        phone.setText(user.getUserPhone());
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        if (snapshot.exists()) {
+                            name.setText(snapshot.get("user").toString());
+                        }
                     }
                 }
             });
+        } else {
+            name.setText(auth.getCurrentUser().getDisplayName());
         }
     }
 

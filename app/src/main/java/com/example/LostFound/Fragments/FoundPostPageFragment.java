@@ -10,14 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.LostFound.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 public class FoundPostPageFragment extends Fragment {
-
-    DatabaseReference databaseReference;
 
     ImageView postImage;
     TextView postName, postLocation, postDescription;
@@ -41,8 +37,6 @@ public class FoundPostPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
 
     }
 

@@ -27,8 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.LostFound.Activities.HomeActivity;
+import com.example.LostFound.Activities.MyPostsActivity;
 import com.example.LostFound.Maps.FoundMapActivity;
-import com.example.LostFound.Activities.MyPosts;
 import com.example.LostFound.Activities.ProfileActivity;
 import com.example.LostFound.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -39,8 +39,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -50,20 +48,22 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class NewPostFoundActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView location;
+    TextView myLocation;
     EditText postName, postDescription;
     Button addNewPots, btnLocation;
     ImageView setImage;
 
     private static final int GALLERY_CODE = 1;
     private static final String TAG = "HomeActivity";
-    private static  final int ERROR_DIALOG_REQUEST = 9001;
+    private static final int ERROR_DIALOG_REQUEST = 9001;
     private List<String> itemTags;
+    private List<String> finalTags;
     private ArrayList<String> tags = new ArrayList<>();
 
     DrawerLayout drawerLayout;
@@ -71,13 +71,11 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     Toolbar toolbar;
     ProgressDialog progressDialog;
 
-    MultiAutoCompleteTextView postTags, locationTags;
+    MultiAutoCompleteTextView postTags;
     private ArrayList<String> postTagsList = new ArrayList<>();
 
     Uri imageUrl = null;
-    FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    DatabaseReference databaseReference;
     FirebaseFirestore firebaseFirestore;
     FirebaseAuth mAuth;
 
@@ -96,17 +94,15 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.post_name);
         btnLocation = findViewById(R.id.btn_location);
-        location = findViewById(R.id.post_location);
+        myLocation = findViewById(R.id.post_location);
         postDescription = findViewById(R.id.post_description);
         setImage = findViewById(R.id.post_image);
 
         progressDialog = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Posts").child("Found");
 
 
         statusBarColor();
@@ -141,8 +137,8 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         }
 
         Intent intent = getIntent();
-        String myLocation = intent.getStringExtra("myFoundLocation");
-        location.setText(myLocation);
+        String userLocation = intent.getStringExtra("myFoundLocation");
+        myLocation.setText(userLocation);
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -156,8 +152,6 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
             }
         });
     }
-
-
 
 
     public boolean isServicesOK() {
@@ -201,9 +195,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         String id = mAuth.getCurrentUser().getUid();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
-        String myLocation = location.getText().toString().trim();
-        String tags = postTags.getText().toString();
-        itemTags = Arrays.asList(tags.split(","));
+        String location = myLocation.getText().toString().trim();
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -215,18 +207,37 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
+                    String tags = postTags.getText().toString();
+                    itemTags = Arrays.asList(tags.split(","));
+                    int changes = -1;
+                    while (changes != 0) {
+                        changes = 0;
+                        finalTags = new ArrayList<>();
+                        for (int i = 0; i < itemTags.size(); i++) {
+                            if (itemTags.get(i).startsWith(" ") || itemTags.get(i).equals("")) {
+                                changes++;
+                            }
+                            if (!itemTags.get(i).equals("")) {
+                                String a = itemTags.get(i).replaceFirst(" ", "");
+                                finalTags.add(a);
+                            }
+                        }
+                        itemTags = finalTags;
+                    }
+
                     Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             String t = task.getResult().toString();
 
-                            DatabaseReference newPost = databaseReference.push();
-                            newPost.child("name").setValue(name);
-                            newPost.child("description").setValue(description);
-                            newPost.child("id").setValue(id);
-                            newPost.child("location").setValue(myLocation);
-                            newPost.child("image").setValue(t);
-                            newPost.child("tags").setValue(itemTags);
+                            HashMap<String, Object> post = new HashMap<>();
+                            post.put("id", id);
+                            post.put("name", name);
+                            post.put("description", description);
+                            post.put("location", location);
+                            post.put("tags", itemTags);
+                            post.put("image", t);
+                            firebaseFirestore.collection("Found Post").add(post);
                             progressDialog.dismiss();
                         }
                     });
@@ -275,7 +286,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                 startActivity(intentProfile);
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPosts = new Intent(NewPostFoundActivity.this, MyPosts.class);
+                Intent intentMyPosts = new Intent(NewPostFoundActivity.this, MyPostsActivity.class);
                 startActivity(intentMyPosts);
                 break;
         }

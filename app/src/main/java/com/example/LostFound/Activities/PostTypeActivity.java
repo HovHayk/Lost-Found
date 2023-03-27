@@ -14,18 +14,34 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.LostFound.NewPost.NewPostFoundActivity;
 import com.example.LostFound.NewPost.NewPostLostActivity;
 import com.example.LostFound.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class PostTypeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    FirebaseAuth auth;
+    FirebaseFirestore firebaseFirestore;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
     Button btnLost, btnFound;
+    TextView emailUser, nameUser;
+    View view;
+
+
+    String id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +54,15 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
+        view = navigationView.getHeaderView(0);
+        nameUser = view.findViewById(R.id.personName);
+        emailUser = view.findViewById(R.id.person_email);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        id = auth.getCurrentUser().getUid();
+
+        nameEmailPhotoSetter();
         statusBarColor();
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
@@ -89,7 +114,7 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
                 startActivity(intentProfile);
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPosts = new Intent(PostTypeActivity.this, MyPosts.class);
+                Intent intentMyPosts = new Intent(PostTypeActivity.this, MyPostsActivity.class);
                 startActivity(intentMyPosts);
                 break;
         }
@@ -113,6 +138,27 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+    }
+
+    public void nameEmailPhotoSetter() {
+
+        String uEmail = auth.getCurrentUser().getEmail();
+        emailUser.setText(uEmail);
+
+        if (auth.getCurrentUser().getDisplayName() == null) {
+            firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        if (snapshot.exists()) {
+                            nameUser.setText(snapshot.get("user").toString());
+                        }
+                    }
+                }
+            });
+        } else {
+            nameUser.setText(auth.getCurrentUser().getDisplayName());
+        }
     }
 
 }

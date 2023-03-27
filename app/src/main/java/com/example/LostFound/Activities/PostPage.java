@@ -1,7 +1,6 @@
 package com.example.LostFound.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,22 +16,19 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.LostFound.Models.Posts;
 import com.example.LostFound.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-public class LostPostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class PostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    DatabaseReference databaseReference;
-    FirebaseDatabase firebaseDatabase;
+    FirebaseFirestore firebaseFirestore;
     FirebaseStorage firebaseStorage;
     FirebaseAuth auth;
 
@@ -42,7 +38,11 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
     View view;
 
 
-    TextView name, email, postName, postLocation, postDescription;
+    TextView name;
+    TextView email;
+    TextView postName;
+    TextView postLocation;
+    TextView postDescription;
     ImageView postImage;
 
 
@@ -55,7 +55,6 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
 
-
         view = navigationView.getHeaderView(0);
         name = view.findViewById(R.id.personName);
         email = view.findViewById(R.id.person_email);
@@ -66,8 +65,7 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
 
         auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Posts").child("Lost");
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -78,10 +76,20 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        setPostInfo();
+        setPostData();
         nameEmailPhotoSetter();
     }
+
+    private void setPostData() {
+
+        Picasso.get().load(getIntent().getStringExtra("IMAGE")).into(postImage);
+        postName.setText(getIntent().getStringExtra("NAME"));
+        postDescription.setText(getIntent().getStringExtra("DESCRIPTION"));
+        postLocation.setText(getIntent().getStringExtra("LOCATION"));
+        //postTags.setText(getIntent().getStringExtra("TAGS"));
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -96,15 +104,15 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Intent intentHome = new Intent(LostPostPage.this, HomeActivity.class);
+                Intent intentHome = new Intent(PostPage.this, HomeActivity.class);
                 startActivity(intentHome);
                 break;
             case R.id.nav_profile:
-                Intent intentProfile = new Intent(LostPostPage.this, ProfileActivity.class);
+                Intent intentProfile = new Intent(PostPage.this, ProfileActivity.class);
                 startActivity(intentProfile);
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPosts = new Intent(LostPostPage.this, MyPosts.class);
+                Intent intentMyPosts = new Intent(PostPage.this, MyPostsActivity.class);
                 startActivity(intentMyPosts);
                 break;
         }
@@ -113,47 +121,7 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void setPostInfo() {
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                Posts posts = new Posts(snapshot.child("Name").getValue().toString()
-                        , snapshot.child("Location").getValue().toString()
-                        , snapshot.child("Description").getValue().toString()
-                        , snapshot.child("image").getValue().toString());
-
-
-
-                Picasso.get().load(posts.getImage()).into(postImage);
-                postName.setText(posts.getName());
-                postLocation.setText(posts.getLocation());
-                postDescription.setText(posts.getDescription());
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     public void statusBarColor() {
         Window window = this.getWindow();
@@ -163,8 +131,25 @@ public class LostPostPage extends AppCompatActivity implements NavigationView.On
     }
 
     public void nameEmailPhotoSetter() {
-        name.setText(auth.getCurrentUser().getDisplayName());
-        email.setText(auth.getCurrentUser().getEmail());
+
+        String uEmail = auth.getCurrentUser().getEmail();
+        email.setText(uEmail);
+
+        if (auth.getCurrentUser().getDisplayName() == null) {
+            firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        if (snapshot.exists()) {
+                            name.setText(snapshot.get("user").toString());
+                        }
+                    }
+                }
+            });
+        } else {
+            name.setText(auth.getCurrentUser().getDisplayName());
+        }
     }
+
 
 }

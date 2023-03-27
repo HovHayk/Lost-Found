@@ -34,8 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.LostFound.Activities.HomeActivity;
+import com.example.LostFound.Activities.MyPostsActivity;
 import com.example.LostFound.Maps.LostMapActivity;
-import com.example.LostFound.Activities.MyPosts;
 import com.example.LostFound.Activities.ProfileActivity;
 import com.example.LostFound.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -46,8 +46,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -57,6 +55,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -73,6 +72,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
     private List<String> itemTags;
+    private List<String> finalTags;
     private ArrayList<String> tags = new ArrayList<>();
 
 
@@ -82,9 +82,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     ProgressDialog progressDialog;
 
     Uri imageUrl = null;
-    FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
-    DatabaseReference databaseReference;
     FirebaseFirestore firebaseFirestore;
     FirebaseAuth mAuth;
 
@@ -110,10 +108,8 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         progressDialog = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Posts").child("Lost");
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -148,6 +144,18 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         Intent intent = getIntent();
         String myLocation = intent.getStringExtra("myLostLocation");
         postLocation.setText(myLocation);
+
+
+        firebaseFirestore.collection("Tags")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                            tags.add(snapshot.get("tag").toString());
+                        }
+                    }
+                });
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -205,49 +213,62 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
         String location = postLocation.getText().toString().trim();
-        String tags = postTags.getText().toString();
-        itemTags = Arrays.asList(tags.split(","));
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-
             StorageReference filePath = firebaseStorage.getReference().child("images").child(imageUrl.toString());
             filePath.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    String tags = postTags.getText().toString();
+                    itemTags = Arrays.asList(tags.split(","));
+                    int changes = -1;
+                    while (changes != 0) {
+                        changes = 0;
+                        finalTags = new ArrayList<>();
+                        for (int i = 0; i < itemTags.size(); i++) {
+                            if (itemTags.get(i).startsWith(" ") || itemTags.get(i).equals("")) {
+                                changes++;
+                            }
+                            if (!itemTags.get(i).equals("")) {
+                                String a = itemTags.get(i).replaceFirst(" ", "");
+                                finalTags.add(a);
+                            }
+                        }
+                        itemTags = finalTags;
+                    }
+
+                    for (int i = 0; i < itemTags.size(); i++) {
+                        if (!tags.contains(itemTags.get(i))) {
+                            HashMap<String, Object> tag = new HashMap<>();
+                            tag.put("tag", itemTags.get(i));
+                            firebaseFirestore.collection("Tags").add(tag);
+                        }
+                    }
 
                     Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             String t = task.getResult().toString();
 
-                            DatabaseReference newPost = databaseReference.push();
-                            newPost.child("name").setValue(name);
-                            newPost.child("description").setValue(description);
-                            newPost.child("id").setValue(id);
-                            newPost.child("location").setValue(location);
-                            newPost.child("image").setValue(t);
-                            newPost.child("tags").setValue(itemTags);
+                            HashMap<String, Object> post = new HashMap<>();
+                            post.put("id", id);
+                            post.put("name", name);
+                            post.put("description", description);
+                            post.put("location", location);
+                            post.put("tags", itemTags);
+                            post.put("image", t);
+                            firebaseFirestore.collection("Lost Post").add(post);
                             progressDialog.dismiss();
                         }
                     });
                 }
             });
         }
-
-        /*for (int i = 0; i <= itemTags.size(); i++) {
-
-            firebaseFirestore.collection("Tags").add(itemTags.get(i)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    progressDialog.dismiss();
-                    Toast.makeText(NewPostLostActivity.this, "Published successfully", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }*/
     }
 
 
@@ -291,7 +312,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                 startActivity(intentProfile);
                 break;
             case R.id.nav_myPosts:
-                Intent intentMyPosts = new Intent(NewPostLostActivity.this, MyPosts.class);
+                Intent intentMyPosts = new Intent(NewPostLostActivity.this, MyPostsActivity.class);
                 startActivity(intentMyPosts);
                 break;
         }
