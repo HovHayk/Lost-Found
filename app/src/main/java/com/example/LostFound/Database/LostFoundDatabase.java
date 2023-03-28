@@ -11,10 +11,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.LostFound.Models.FoundPost;
 import com.example.LostFound.Models.LostPost;
+import com.example.LostFound.Models.MyFoundPost;
+import com.example.LostFound.Models.MyLostPost;
 import com.example.LostFound.Models.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-@Database(entities = {LostPost.class, FoundPost.class, User.class}, exportSchema = false, version = 2)
+@Database(entities = {LostPost.class, FoundPost.class, MyLostPost.class, MyFoundPost.class, User.class}, exportSchema = false, version = 3)
 public abstract class LostFoundDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "project_database.db";

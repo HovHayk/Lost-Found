@@ -14,11 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.LostFound.Adapters.PostAdapter;
+import com.example.LostFound.Adapters.LostPostAdapter;
 import com.example.LostFound.Database.PostViewModel;
 import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.R;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -26,10 +25,8 @@ public class LostPostsFragment extends Fragment {
 
     private PostViewModel postViewModel;
 
-    FirebaseFirestore firebaseFirestore;
-
     RecyclerView recyclerView;
-    PostAdapter adapter;
+    LostPostAdapter adapter;
 
     public LostPostsFragment() {
         // Required empty public constructor
@@ -44,7 +41,7 @@ public class LostPostsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        adapter = new PostAdapter();
+        adapter = new LostPostAdapter();
 
         return inflater.inflate(R.layout.fragment_posts, container, false);
     }

@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.LostFound.Models.FoundPost;
 import com.example.LostFound.Models.LostPost;
+import com.example.LostFound.Models.MyFoundPost;
+import com.example.LostFound.Models.MyLostPost;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class PostRepository {
     private PostDAO postDAO;
     private LiveData<List<LostPost>> allLostPosts;
     private LiveData<List<FoundPost>> allFoundPosts;
+    private LiveData<List<MyLostPost>> allMyLostPosts;
+    private LiveData<List<MyFoundPost>> allMyFoundPosts;
 
     public PostRepository(Application application) {
         LostFoundDatabase database = LostFoundDatabase.getInstance(application);
@@ -21,6 +25,8 @@ public class PostRepository {
         postDAO = database.postDAO();
         allLostPosts = postDAO.getAllLostPosts();
         allFoundPosts = postDAO.getAllFoundPosts();
+        allMyLostPosts = postDAO.getAllMyLostPosts();
+        allMyFoundPosts = postDAO.getAllMyFoundPosts();
     }
 
     public void insert(LostPost post) {
@@ -45,6 +51,14 @@ public class PostRepository {
 
     public LiveData<List<FoundPost>> getAllFoundPost() {
         return allFoundPosts;
+    }
+
+    public LiveData<List<MyLostPost>> getAllMyLostPost() {
+        return allMyLostPosts;
+    }
+
+    public LiveData<List<MyFoundPost>> getAllMyFoundPost() {
+        return allMyFoundPosts;
     }
 
     private static class InsertPostAsyncTask extends AsyncTask<LostPost, Void, Void> {

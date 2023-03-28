@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,13 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.LostFound.Adapters.FoundPostAdapter;
-import com.example.LostFound.Adapters.PostAdapter;
 import com.example.LostFound.Database.PostViewModel;
 import com.example.LostFound.Models.FoundPost;
 import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.R;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;

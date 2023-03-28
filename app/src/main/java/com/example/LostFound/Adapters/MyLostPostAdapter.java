@@ -5,20 +5,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.LostFound.Models.FoundPost;
 import com.example.LostFound.Models.LostPost;
+import com.example.LostFound.Models.MyLostPost;
 import com.example.LostFound.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
+public class MyLostPostAdapter extends RecyclerView.Adapter<MyLostPostAdapter.PostHolder> {
 
-    private List<LostPost> lostPosts = new ArrayList<>();
+    private List<MyLostPost> myLostPosts = new ArrayList<>();
 
     @NonNull
     @Override
@@ -31,20 +32,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
-        LostPost currentLottPost = lostPosts.get(position);
-        holder.name.setText(currentLottPost.getName());
-        holder.location.setText(currentLottPost.getLocation());
-        holder.description.setText(currentLottPost.getDescription());
-        Picasso.get().load(currentLottPost.getImage()).into(holder.image);
+        MyLostPost currentMyLostPost = myLostPosts.get(position);
+        holder.name.setText(currentMyLostPost.getName());
+        holder.location.setText(currentMyLostPost.getLocation());
+        holder.description.setText(currentMyLostPost.getDescription());
+        Picasso.get().load(currentMyLostPost.getImage()).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return lostPosts.size();
+        return myLostPosts.size();
     }
 
-    public void setLostPosts(List<LostPost> posts) {
-        this.lostPosts = posts;
+    public void setMyLostPosts(List<MyLostPost> posts) {
+        this.myLostPosts = posts;
         notifyDataSetChanged();
     }
 
