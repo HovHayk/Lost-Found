@@ -1,5 +1,6 @@
 package com.example.LostFound.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.LostFound.Activities.PostPage;
 import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.Models.MyFoundPost;
 import com.example.LostFound.Models.MyLostPost;
@@ -38,6 +40,18 @@ public class MyFoundPostAdapter extends RecyclerView.Adapter<MyFoundPostAdapter.
         holder.location.setText(currentMyFoundPost.getLocation());
         holder.description.setText(currentMyFoundPost.getDescription());
         Picasso.get().load(currentMyFoundPost.getImage()).into(holder.image);
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), PostPage.class);
+                intent.putExtra("NAME", currentMyFoundPost.getName());
+                intent.putExtra("LOCATION", currentMyFoundPost.getLocation());
+                intent.putExtra("DESCRIPTION", currentMyFoundPost.getDescription());
+                intent.putExtra("IMAGE", currentMyFoundPost.getImage());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

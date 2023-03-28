@@ -1,13 +1,17 @@
 package com.example.LostFound.Adapters;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.LostFound.Activities.PostPage;
 import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.R;
 import com.squareup.picasso.Picasso;
@@ -30,11 +34,23 @@ public class LostPostAdapter extends RecyclerView.Adapter<LostPostAdapter.PostHo
 
     @Override
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
-        LostPost currentLottPost = lostPosts.get(position);
-        holder.name.setText(currentLottPost.getName());
-        holder.location.setText(currentLottPost.getLocation());
-        holder.description.setText(currentLottPost.getDescription());
-        Picasso.get().load(currentLottPost.getImage()).into(holder.image);
+        LostPost currentLostPost = lostPosts.get(position);
+        holder.name.setText(currentLostPost.getName());
+        holder.location.setText(currentLostPost.getLocation());
+        holder.description.setText(currentLostPost.getDescription());
+        Picasso.get().load(currentLostPost.getImage()).into(holder.image);
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), PostPage.class);
+                intent.putExtra("NAME", currentLostPost.getName());
+                intent.putExtra("LOCATION", currentLostPost.getLocation());
+                intent.putExtra("DESCRIPTION", currentLostPost.getDescription());
+                intent.putExtra("IMAGE", currentLostPost.getImage());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

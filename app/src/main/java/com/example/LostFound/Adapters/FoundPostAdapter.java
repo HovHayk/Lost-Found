@@ -1,5 +1,6 @@
 package com.example.LostFound.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.LostFound.Activities.PostPage;
 import com.example.LostFound.Models.FoundPost;
 import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.R;
@@ -32,11 +34,23 @@ public class FoundPostAdapter extends RecyclerView.Adapter<FoundPostAdapter.Post
 
     @Override
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
-        FoundPost currentLottPost = foundPosts.get(position);
-        holder.name.setText(currentLottPost.getName());
-        holder.location.setText(currentLottPost.getLocation());
-        holder.description.setText(currentLottPost.getDescription());
-        Picasso.get().load(currentLottPost.getImage()).into(holder.image);
+        FoundPost currentFoundPost = foundPosts.get(position);
+        holder.name.setText(currentFoundPost.getName());
+        holder.location.setText(currentFoundPost.getLocation());
+        holder.description.setText(currentFoundPost.getDescription());
+        Picasso.get().load(currentFoundPost.getImage()).into(holder.image);
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), PostPage.class);
+                intent.putExtra("NAME", currentFoundPost.getName());
+                intent.putExtra("LOCATION", currentFoundPost.getLocation());
+                intent.putExtra("DESCRIPTION", currentFoundPost.getDescription());
+                intent.putExtra("IMAGE", currentFoundPost.getImage());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

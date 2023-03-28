@@ -88,7 +88,6 @@ public class PostViewModel extends AndroidViewModel {
                             AsyncTask.execute(() -> {
                                 postDAO.insertLostPost(new LostPost(name, location, description, image));
                             });
-
                         }
                     }
                 }
