@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SearchHelper {
-    /*public static List<Post> searchInCocktails(String s, List<Post> cocktails) {
+    /*public static List<LostPost> searchInCocktails(String s, List<LostPost> cocktails) {
         String a[] = s.split(" ");
         List<String> charsNormal = Arrays.asList(a);
         List<String> chars = new ArrayList<>();
@@ -13,9 +13,9 @@ public class SearchHelper {
         for (int i = 0; i < charsNormal.size(); i++) {
             chars.add(charsNormal.get(i).toLowerCase());
         }
-        List<Post> finalList = new ArrayList<>();
+        List<LostPost> finalList = new ArrayList<>();
         for (int i = 0; i < cocktails.size(); i++) {
-            Post temp = cocktails.get(i);
+            LostPost temp = cocktails.get(i);
             boolean added = false;
             for (int j = 0; j < chars.size(); j++) {
                 if (temp.name.toLowerCase().contains(chars.get(j))) {

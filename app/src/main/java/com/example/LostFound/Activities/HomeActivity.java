@@ -44,7 +44,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     Toolbar toolbar;
 
-    EditText nameRegister;
     Button newPost;
     TextView name, email;
     View view, registerView;
@@ -113,9 +112,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.btmnav_lost:
                         setFragment(new LostPostsFragment());
                         return true;
-                    /*case R.id.btmnav_found:
+                    case R.id.btmnav_found:
                         setFragment(new FoundPostsFragment());
-                        return true;*/
+                        return true;
                     default:
                         return false;
 
@@ -128,7 +127,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void setFragment(Fragment fragment) {
-        Log.i("MHER", "setFragment called from home activity");
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);

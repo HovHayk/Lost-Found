@@ -21,7 +21,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.LostFound.Models.Post;
+import com.example.LostFound.Fragments.MyFoundPostsFragment;
+import com.example.LostFound.Fragments.MyLostPostsFragment;
+import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,7 +42,7 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
     FirebaseAuth auth;
     FirebaseFirestore firebaseFirestore;
 
-    List<Post> list;
+    List<LostPost> list;
     RecyclerView recyclerView;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -77,7 +79,7 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
         firebaseFirestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         id = auth.getCurrentUser().getUid();
-        list = new ArrayList<Post>();
+        list = new ArrayList<LostPost>();
 
         statusBarColor();
         setSupportActionBar(toolbar);
@@ -99,7 +101,7 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
         });
 
 
-        //setFragment(new MyLostPostsFragment());
+        setFragment(new MyLostPostsFragment());
         nameEmailPhotoSetter();
 
 
@@ -112,12 +114,12 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    /*case R.id.btmnav_lost:
+                    case R.id.btmnav_lost:
                         setFragment(new MyLostPostsFragment());
                         return true;
                     case R.id.btmnav_found:
                         setFragment(new MyFoundPostsFragment());
-                        return true;*/
+                        return true;
                     default:
                         return false;
 
@@ -151,14 +153,13 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                break;
+                Intent intentHome = new Intent(MyPostsActivity.this, HomeActivity.class);
+                startActivity(intentHome);
             case R.id.nav_profile:
                 Intent intentProfile = new Intent(MyPostsActivity.this, ProfileActivity.class);
                 startActivity(intentProfile);
-                break;
             case R.id.nav_myPosts:
-                Intent intentMyPost = new Intent(MyPostsActivity.this, MyPostsActivity.class);
-                startActivity(intentMyPost);
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

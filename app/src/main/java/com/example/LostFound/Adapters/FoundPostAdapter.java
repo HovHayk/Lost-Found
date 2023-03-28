@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,9 +17,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
+public class FoundPostAdapter extends RecyclerView.Adapter<FoundPostAdapter.PostHolder> {
 
-    private List<LostPost> lostPosts = new ArrayList<>();
+    private List<FoundPost> foundPosts = new ArrayList<>();
 
     @NonNull
     @Override
@@ -31,7 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
-        LostPost currentLottPost = lostPosts.get(position);
+        FoundPost currentLottPost = foundPosts.get(position);
         holder.name.setText(currentLottPost.getName());
         holder.location.setText(currentLottPost.getLocation());
         holder.description.setText(currentLottPost.getDescription());
@@ -40,11 +41,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     @Override
     public int getItemCount() {
-        return lostPosts.size();
+        return foundPosts.size();
     }
 
-    public void setLostPosts(List<LostPost> posts) {
-        this.lostPosts = posts;
+    public void setFoundPosts(List<FoundPost> posts) {
+        this.foundPosts = posts;
         notifyDataSetChanged();
     }
 

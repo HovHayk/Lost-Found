@@ -237,7 +237,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                             post.put("location", location);
                             post.put("tags", itemTags);
                             post.put("image", t);
-                            firebaseFirestore.collection("Found Post").add(post);
+                            firebaseFirestore.collection("Found LostPost").add(post);
                             progressDialog.dismiss();
                         }
                     });

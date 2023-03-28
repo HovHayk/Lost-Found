@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SearchActivity extends AppCompatActivity {
 
     /*private ActivitySearchBinding binding;
-    private List<Post> cocktails;
+    private List<LostPost> cocktails;
     private FirebaseFirestore database;
     private String uid;
     Integer i;
@@ -13,7 +13,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private final RecyclerViewPostsInterface cocktailListener = new RecyclerViewPostsInterface() {
         @Override
-        public void onPostClicked(Post posts) {
+        public void onPostClicked(LostPost posts) {
             Intent intent = new Intent(binding.getRoot().getContext(), CocktailPageActivity.class);
             intent.putExtra(, posts.id);
             startActivity(intent);
@@ -63,7 +63,7 @@ public class SearchActivity extends AppCompatActivity {
         binding.cocktailsRecyclerView.setVisibility(View.INVISIBLE);
         cocktails = new LinkedList<>();
         i = 0;
-        database.collection("Post")
+        database.collection("LostPost")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -73,7 +73,7 @@ public class SearchActivity extends AppCompatActivity {
                             String cocktailName = document.getString();
                             String creator = document.getString();
                             ArrayList<String> tags = (ArrayList<String>) document.get();
-                            Post a = new Post(document.getId(), cocktailName, recipe, image, rating, creator, rating_count, tags);
+                            LostPost a = new LostPost(document.getId(), cocktailName, recipe, image, rating, creator, rating_count, tags);
                             cocktails.add(a);
                             if (i == queryDocumentSnapshots.size()) {
                                 changeAdapter(0, cocktails);

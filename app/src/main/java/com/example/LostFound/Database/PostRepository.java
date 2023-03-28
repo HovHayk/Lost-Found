@@ -5,30 +5,33 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.LostFound.Models.Post;
+import com.example.LostFound.Models.FoundPost;
+import com.example.LostFound.Models.LostPost;
 
 import java.util.List;
 
 public class PostRepository {
     private PostDAO postDAO;
-    private LiveData<List<Post>> allPosts;
+    private LiveData<List<LostPost>> allLostPosts;
+    private LiveData<List<FoundPost>> allFoundPosts;
 
     public PostRepository(Application application) {
         LostFoundDatabase database = LostFoundDatabase.getInstance(application);
 
         postDAO = database.postDAO();
-        allPosts = postDAO.getAllPosts();
+        allLostPosts = postDAO.getAllLostPosts();
+        allFoundPosts = postDAO.getAllFoundPosts();
     }
 
-    public void insert(Post post) {
+    public void insert(LostPost post) {
         new InsertPostAsyncTask(postDAO).execute(post);
     }
 
-    public void update(Post post) {
+    public void update(LostPost post) {
         new UpdatePostAsyncTask(postDAO).execute(post);
     }
 
-    public void delete(Post post) {
+    public void delete(LostPost post) {
         new DeletePostAsyncTask(postDAO).execute(post);
     }
 
@@ -36,12 +39,15 @@ public class PostRepository {
         new DeleteAllPostsAsyncTask(postDAO).execute();
     }
 
-    public LiveData<List<Post>> getAllPosts() {
-
-        return allPosts;
+    public LiveData<List<LostPost>> getAllPosts() {
+        return allLostPosts;
     }
 
-    private static class InsertPostAsyncTask extends AsyncTask<Post, Void, Void> {
+    public LiveData<List<FoundPost>> getAllFoundPost() {
+        return allFoundPosts;
+    }
+
+    private static class InsertPostAsyncTask extends AsyncTask<LostPost, Void, Void> {
 
         private PostDAO postDAO;
 
@@ -50,13 +56,13 @@ public class PostRepository {
         }
 
         @Override
-        protected Void doInBackground(Post... posts) {
-            postDAO.insertPost(posts[0]);
+        protected Void doInBackground(LostPost... posts) {
+            postDAO.insertLostPost(posts[0]);
             return null;
         }
     }
 
-    private static class UpdatePostAsyncTask extends AsyncTask<Post, Void, Void> {
+    private static class UpdatePostAsyncTask extends AsyncTask<LostPost, Void, Void> {
 
         private PostDAO postDAO;
 
@@ -65,13 +71,13 @@ public class PostRepository {
         }
 
         @Override
-        protected Void doInBackground(Post... posts) {
+        protected Void doInBackground(LostPost... posts) {
             postDAO.updatePost(posts[0]);
             return null;
         }
     }
 
-    private static class DeletePostAsyncTask extends AsyncTask<Post, Void, Void> {
+    private static class DeletePostAsyncTask extends AsyncTask<LostPost, Void, Void> {
 
         private PostDAO postDAO;
 
@@ -80,7 +86,7 @@ public class PostRepository {
         }
 
         @Override
-        protected Void doInBackground(Post... posts) {
+        protected Void doInBackground(LostPost... posts) {
             postDAO.deletePost(posts[0]);
             return null;
         }
@@ -96,7 +102,7 @@ public class PostRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            postDAO.deleteAllPosts();
+            postDAO.deleteAllLostPosts();
             return null;
         }
     }

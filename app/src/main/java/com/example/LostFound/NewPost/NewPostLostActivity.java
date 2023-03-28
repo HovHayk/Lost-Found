@@ -253,7 +253,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                     Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
-                            String t = task.getResult().toString();
+                            String image = task.getResult().toString();
 
                             HashMap<String, Object> post = new HashMap<>();
                             post.put("id", id);
@@ -261,8 +261,8 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                             post.put("description", description);
                             post.put("location", location);
                             post.put("tags", itemTags);
-                            post.put("image", t);
-                            firebaseFirestore.collection("Lost Post").add(post);
+                            post.put("image", image);
+                            firebaseFirestore.collection("Lost Posts").add(post);
                             progressDialog.dismiss();
                         }
                     });

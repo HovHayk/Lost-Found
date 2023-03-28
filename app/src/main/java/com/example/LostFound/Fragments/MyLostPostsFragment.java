@@ -12,12 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.LostFound.Models.Post;
+import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class MyLostPostsFragment extends Fragment {
     CollectionReference collectionReference;
 
     View v;
-    ArrayList<Post> list;
+    ArrayList<LostPost> list;
     RecyclerView recyclerView;
 
 
@@ -48,10 +47,10 @@ public class MyLostPostsFragment extends Fragment {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
-        collectionReference = FirebaseFirestore.getInstance().collection("Lost Post");
+        collectionReference = FirebaseFirestore.getInstance().collection("Lost LostPost");
         firebaseFirestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-        list = new ArrayList<Post>();
+        list = new ArrayList<LostPost>();
         id = auth.getCurrentUser().getUid();
 
     }
@@ -61,13 +60,13 @@ public class MyLostPostsFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_posts, container, false);
 
-        collectionReference = FirebaseFirestore.getInstance().collection("Lost Post");
+        collectionReference = FirebaseFirestore.getInstance().collection("Lost LostPost");
         firebaseFirestore = FirebaseFirestore.getInstance();
         recyclerView = v.findViewById(R.id.recyclerView);
         auth = FirebaseAuth.getInstance();
 
         id = auth.getCurrentUser().getUid();
-        list = new ArrayList<Post>();
+        list = new ArrayList<LostPost>();
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -80,7 +79,7 @@ public class MyLostPostsFragment extends Fragment {
 
     /*public void getPostData() {
 
-        firebaseFirestore.collection("Lost Post")
+        firebaseFirestore.collection("Lost LostPost")
                 .whereEqualTo("id", id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -88,7 +87,7 @@ public class MyLostPostsFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot snapshot : task.getResult()) {
-                                Post posts = new Post();
+                                LostPost posts = new LostPost();
                                 posts.id = snapshot.getId();
                                 posts.name = snapshot.get("name").toString();
                                 posts.description = snapshot.get("description").toString();
@@ -108,7 +107,7 @@ public class MyLostPostsFragment extends Fragment {
 
     @Override
     public void onPostClicked(int position) {
-        firebaseFirestore.collection("Lost Post")
+        firebaseFirestore.collection("Lost LostPost")
                 .document()
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -117,7 +116,7 @@ public class MyLostPostsFragment extends Fragment {
                         if (task.isSuccessful()) {
                             DocumentSnapshot snapshot = task.getResult();
                             if (snapshot.exists()) {
-                                Post posts = new Post();
+                                LostPost posts = new LostPost();
                                 posts.name = snapshot.getString("name");
                                 posts.description = snapshot.getString("name");
                                 posts.location = snapshot.getString("name");

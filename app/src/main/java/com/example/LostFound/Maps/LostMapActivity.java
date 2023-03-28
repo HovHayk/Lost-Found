@@ -179,6 +179,11 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
                                 @Override
                                 public void run() {
                                     LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                                    if (currentLocation.getLatitude() == 0) {
+                                        Toast.makeText(LostMapActivity.this, "Please turn on your GPS", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LostMapActivity.this, NewPostLostActivity.class);
+                                        startActivity(intent);
+                                    }
                                     moveCamera(latLng, DEFAULT_ZOOM, "My location");
                                 }
                             },500);

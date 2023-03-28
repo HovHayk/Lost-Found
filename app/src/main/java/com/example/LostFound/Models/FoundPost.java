@@ -5,31 +5,29 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.ArrayList;
-
-@Entity(tableName = "post_table")
-public class Post {
+@Entity(tableName = "found_post_table")
+public class FoundPost {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
     @ColumnInfo(name = "u_id")
     public String uid;
-    @ColumnInfo(name = "p_name")
+    @ColumnInfo(name = "found_p_name")
     public String name;
-    @ColumnInfo(name = "p_location")
+    @ColumnInfo(name = "found_p_location")
     public String location;
-    @ColumnInfo(name = "p_description")
+    @ColumnInfo(name = "found_p_description")
     public String description;
-    @ColumnInfo(name = "p_image")
+    @ColumnInfo(name = "found_p_image")
     public String image;
-    @ColumnInfo(name = "p_tags")
+    @ColumnInfo(name = "found_p_tags")
     public String tags;
 
     @Ignore
-    public Post() { }
+    public FoundPost() {
+    }
 
-    public Post(String name, String location, String description, String image) {
+    public FoundPost(String name, String location, String description, String image) {
         this.name = name;
         this.location = location;
         this.description = description;
@@ -70,7 +68,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
+        return "LostPost{" +
                 "id='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
@@ -80,4 +78,3 @@ public class Post {
                 '}';
     }
 }
-

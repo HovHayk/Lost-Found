@@ -1,7 +1,6 @@
 package com.example.LostFound.Database;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -9,7 +8,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.LostFound.Models.Post;
+import com.example.LostFound.Models.FoundPost;
+import com.example.LostFound.Models.LostPost;
 
 import java.util.List;
 
@@ -17,21 +17,30 @@ import java.util.List;
 public interface PostDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertPost(Post posts);
+    void insertLostPost(LostPost posts);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertFoundPost(FoundPost post);
 
     @Update
-    void updatePost(Post posts);
+    void updatePost(LostPost posts);
 
     @Delete
-    void deletePost(Post posts);
+    void deletePost(LostPost posts);
 
-    @Query("DELETE FROM post_table")
-    void deleteAllPosts();
+    @Query("DELETE FROM lost_post_table")
+    void deleteAllLostPosts();
 
-    @Query("SELECT * FROM post_table ORDER BY p_name DESC")
-    LiveData<List<Post>> getAllPosts();
+    @Query("DELETE FROM found_post_table" )
+    void deleteAllFoundPosts();
 
+    @Query("SELECT * FROM lost_post_table ORDER BY lost_p_name DESC")
+    LiveData<List<LostPost>> getAllLostPosts();
+
+    @Query("SELECT * FROM found_post_table ORDER BY found_p_name DESC")
+    LiveData<List<FoundPost>> getAllFoundPosts();
 
     /*@Delete
-    List<Integer> deleteListOfPosts(List<Post> posts); */
+    List<Integer> deleteListOfPosts(List<LostPost> posts); */
+
 }
