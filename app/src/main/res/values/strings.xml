@@ -20,6 +20,7 @@
     <string name="facebook_app_id">1234</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">56789</string>
+    <string name="about">This is the first project by me that has been written in programming language Java. I\'m 17 year old teenager from 9th district who\'s always looking forward to be better and in general be the best version of my self. This is not the final version of application. It\'s going to be global using app with millions of pleased users. Thank you for the attention and your time given to this project.</string>
 
 
 </resources>

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.LostFound.R;
@@ -28,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    LinearLayout about;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -44,17 +46,18 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        about = findViewById(R.id.about);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
 
         namePhoto = findViewById(R.id.persons_name);
         email = findViewById(R.id.persons_email);
-        name = findViewById(R.id.personName);
-        phone = findViewById(R.id.personPhone);
-        city = findViewById(R.id.personCity);
+        name = findViewById(R.id.person_name);
+        phone = findViewById(R.id.person_phone);
+        city = findViewById(R.id.person_city);
         view = navigationView.getHeaderView(0);
-        navName = view.findViewById(R.id.personName);
+        navName = view.findViewById(R.id.person_name);
         navEmail = view.findViewById(R.id.person_email);
 
 
@@ -75,6 +78,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         toggle.syncState();
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, AboutActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
     } // End of OnCreate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

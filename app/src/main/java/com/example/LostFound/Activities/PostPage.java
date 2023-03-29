@@ -61,7 +61,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         toolbar = findViewById(R.id.toolbar);
 
         view = navigationView.getHeaderView(0);
-        name = view.findViewById(R.id.personName);
+        name = view.findViewById(R.id.person_name);
         email = view.findViewById(R.id.person_email);
         postName = findViewById(R.id.post_name);
         postLocation = findViewById(R.id.post_location);

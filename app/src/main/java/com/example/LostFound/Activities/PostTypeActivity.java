@@ -55,7 +55,7 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         navigationView = findViewById(R.id.nav_View);
         toolbar = findViewById(R.id.toolbar);
         view = navigationView.getHeaderView(0);
-        nameUser = view.findViewById(R.id.personName);
+        nameUser = view.findViewById(R.id.person_name);
         emailUser = view.findViewById(R.id.person_email);
 
         firebaseFirestore = FirebaseFirestore.getInstance();

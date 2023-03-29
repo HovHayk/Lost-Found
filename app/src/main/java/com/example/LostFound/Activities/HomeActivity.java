@@ -11,8 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -67,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
         registerView = getLayoutInflater().inflate(R.layout.activity_register, null);
         newPost = findViewById(R.id.btnNewPost);
-        name = view.findViewById(R.id.personName);
+        name = view.findViewById(R.id.person_name);
         email = view.findViewById(R.id.person_email);
         search = findViewById(R.id.image_search);
 

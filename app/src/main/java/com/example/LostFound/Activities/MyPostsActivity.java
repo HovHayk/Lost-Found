@@ -72,7 +72,7 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
         registerView = getLayoutInflater().inflate(R.layout.activity_register, null);
         newPost = findViewById(R.id.btnNewPost);
         recyclerView = findViewById(R.id.recyclerView);
-        name = view.findViewById(R.id.personName);
+        name = view.findViewById(R.id.person_name);
         email = view.findViewById(R.id.person_email);
         nameRegister = registerView.findViewById(R.id.inputUsernameForRegistration);
 

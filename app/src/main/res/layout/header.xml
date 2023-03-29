@@ -18,7 +18,7 @@
         android:src="@drawable/logo"/>
 
     <TextView
-        android:id="@+id/personName"
+        android:id="@+id/person_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/almendra"

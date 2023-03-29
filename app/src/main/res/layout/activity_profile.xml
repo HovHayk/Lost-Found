@@ -145,7 +145,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:layout_weight="0.333"
+                            android:layout_weight="0.5"
                             android:background="@drawable/profile_grey_btn_bg"
                             android:elevation="5dp"
                             android:orientation="vertical">
@@ -184,10 +184,11 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/about"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="10dp"
-                            android:layout_weight="0.333"
+                            android:layout_weight="0.5"
                             android:background="@drawable/profile_grey_btn_bg"
                             android:elevation="5dp"
                             android:orientation="vertical">
@@ -207,7 +208,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:srcCompat="@drawable/ic_search" />
+                                    app:srcCompat="@drawable/ic_about" />
 
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -217,7 +218,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:text="Edit"
+                                android:text="About"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="13sp"
@@ -244,7 +245,7 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/personName"
+                            android:id="@+id/person_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -279,7 +280,7 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/personPhone"
+                            android:id="@+id/person_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -314,7 +315,7 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/personCity"
+                            android:id="@+id/person_city"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
