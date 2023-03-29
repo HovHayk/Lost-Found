@@ -14,6 +14,8 @@ public class FoundPost {
     private int id;
     @ColumnInfo(name = "u_id")
     public String uid;
+    @ColumnInfo(name = "u_email")
+    public String uEmail;
     @ColumnInfo(name = "found_p_name")
     public String name;
     @ColumnInfo(name = "found_p_location")
@@ -29,7 +31,9 @@ public class FoundPost {
     public FoundPost() {
     }
 
-    public FoundPost(String name, String location, String description, String image, String tags) {
+    public FoundPost(String uEmail, String uid, String name, String location, String description, String image, String tags) {
+        this.uid = uid;
+        this.uEmail = uEmail;
         this.name = name;
         this.location = location;
         this.description = description;
@@ -43,6 +47,10 @@ public class FoundPost {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUEmail() {
+        return uEmail;
     }
 
     public String getUid() {

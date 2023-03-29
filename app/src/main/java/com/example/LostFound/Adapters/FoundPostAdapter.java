@@ -44,6 +44,8 @@ public class FoundPostAdapter extends RecyclerView.Adapter<FoundPostAdapter.Post
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), PostPage.class);
+                intent.putExtra("UID", currentFoundPost.getUid());
+                intent.putExtra("UEMAIL", currentFoundPost.getUEmail());
                 intent.putExtra("NAME", currentFoundPost.getName());
                 intent.putExtra("LOCATION", currentFoundPost.getLocation());
                 intent.putExtra("DESCRIPTION", currentFoundPost.getDescription());

@@ -44,6 +44,8 @@ public class LostPostAdapter extends RecyclerView.Adapter<LostPostAdapter.PostHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), PostPage.class);
+                intent.putExtra("UID", currentLostPost.getUid());
+                intent.putExtra("UEMAIL", currentLostPost.getUEmail());
                 intent.putExtra("NAME", currentLostPost.getName());
                 intent.putExtra("LOCATION", currentLostPost.getLocation());
                 intent.putExtra("DESCRIPTION", currentLostPost.getDescription());

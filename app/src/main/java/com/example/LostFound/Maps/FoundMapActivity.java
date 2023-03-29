@@ -79,7 +79,7 @@ public class FoundMapActivity extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        Toast.makeText(FoundMapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
+        Toast.makeText(FoundMapActivity.this, "Please enter location name in search bar", Toast.LENGTH_SHORT).show();
         map = googleMap;
 
         if (locationPermissionGranted) {

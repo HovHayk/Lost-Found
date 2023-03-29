@@ -10,4 +10,6 @@
     <color name="colorMediumGrey">#5e5e5e</color>
     <color name="colorBlue">#2E5EBF</color>
     <color name="imageBg">#00A7DB</color>
+    <color name="mainBlue">#055C9D</color>
+
 </resources>

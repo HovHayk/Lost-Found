@@ -75,7 +75,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
     } // End of OnCreate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     @Override
@@ -112,20 +111,53 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         String uEmail = auth.getCurrentUser().getEmail();
 
-        firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot snapshot : task.getResult()) {
-                        name.setText(snapshot.get("user").toString());
-                        namePhoto.setText(snapshot.get("user").toString());
-                        email.setText(snapshot.get("email").toString());
-                        city.setText(snapshot.get("city").toString());
-                        phone.setText(snapshot.get("phone").toString());
+        String uid = getIntent().getStringExtra("UID");
+        String UEmail = getIntent().getStringExtra("UEMAIL");
+
+        if (UEmail == null) {
+
+            firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot snapshot : task.getResult()) {
+                            name.setText(snapshot.get("user").toString());
+                            namePhoto.setText(snapshot.get("user").toString());
+                            email.setText(snapshot.get("email").toString());
+                            city.setText(snapshot.get("city").toString());
+                            phone.setText(snapshot.get("phone").toString());
+                        }
                     }
                 }
-            }
-        });
+            });
+
+        } else {
+
+            firebaseFirestore.collection("Users").whereEqualTo("email", UEmail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot snapshot : task.getResult()) {
+
+                            if (snapshot.getString("city") != null) {
+
+                                name.setText(snapshot.get("user").toString());
+                                namePhoto.setText(snapshot.get("user").toString());
+                                email.setText(snapshot.get("email").toString());
+                                city.setText(snapshot.get("city").toString());
+                                phone.setText(snapshot.get("phone").toString());
+                            } else {
+                                name.setText("Please edit your Profile");
+                                namePhoto.setText("Please edit your Profile");
+                                email.setText("Please edit your Profile");
+                                city.setText("Please edit your Profile");
+                                phone.setText("Please edit your Profile");
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     public void nameEmailPhotoSetter() {

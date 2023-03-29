@@ -79,7 +79,7 @@ public class LostMapActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        Toast.makeText(LostMapActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
+        Toast.makeText(LostMapActivity.this, "Please enter location name in search bar", Toast.LENGTH_LONG).show();
         mMap = googleMap;
 
         if (mLocationPermissionGranted) {

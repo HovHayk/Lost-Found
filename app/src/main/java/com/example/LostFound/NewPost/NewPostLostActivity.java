@@ -84,7 +84,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     Uri imageUrl = null;
     FirebaseStorage firebaseStorage;
     FirebaseFirestore firebaseFirestore;
-    FirebaseAuth mAuth;
+    FirebaseAuth auth;
 
 
     @Override
@@ -107,7 +107,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
 
         progressDialog = new ProgressDialog(this);
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -209,7 +209,8 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
     }
 
     public void insertPostData() {
-        String id = mAuth.getCurrentUser().getUid();
+        String id = auth.getCurrentUser().getUid();
+        String email = auth.getCurrentUser().getEmail();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
         String location = postLocation.getText().toString().trim();
@@ -257,6 +258,7 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
 
                             HashMap<String, Object> post = new HashMap<>();
                             post.put("id", id);
+                            post.put("uEmail", email);
                             post.put("name", name);
                             post.put("description", description);
                             post.put("location", location);

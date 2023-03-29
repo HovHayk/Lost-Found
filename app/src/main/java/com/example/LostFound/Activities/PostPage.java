@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.LostFound.Adapters.TagAdapter;
 import com.example.LostFound.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,11 +43,13 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
     Toolbar toolbar;
     View view;
 
+    String uid, uEmail;
 
     TextView name, email, postName, postLocation, postDescription;
     ImageView postImage;
     RecyclerView tagsRecyclerView;
     ArrayList<String> tags;
+    ShapeableImageView creatorPhoto;
 
 
     @Override
@@ -66,6 +69,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         postDescription = findViewById(R.id.post_description);
         postImage = findViewById(R.id.post_image);
         tagsRecyclerView = findViewById(R.id.tagsRecyclerView);
+        creatorPhoto = findViewById(R.id.creator_image);
 
         auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -92,14 +96,25 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         postDescription.setText(getIntent().getStringExtra("DESCRIPTION"));
         postLocation.setText(getIntent().getStringExtra("LOCATION"));
 
+        uid = getIntent().getStringExtra("UID");
+        uEmail = getIntent().getStringExtra("UEMAIL");
+
         tags = new ArrayList<>();
         tags.add(getIntent().getStringExtra("TAGS"));
-
-        Log.i("POSTPAGE", "setPostData: " + tags);
 
         TagAdapter tagAdapter = new TagAdapter(tags);
         tagsRecyclerView.setAdapter(tagAdapter);
         tagsRecyclerView.setVisibility(View.VISIBLE);
+
+        creatorPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostPage.this, ProfileActivity.class);
+                intent.putExtra("UID", uid);
+                intent.putExtra("UEMAIL", uEmail);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -144,9 +159,11 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
     public void nameEmailPhotoSetter() {
 
         String uEmail = auth.getCurrentUser().getEmail();
+
         email.setText(uEmail);
 
         if (auth.getCurrentUser().getDisplayName() == null) {
+
             firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

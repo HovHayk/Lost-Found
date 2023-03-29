@@ -85,12 +85,13 @@ public class PostViewModel extends AndroidViewModel {
                             String description = snapshot.getString("description");
                             String image = snapshot.getString("image");
                             String uid = snapshot.getString("id");
+                            String email = snapshot.getString("uEmail");
                             ArrayList<String> tags = (ArrayList<String>) snapshot.get("tags");
 
                             String convTags = Converters.fromArrayList(tags);
 
                             AsyncTask.execute(() -> {
-                                postDAO.insertLostPost(new LostPost(name, location, description, image, convTags));
+                                postDAO.insertLostPost(new LostPost(email, uid, name, location, description, image, convTags));
                             });
                         }
                     }
@@ -118,12 +119,13 @@ public class PostViewModel extends AndroidViewModel {
                             String description = snapshot.getString("description");
                             String image = snapshot.getString("image");
                             String uid = snapshot.getString("id");
+                            String email = snapshot.getString("uEmail");
                             ArrayList<String> tags = (ArrayList<String>) snapshot.get("tags");
 
                             String convTags = Converters.fromArrayList(tags);
 
                             AsyncTask.execute(() -> {
-                                postDAO.insertFoundPost(new FoundPost(name, location, description, image, convTags));
+                                postDAO.insertFoundPost(new FoundPost(email, uid, name, location, description, image, convTags));
                             });
                         }
                     }

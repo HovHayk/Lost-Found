@@ -193,6 +193,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
 
     public void insertPostData() {
         String id = mAuth.getCurrentUser().getUid();
+        String email = mAuth.getCurrentUser().getEmail();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
         String location = myLocation.getText().toString().trim();
@@ -232,6 +233,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
 
                             HashMap<String, Object> post = new HashMap<>();
                             post.put("id", id);
+                            post.put("uEmail", email);
                             post.put("name", name);
                             post.put("description", description);
                             post.put("location", location);
