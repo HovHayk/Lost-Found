@@ -64,9 +64,9 @@ public class MyLostPostAdapter extends RecyclerView.Adapter<MyLostPostAdapter.Po
     }
 
     class PostHolder extends RecyclerView.ViewHolder {
-        private TextView name, location, description;
-        private ImageView image;
-        private RecyclerView tags;
+        private final TextView name, location, description;
+        private final ImageView image;
+        private final RecyclerView tags;
 
         public PostHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,7 +75,7 @@ public class MyLostPostAdapter extends RecyclerView.Adapter<MyLostPostAdapter.Po
             location = itemView.findViewById(R.id.location_of_post);
             description = itemView.findViewById(R.id.description_of_post);
             image = itemView.findViewById(R.id.image_of_post);
-            tags = itemView.findViewById(R.id.tagsRecyclerView);
+            tags = itemView.findViewById(R.id.tags_recycler_view);
         }
     }
 }

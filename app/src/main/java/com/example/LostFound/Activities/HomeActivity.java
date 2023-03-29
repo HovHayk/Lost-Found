@@ -12,21 +12,20 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.LostFound.Fragments.FoundPostsFragment;
 import com.example.LostFound.Fragments.LostPostsFragment;
 import com.example.LostFound.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     Button newPost;
     TextView name, email;
+    ImageView search;
     View view, registerView;
 
     BottomNavigationView bottomNavigationView;
@@ -68,6 +68,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         newPost = findViewById(R.id.btnNewPost);
         name = view.findViewById(R.id.personName);
         email = view.findViewById(R.id.person_email);
+        search = findViewById(R.id.image_search);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -94,6 +95,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
         setFragment(new LostPostsFragment());
         nameEmailPhotoSetter();
@@ -105,25 +113,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void setBottomNavigationView() {
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.btmnav_lost:
-                        setFragment(new LostPostsFragment());
-                        return true;
-                    case R.id.btmnav_found:
-                        setFragment(new FoundPostsFragment());
-                        return true;
-                    default:
-                        return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.btmnav_lost:
+                    setFragment(new LostPostsFragment());
+                    return true;
+                case R.id.btmnav_found:
+                    setFragment(new FoundPostsFragment());
+                    return true;
+                default:
+                    return false;
 
-                }
             }
         });
 
     }
-
 
 
     private void setFragment(Fragment fragment) {
@@ -167,8 +171,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+        window.setStatusBarColor(this.getResources().getColor(R.color.light_grey));
     }
+
 
 
     public void nameEmailPhotoSetter() {

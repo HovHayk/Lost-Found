@@ -203,7 +203,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(LoginActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
+
+                        if (task.getException().getMessage().contains("password")) {
+                            passwordForLogin.setError("Wrong password");
+                        } else {
+                            emailForLogin.setError("Wrong Email");
+                        }
                     }
                 }
             });
@@ -217,7 +222,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-
 
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -245,7 +249,7 @@ public class LoginActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+        window.setStatusBarColor(this.getResources().getColor(R.color.light_grey));
     }
 
 

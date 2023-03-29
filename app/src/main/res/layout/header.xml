@@ -11,8 +11,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/personPhoto"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_15sdp"
         android:src="@drawable/logo"/>
@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/almendra"
         android:hint="Person's name will be placed here"
-        android:textColor="@color/colorLightGrey"
-        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/light_grey"
+        android:textSize="@dimen/_12ssp"
         android:textStyle="bold" />
 
     <TextView
@@ -33,9 +33,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/almendra"
         android:hint="Person's email will be placed here"
-        android:textColor="@color/colorLightGrey"
+        android:textColor="@color/light_grey"
         android:layout_marginTop="0dp"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_10ssp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:textStyle="bold" />
 
 </LinearLayout>

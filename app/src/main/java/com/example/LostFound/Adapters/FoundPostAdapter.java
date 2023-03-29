@@ -66,6 +66,13 @@ public class FoundPostAdapter extends RecyclerView.Adapter<FoundPostAdapter.Post
         notifyDataSetChanged();
     }
 
+    public void deleteFoundPosts(List<FoundPost> posts) {
+        this.foundPosts = posts;
+        posts.clear();
+        notifyDataSetChanged();
+    }
+
+
     class PostHolder extends RecyclerView.ViewHolder {
         private TextView name, location, description;
         private ImageView image;

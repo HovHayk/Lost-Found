@@ -171,7 +171,7 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+        window.setStatusBarColor(this.getResources().getColor(R.color.light_grey));
     }
 
 

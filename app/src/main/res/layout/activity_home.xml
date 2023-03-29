@@ -18,7 +18,7 @@
         android:layout_gravity="start"
         android:background="@drawable/bg"
         app:headerLayout="@layout/header"
-        app:itemTextColor="@color/colorLightGrey"
+        app:itemTextColor="@color/light_grey"
         app:menu="@menu/main_menu" />
 
     <RelativeLayout
@@ -60,7 +60,7 @@
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/almendra"
                                 android:text="Lost"
-                                android:textColor="@color/colorBlack"
+                                android:textColor="@color/black"
                                 android:textSize="25sp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toTopOf="@+id/toolbarTitle2"
@@ -74,7 +74,7 @@
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/almendra"
                                 android:text="&amp; Found"
-                                android:textColor="@color/colorBlack"
+                                android:textColor="@color/black"
                                 android:textSize="25sp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -91,7 +91,23 @@
                                 android:gravity="center"
                                 android:text="+"
                                 android:textAlignment="center"
-                                android:textColor="@color/colorBlack"
+                                android:textColor="@color/black"
+                                android:textSize="30sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/image_search"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/image_search"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:background="@drawable/btn_bg"
+                                android:src="@drawable/ic_search"
+                                android:drawablePadding="5dp"
+                                android:gravity="center"
+                                android:textAlignment="center"
+                                android:textColor="@color/black"
                                 android:textSize="30sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"

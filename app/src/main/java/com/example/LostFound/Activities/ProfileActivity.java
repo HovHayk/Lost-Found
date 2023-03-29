@@ -9,11 +9,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.LostFound.R;
@@ -32,8 +31,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    Button newPost;
-    TextView namePhoto, name, email, phone, city;
+    TextView namePhoto, name, email, phone, city, navName, navEmail;
+    View view;
     String id;
 
     FirebaseStorage firebaseStorage;
@@ -54,6 +53,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         name = findViewById(R.id.personName);
         phone = findViewById(R.id.personPhone);
         city = findViewById(R.id.personCity);
+        view = navigationView.getHeaderView(0);
+        navName = view.findViewById(R.id.personName);
+        navEmail = view.findViewById(R.id.person_email);
 
 
         auth = FirebaseAuth.getInstance();
@@ -163,7 +165,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     public void nameEmailPhotoSetter() {
 
         String uEmail = auth.getCurrentUser().getEmail();
-        email.setText(uEmail);
+        navEmail.setText(uEmail);
 
         if (auth.getCurrentUser().getDisplayName() == null) {
             firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -171,13 +173,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                         if (snapshot.exists()) {
-                            name.setText(snapshot.get("user").toString());
+                            navName.setText(snapshot.get("user").toString());
                         }
                     }
                 }
             });
         } else {
-            name.setText(auth.getCurrentUser().getDisplayName());
+            navName.setText(auth.getCurrentUser().getDisplayName());
         }
     }
 
@@ -186,6 +188,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+        window.setStatusBarColor(this.getResources().getColor(R.color.light_grey));
     }
 }

@@ -12,7 +12,7 @@
         android:autoSizeTextType="uniform"
         android:gravity="center"
         android:text=""
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/white"
         android:textSize="@dimen/_16sdp" />
 
 </LinearLayout>

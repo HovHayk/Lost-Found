@@ -25,7 +25,7 @@ public class FoundPost {
     @ColumnInfo(name = "found_p_image")
     public String image;
     @ColumnInfo(name = "found_p_tags")
-    public String tags;
+    public String  tags;
 
     @Ignore
     public FoundPost() {

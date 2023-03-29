@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -68,7 +67,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         postLocation = findViewById(R.id.post_location);
         postDescription = findViewById(R.id.post_description);
         postImage = findViewById(R.id.post_image);
-        tagsRecyclerView = findViewById(R.id.tagsRecyclerView);
+        tagsRecyclerView = findViewById(R.id.tags_recycler_view);
         creatorPhoto = findViewById(R.id.creator_image);
 
         auth = FirebaseAuth.getInstance();
@@ -153,7 +152,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.colorLightGrey));
+        window.setStatusBarColor(this.getResources().getColor(R.color.light_grey));
     }
 
     public void nameEmailPhotoSetter() {

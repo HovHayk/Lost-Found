@@ -17,7 +17,7 @@
         android:layout_gravity="start"
         android:background="@drawable/bg"
         app:headerLayout="@layout/header"
-        app:itemTextColor="@color/colorLightGrey"
+        app:itemTextColor="@color/light_grey"
         app:menu="@menu/main_menu" />
 
 
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Post Page"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -87,20 +87,20 @@
                     android:layout_marginBottom="0dp">
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                             <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_300sdp"
-                                app:cardElevation="@dimen/_10sdp"
-                                android:backgroundTint="@color/mainBlue">
+                                android:backgroundTint="@color/best_blue"
+                                app:cardElevation="@dimen/_10sdp">
 
 
                                 <ImageView
@@ -116,64 +116,11 @@
                                     android:layout_marginTop="@dimen/_3sdp"
                                     android:layout_marginEnd="@dimen/_3sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
-                                    app:shapeAppearanceOverlay="@style/ImageView.Circle.LowRoll"
-                                    android:src="@drawable/profile"/>
+                                    android:src="@drawable/profile"
+                                    app:shapeAppearanceOverlay="@style/ImageView.Circle.LowRoll" />
 
 
                             </androidx.cardview.widget.CardView>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_10sdp"
-                                android:orientation="horizontal"
-                                android:paddingHorizontal="@dimen/_15sdp">
-
-                                <TextView
-                                    android:id="@+id/post_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:gravity="start"
-                                    android:hint="Post's Name"
-                                    android:maxWidth="@dimen/_250sdp"
-                                    android:maxHeight="@dimen/_80sdp"
-                                    android:textColor="@color/colorWhite"
-                                    android:textSize="@dimen/_30sdp" />
-
-                            </LinearLayout>
-
-
-                            <View
-                                android:id="@+id/view"
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:layout_marginHorizontal="@dimen/_10sdp"
-                                android:background="@color/colorMediumGrey" />
-
-
-                            <HorizontalScrollView
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_10sdp"
-                                android:paddingHorizontal="@dimen/_15sdp"
-                                android:scrollbars="none">
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/tagsRecyclerView"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center_horizontal"
-                                    android:clipToPadding="false"
-                                    android:orientation="horizontal"
-                                    android:overScrollMode="always"
-                                    android:visibility="gone"
-                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                            </HorizontalScrollView>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -185,9 +132,47 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingStart="@dimen/_5sdp"
-                                    android:text="Location"
-                                    android:textColor="@color/colorWhite"
-                                    android:textSize="@dimen/_17ssp" />
+                                    android:text="Name:"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_25ssp" />
+
+                                <TextView
+                                    android:id="@+id/post_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="name"
+                                    android:paddingEnd="@dimen/_5sdp"
+                                    android:textAlignment="viewEnd"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="@dimen/_25ssp" />
+
+                            </LinearLayout>
+
+
+                            <View
+                                android:id="@+id/view"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginHorizontal="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="@color/medium_grey" />
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingStart="@dimen/_5sdp"
+                                    android:text="Location:"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_25ssp" />
 
                                 <TextView
                                     android:id="@+id/post_location"
@@ -197,10 +182,19 @@
                                     android:hint="place"
                                     android:paddingEnd="@dimen/_5sdp"
                                     android:textAlignment="viewEnd"
-                                    android:textColorHint="@color/colorWhite"
-                                    android:textSize="@dimen/_17ssp" />
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="@dimen/_25ssp" />
 
                             </LinearLayout>
+
+                            <View
+                                android:id="@+id/view1"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginHorizontal="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="@color/medium_grey" />
 
                             <LinearLayout
                                 android:id="@+id/description"
@@ -215,17 +209,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:layout_marginBottom="@dimen/_10sdp"
-                                    android:paddingLeft="@dimen/_15sdp"
-                                    android:text="Description"
-                                    android:textColor="@color/colorWhite"
-                                    android:textSize="@dimen/_20ssp" />
-
-                                <View
-                                    android:id="@+id/view1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="2dp"
-                                    android:layout_marginHorizontal="@dimen/_10sdp"
-                                    android:background="@color/colorMediumGrey" />
+                                    android:text="Description:"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_25ssp" />
 
 
                                 <TextView
@@ -235,24 +221,55 @@
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:gravity="top"
                                     android:hint="Post's Description"
-                                    android:minHeight="@dimen/_100sdp"
                                     android:paddingHorizontal="@dimen/_10sdp"
                                     android:paddingVertical="@dimen/_5sdp"
-                                    android:textColor="@color/colorWhite"
-                                    android:textColorHint="@color/colorLightGrey"
-                                    android:textSize="@dimen/_17ssp" />
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/light_grey"
+                                    android:textSize="@dimen/_20ssp" />
 
 
                             </LinearLayout>
 
+                            <View
+                                android:id="@+id/view2"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginHorizontal="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="@color/medium_grey" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:text="Tags:"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_25ssp" />
+
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/tags_recycler_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_horizontal"
+                                android:clipToPadding="false"
+                                android:orientation="horizontal"
+                                android:overScrollMode="always"
+                                android:visibility="gone"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
                         </LinearLayout>
+
                     </RelativeLayout>
+
                 </ScrollView>
+
             </RelativeLayout>
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

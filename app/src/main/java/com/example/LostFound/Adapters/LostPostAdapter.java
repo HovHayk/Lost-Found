@@ -58,11 +58,19 @@ public class LostPostAdapter extends RecyclerView.Adapter<LostPostAdapter.PostHo
 
     @Override
     public int getItemCount() {
+        Log.i("QNK", "getItemCount: " + lostPosts.size());
         return lostPosts.size();
     }
 
     public void setLostPosts(List<LostPost> posts) {
         this.lostPosts = posts;
+        Log.i("QNK", "setLostPosts: " + posts.size());
+        notifyDataSetChanged();
+    }
+
+    public void deleteLostPosts(List<LostPost> posts) {
+        this.lostPosts = posts;
+        lostPosts.clear();
         notifyDataSetChanged();
     }
 
