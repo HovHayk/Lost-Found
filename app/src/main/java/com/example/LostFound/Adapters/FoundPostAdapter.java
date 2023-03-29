@@ -48,6 +48,7 @@ public class FoundPostAdapter extends RecyclerView.Adapter<FoundPostAdapter.Post
                 intent.putExtra("LOCATION", currentFoundPost.getLocation());
                 intent.putExtra("DESCRIPTION", currentFoundPost.getDescription());
                 intent.putExtra("IMAGE", currentFoundPost.getImage());
+                intent.putExtra("TAGS", currentFoundPost.getTags());
                 v.getContext().startActivity(intent);
             }
         });

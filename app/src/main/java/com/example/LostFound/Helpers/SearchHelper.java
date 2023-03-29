@@ -1,4 +1,4 @@
-package com.example.LostFound.Models;
+package com.example.LostFound.Helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;

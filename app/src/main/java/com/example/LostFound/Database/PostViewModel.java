@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.LostFound.Helpers.Converters;
 import com.example.LostFound.Models.FoundPost;
 import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.Models.MyFoundPost;
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostViewModel extends AndroidViewModel {
@@ -83,10 +85,12 @@ public class PostViewModel extends AndroidViewModel {
                             String description = snapshot.getString("description");
                             String image = snapshot.getString("image");
                             String uid = snapshot.getString("id");
-                            //ArrayList<String> tags = snapshot.get("tags", ArrayList<String>.class);
+                            ArrayList<String> tags = (ArrayList<String>) snapshot.get("tags");
+
+                            String convTags = Converters.fromArrayList(tags);
 
                             AsyncTask.execute(() -> {
-                                postDAO.insertLostPost(new LostPost(name, location, description, image));
+                                postDAO.insertLostPost(new LostPost(name, location, description, image, convTags));
                             });
                         }
                     }
@@ -114,10 +118,12 @@ public class PostViewModel extends AndroidViewModel {
                             String description = snapshot.getString("description");
                             String image = snapshot.getString("image");
                             String uid = snapshot.getString("id");
-                            //ArrayList<String> tags = snapshot.get("tags", ArrayList<String>.class);
+                            ArrayList<String> tags = (ArrayList<String>) snapshot.get("tags");
+
+                            String convTags = Converters.fromArrayList(tags);
 
                             AsyncTask.execute(() -> {
-                                postDAO.insertFoundPost(new FoundPost(name, location, description, image));
+                                postDAO.insertFoundPost(new FoundPost(name, location, description, image, convTags));
                             });
                         }
                     }
@@ -145,10 +151,12 @@ public class PostViewModel extends AndroidViewModel {
                             String description = snapshot.getString("description");
                             String image = snapshot.getString("image");
                             String uid = snapshot.getString("id");
-                            //ArrayList<String> tags = snapshot.get("tags", ArrayList<String>.class);
+                            ArrayList<String> tags = (ArrayList<String>) snapshot.get("tags");
+
+                            String convTags = Converters.fromArrayList(tags);
 
                             AsyncTask.execute(() -> {
-                                postDAO.insertMyLostPost(new MyLostPost(name, location, description, image));
+                                postDAO.insertMyLostPost(new MyLostPost(name, location, description, image, convTags));
                             });
                         }
                     }
@@ -176,10 +184,12 @@ public class PostViewModel extends AndroidViewModel {
                             String description = snapshot.getString("description");
                             String image = snapshot.getString("image");
                             String uid = snapshot.getString("id");
-                            //ArrayList<String> tags = snapshot.get("tags", ArrayList<String>.class);
+                            ArrayList<String> tags = (ArrayList<String>) snapshot.get("tags");
+
+                            String convTags = Converters.fromArrayList(tags);
 
                             AsyncTask.execute(() -> {
-                                postDAO.insertMyFoundPost(new MyFoundPost(name, location, description, image));
+                                postDAO.insertMyFoundPost(new MyFoundPost(name, location, description, image, convTags));
                             });
                         }
                     }

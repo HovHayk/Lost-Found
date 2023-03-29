@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+
 @Entity(tableName = "my_lost_post_table")
 public class MyLostPost {
 
@@ -27,11 +29,12 @@ public class MyLostPost {
     @Ignore
     public MyLostPost() { }
 
-    public MyLostPost( String name, String location, String description, String image) {
+    public MyLostPost(String name, String location, String description, String image, String tags) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.image = image;
+        this.tags = tags;
     }
 
     public int getId() {

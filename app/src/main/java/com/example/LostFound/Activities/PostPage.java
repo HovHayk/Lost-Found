@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.LostFound.Adapters.TagAdapter;
 import com.example.LostFound.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -25,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class PostPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,12 +43,10 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
     View view;
 
 
-    TextView name;
-    TextView email;
-    TextView postName;
-    TextView postLocation;
-    TextView postDescription;
+    TextView name, email, postName, postLocation, postDescription;
     ImageView postImage;
+    RecyclerView tagsRecyclerView;
+    ArrayList<String> tags;
 
 
     @Override
@@ -62,6 +65,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         postLocation = findViewById(R.id.post_location);
         postDescription = findViewById(R.id.post_description);
         postImage = findViewById(R.id.post_image);
+        tagsRecyclerView = findViewById(R.id.tagsRecyclerView);
 
         auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -76,6 +80,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         navigationView.setCheckedItem(R.id.nav_home);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         setPostData();
         nameEmailPhotoSetter();
     }
@@ -86,8 +91,15 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         postName.setText(getIntent().getStringExtra("NAME"));
         postDescription.setText(getIntent().getStringExtra("DESCRIPTION"));
         postLocation.setText(getIntent().getStringExtra("LOCATION"));
-        //postTags.setText(getIntent().getStringExtra("TAGS"));
 
+        tags = new ArrayList<>();
+        tags.add(getIntent().getStringExtra("TAGS"));
+
+        Log.i("POSTPAGE", "setPostData: " + tags);
+
+        TagAdapter tagAdapter = new TagAdapter(tags);
+        tagsRecyclerView.setAdapter(tagAdapter);
+        tagsRecyclerView.setVisibility(View.VISIBLE);
     }
 
 
@@ -120,7 +132,6 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
     public void statusBarColor() {

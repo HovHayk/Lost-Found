@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.LostFound.Activities.PostPage;
-import com.example.LostFound.Models.LostPost;
 import com.example.LostFound.Models.MyLostPost;
 import com.example.LostFound.R;
 import com.squareup.picasso.Picasso;
@@ -48,6 +47,7 @@ public class MyLostPostAdapter extends RecyclerView.Adapter<MyLostPostAdapter.Po
                 intent.putExtra("LOCATION", currentMyLostPost.getLocation());
                 intent.putExtra("DESCRIPTION", currentMyLostPost.getDescription());
                 intent.putExtra("IMAGE", currentMyLostPost.getImage());
+                intent.putExtra("TAGS", currentMyLostPost.getTags());
                 v.getContext().startActivity(intent);
             }
         });
@@ -66,6 +66,7 @@ public class MyLostPostAdapter extends RecyclerView.Adapter<MyLostPostAdapter.Po
     class PostHolder extends RecyclerView.ViewHolder {
         private TextView name, location, description;
         private ImageView image;
+        private RecyclerView tags;
 
         public PostHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +75,7 @@ public class MyLostPostAdapter extends RecyclerView.Adapter<MyLostPostAdapter.Po
             location = itemView.findViewById(R.id.location_of_post);
             description = itemView.findViewById(R.id.description_of_post);
             image = itemView.findViewById(R.id.image_of_post);
+            tags = itemView.findViewById(R.id.tagsRecyclerView);
         }
     }
 }

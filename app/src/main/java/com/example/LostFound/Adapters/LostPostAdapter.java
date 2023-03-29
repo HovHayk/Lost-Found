@@ -48,6 +48,7 @@ public class LostPostAdapter extends RecyclerView.Adapter<LostPostAdapter.PostHo
                 intent.putExtra("LOCATION", currentLostPost.getLocation());
                 intent.putExtra("DESCRIPTION", currentLostPost.getDescription());
                 intent.putExtra("IMAGE", currentLostPost.getImage());
+                intent.putExtra("TAGS", currentLostPost.getTags());
                 v.getContext().startActivity(intent);
             }
         });

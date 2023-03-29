@@ -4,6 +4,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+
+import com.example.LostFound.Helpers.Converters;
+
+import java.util.ArrayList;
 
 @Entity(tableName = "lost_post_table")
 public class LostPost {
@@ -26,11 +31,12 @@ public class LostPost {
     @Ignore
     public LostPost() { }
 
-    public LostPost( String name, String location, String description, String image) {
+    public LostPost( String name, String location, String description, String image, String tags) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.image = image;
+        this.tags = tags;
     }
 
     public int getId() {
