@@ -67,7 +67,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,10 +134,12 @@
                     android:id="@+id/post_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/transparent_white_stroke_bg"
                     android:hint="Lost item name"
                     android:minHeight="48dp"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_10sdp"
                     android:textColorHint="@color/light_grey"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -149,10 +151,12 @@
                     android:id="@+id/post_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/transparent_white_stroke_bg"
                     android:hint="Write description of your item"
                     android:minHeight="48dp"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_10sdp"
                     android:textColorHint="@color/light_grey"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintTop_toBottomOf="@+id/post_name" />
@@ -161,12 +165,14 @@
                     android:id="@+id/post_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/transparent_white_stroke_bg"
                     android:ems="10"
                     android:hint="Enter tags(break with commas)"
                     android:inputType="text"
                     android:minHeight="48dp"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_10sdp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/light_grey"
                     android:textSize="@dimen/_13ssp"

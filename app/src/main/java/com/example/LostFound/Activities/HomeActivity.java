@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.LostFound.Fragments.FoundPostsFragment;
 import com.example.LostFound.Fragments.LostPostsFragment;
+import com.example.LostFound.Login.LoginActivity;
 import com.example.LostFound.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -86,7 +87,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setBottomNavigationView();
 
 
-
         newPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +108,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     } // End of onCreate
-
 
 
     public void setBottomNavigationView() {
@@ -160,6 +159,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_myPosts:
                 Intent intentMyPost = new Intent(HomeActivity.this, MyPostsActivity.class);
                 startActivity(intentMyPost);
+                break;
+            case R.id.nav_logout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intentLogout = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(intentLogout);
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -173,8 +178,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.light_grey));
     }
-
-
 
     public void nameEmailPhotoSetter() {
 
