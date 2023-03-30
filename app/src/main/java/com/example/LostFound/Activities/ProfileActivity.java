@@ -152,7 +152,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (DocumentSnapshot snapshot : task.getResult()) {
-
                             if (snapshot.getString("city") != null) {
 
                                 name.setText(snapshot.get("user").toString());
@@ -160,12 +159,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                                 email.setText(snapshot.get("email").toString());
                                 city.setText(snapshot.get("city").toString());
                                 phone.setText(snapshot.get("phone").toString());
-                            } else {
-                                name.setText("Please edit your Profile");
-                                namePhoto.setText("Please edit your Profile");
-                                email.setText("Please edit your Profile");
-                                city.setText("Please edit your Profile");
-                                phone.setText("Please edit your Profile");
                             }
                         }
                     }
@@ -178,6 +171,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         String uEmail = auth.getCurrentUser().getEmail();
         navEmail.setText(uEmail);
+        email.setText(auth.getCurrentUser().getEmail());
 
         if (auth.getCurrentUser().getDisplayName() == null) {
             firebaseFirestore.collection("Users").whereEqualTo("email", uEmail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -191,7 +185,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 }
             });
         } else {
+            name.setText(auth.getCurrentUser().getDisplayName());
+            namePhoto.setText(auth.getCurrentUser().getDisplayName());
             navName.setText(auth.getCurrentUser().getDisplayName());
+            phone.setText(auth.getCurrentUser().getPhoneNumber());
+            city.setText("City");
         }
     }
 

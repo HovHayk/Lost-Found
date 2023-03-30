@@ -81,8 +81,8 @@
             android:layout_alignParentEnd="true"
             android:gravity="center|top"
             android:text="@string/about"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/_40sdp"/>
 
