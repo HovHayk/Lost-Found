@@ -34,7 +34,6 @@ import java.util.List;
 
 public class FoundSearchFragment extends Fragment {
 
-
     RecyclerView recyclerView;
     FoundPostAdapter adapter;
 
@@ -66,51 +65,4 @@ public class FoundSearchFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
     }
-
-    /*@Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        inflater.inflate(R.menu.search_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String tags) {
-                filterPosts(tags);
-                return false;
-            }
-        });
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    private void filterPosts(String text) {
-        ArrayList<LostPost> filteredList = new ArrayList<LostPost>();
-
-        postViewModel.getAllLostPosts().observe(getViewLifecycleOwner(), new Observer<List<LostPost>>() {
-            @Override
-            public void onChanged(List<LostPost> posts) {
-                for (LostPost item : posts) {
-                    if (item.getTags().contains(text.toLowerCase())) {
-                        if (!filteredList.contains(item)) {
-                            filteredList.add(item);
-                        }
-                    }
-                }
-                if (filteredList.isEmpty()) {
-                    adapter.deleteLostPosts(filteredList);
-                } else {
-                    adapter.setLostPosts(filteredList);
-                }
-            }
-        });
-    }*/
 }

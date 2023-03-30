@@ -2,6 +2,7 @@ package com.example.LostFound.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -77,7 +79,6 @@ public class SearchActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
         suggestion.setVisibility(View.VISIBLE);
         setBottomNavigationView();
-
     }
 
     public void setBottomNavigationView() {
@@ -85,12 +86,14 @@ public class SearchActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.btmnav_lost:
+                    recyclerView.setVisibility(View.INVISIBLE);
                     suggestion.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.VISIBLE);
                     setFragment(new LostSearchFragment());
                     searchMethodForLost();
                     return true;
                 case R.id.btmnav_found:
+                    recyclerView.setVisibility(View.INVISIBLE);
                     suggestion.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.VISIBLE);
                     setFragment(new FoundSearchFragment());
@@ -136,11 +139,12 @@ public class SearchActivity extends AppCompatActivity {
                                 if (searchResult.isEmpty()) {
                                     recyclerView.setVisibility(View.INVISIBLE);
                                     error.setVisibility(View.VISIBLE);
-                                } else if (search == null) {
+                                } else if (search.getText() == null) {
+                                    searchResult.clear();
                                     recyclerView.setVisibility(View.INVISIBLE);
                                     error.setVisibility(View.INVISIBLE);
                                     progressBar.setVisibility(View.VISIBLE);
-                                } else {
+                                } else if (!searchResult.isEmpty()) {
                                     recyclerView.setVisibility(View.VISIBLE);
                                     recyclerView.setHasFixedSize(true);
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -152,10 +156,8 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 });
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
     }

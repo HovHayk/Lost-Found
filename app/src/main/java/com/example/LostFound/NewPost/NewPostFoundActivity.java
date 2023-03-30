@@ -54,7 +54,7 @@ import java.util.List;
 
 public class NewPostFoundActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView myLocation;
+    TextView postLocation;
     EditText postName, postDescription;
     Button addNewPots, btnLocation;
     ImageView setImage;
@@ -77,7 +77,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     Uri imageUrl = null;
     FirebaseStorage firebaseStorage;
     FirebaseFirestore firebaseFirestore;
-    FirebaseAuth mAuth;
+    FirebaseAuth auth;
 
 
     @Override
@@ -94,13 +94,13 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         addNewPots = findViewById(R.id.btnAddPost);
         postName = findViewById(R.id.post_name);
         btnLocation = findViewById(R.id.btn_location);
-        myLocation = findViewById(R.id.post_location);
+        postLocation = findViewById(R.id.post_location);
         postDescription = findViewById(R.id.post_description);
         setImage = findViewById(R.id.post_image);
 
         progressDialog = new ProgressDialog(this);
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -138,7 +138,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
 
         Intent intent = getIntent();
         String userLocation = intent.getStringExtra("myFoundLocation");
-        myLocation.setText(userLocation);
+        postLocation.setText(userLocation);
 
     } // End of OnCreate !!!!!!!!!!!
 
@@ -192,11 +192,11 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
     }
 
     public void insertPostData() {
-        String id = mAuth.getCurrentUser().getUid();
-        String email = mAuth.getCurrentUser().getEmail();
+        String id = auth.getCurrentUser().getUid();
+        String email = auth.getCurrentUser().getEmail();
         String name = postName.getText().toString().trim();
         String description = postDescription.getText().toString().trim();
-        String location = myLocation.getText().toString().trim();
+        String location = postLocation.getText().toString().trim();
 
         if (!(name.isEmpty() && description.isEmpty())) {
 
@@ -229,7 +229,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                     Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
-                            String t = task.getResult().toString();
+                            String image = task.getResult().toString();
 
                             HashMap<String, Object> post = new HashMap<>();
                             post.put("id", id);
@@ -238,7 +238,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                             post.put("description", description);
                             post.put("location", location);
                             post.put("tags", itemTags);
-                            post.put("image", t);
+                            post.put("image", image);
                             firebaseFirestore.collection("Found LostPost").add(post);
                             progressDialog.dismiss();
                         }

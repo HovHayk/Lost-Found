@@ -113,8 +113,8 @@
                                     android:layout_width="@dimen/_50sdp"
                                     android:layout_height="@dimen/_50sdp"
                                     android:layout_gravity="end"
-                                    android:layout_marginTop="@dimen/_3sdp"
-                                    android:layout_marginEnd="@dimen/_3sdp"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_marginEnd="@dimen/_10sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
                                     android:src="@drawable/profile"
                                     app:shapeAppearanceOverlay="@style/ImageView.Circle.LowRoll" />

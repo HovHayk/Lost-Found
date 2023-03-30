@@ -16,13 +16,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
+
         <activity
-            android:name=".AboutActivity"
+            android:name=".Activities.AboutActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Activities.SearchActivity"
             android:exported="false">
@@ -30,15 +32,19 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Activities.SplashScreen"
             android:exported="true">
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Login.RegisterActivity"
             android:exported="false">
@@ -46,6 +52,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Maps.LostMapActivity"
             android:exported="false">
@@ -53,6 +60,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Activities.MyPostsActivity"
             android:exported="false">
@@ -60,6 +68,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Activities.PostPage"
             android:exported="false">
@@ -67,6 +76,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Activities.PostTypeActivity"
             android:exported="false">
@@ -74,6 +84,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".NewPost.NewPostFoundActivity"
             android:exported="false">
@@ -81,6 +92,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".NewPost.NewPostLostActivity"
             android:exported="false">
@@ -88,6 +100,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Activities.ProfileActivity"
             android:exported="false">
@@ -95,16 +108,19 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Login.LoginActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
+
         <activity android:name=".Activities.HomeActivity" />
+
         <activity android:name=".Maps.FoundMapActivity" />
 
         <meta-data

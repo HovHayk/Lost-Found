@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +23,9 @@ import android.view.View;
 
 
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.LostFound.Activities.SearchActivity;
@@ -45,15 +50,18 @@ public class LostSearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setHasOptionsMenu(true);
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        View v = inflater.inflate(R.layout.fragment_posts, container, false);
+
         adapter = new LostPostAdapter();
 
-        return inflater.inflate(R.layout.fragment_posts, container, false);
+        return v;
     }
 
     @Override
@@ -66,52 +74,6 @@ public class LostSearchFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
+
     }
-
-    /*@Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        inflater.inflate(R.menu.search_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String tags) {
-                filterPosts(tags);
-                return false;
-            }
-        });
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    private void filterPosts(String text) {
-        ArrayList<LostPost> filteredList = new ArrayList<LostPost>();
-
-        postViewModel.getAllLostPosts().observe(getViewLifecycleOwner(), new Observer<List<LostPost>>() {
-            @Override
-            public void onChanged(List<LostPost> posts) {
-                for (LostPost item : posts) {
-                    if (item.getTags().contains(text.toLowerCase())) {
-                        if (!filteredList.contains(item)) {
-                            filteredList.add(item);
-                        }
-                    }
-                }
-                if (filteredList.isEmpty()) {
-                    adapter.deleteLostPosts(filteredList);
-                } else {
-                    adapter.setLostPosts(filteredList);
-                }
-            }
-        });
-    }*/
 }

@@ -243,14 +243,6 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
                         itemTags = finalTags;
                     }
 
-                    for (int i = 0; i < itemTags.size(); i++) {
-                        if (!tags.contains(itemTags.get(i))) {
-                            HashMap<String, Object> tag = new HashMap<>();
-                            tag.put("tag", itemTags.get(i));
-                            firebaseFirestore.collection("Tags").add(tag);
-                        }
-                    }
-
                     Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {

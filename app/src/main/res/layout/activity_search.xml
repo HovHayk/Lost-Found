@@ -53,15 +53,13 @@
                 android:textSize="@dimen/_12ssp" />
 
 
-
-
-
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_50sdp">
+
 
             <FrameLayout
                 android:id="@+id/frameLayout"
@@ -99,8 +97,8 @@
             android:id="@+id/text_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_250sdp"
             android:gravity="center"
@@ -114,8 +112,8 @@
             android:id="@+id/text_suggestion_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_250sdp"
             android:gravity="center"
