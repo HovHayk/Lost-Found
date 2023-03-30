@@ -12,7 +12,7 @@
 
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_View"
+        android:id="@+id/nav_view"
         android:layout_width="@dimen/_170sdp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -43,11 +43,11 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/toolbarTitle"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/almendra"
-                    android:text="About Us"
+                    android:text="@string/about_us"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold"
@@ -61,7 +61,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageView"
+            android:id="@+id/image_view"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
             android:layout_below="@+id/toolbar"
@@ -76,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView"
+            android:layout_below="@+id/image_view"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:gravity="center|top"

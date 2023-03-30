@@ -12,7 +12,7 @@
 
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_View"
+        android:id="@+id/nav_view"
         android:layout_width="@dimen/_170sdp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -55,34 +55,34 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/toolbarTitle"
+                                android:id="@+id/toolbar_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/almendra"
-                                android:text="Lost"
+                                android:text="@string/lost"
                                 android:textColor="@color/black"
                                 android:textSize="25sp"
                                 android:textStyle="bold"
-                                app:layout_constraintBottom_toTopOf="@+id/toolbarTitle2"
+                                app:layout_constraintBottom_toTopOf="@+id/toolbar_title_2"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
 
                             <TextView
-                                android:id="@+id/toolbarTitle2"
+                                android:id="@+id/toolbar_title_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/almendra"
-                                android:text="&amp; Found"
+                                android:text="@string/found"
                                 android:textColor="@color/black"
                                 android:textSize="25sp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/toolbarTitle" />
+                                app:layout_constraintTop_toBottomOf="@+id/toolbar_title" />
 
                             <Button
-                                android:id="@+id/btnNewPost"
+                                android:id="@+id/btn_new_post"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_marginEnd="@dimen/_10sdp"
@@ -119,13 +119,13 @@
                     </androidx.appcompat.widget.Toolbar>
 
                 <FrameLayout
-                    android:id="@+id/frameLayout"
+                    android:id="@+id/frame_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="60dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                        android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:breakStrategy="balanced"
@@ -142,7 +142,7 @@
         </ScrollView>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/btmNavView"
+            android:id="@+id/btm_nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"

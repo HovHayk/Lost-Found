@@ -57,14 +57,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        frameLayout = findViewById(R.id.frameLayout);
-        bottomNavigationView = findViewById(R.id.btmNavView);
+        frameLayout = findViewById(R.id.frame_layout);
+        bottomNavigationView = findViewById(R.id.btm_nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_View);
+        navigationView = findViewById(R.id.nav_view);
         view = navigationView.getHeaderView(0);
         toolbar = findViewById(R.id.toolbar);
         registerView = getLayoutInflater().inflate(R.layout.activity_register, null);
-        newPost = findViewById(R.id.btnNewPost);
+        newPost = findViewById(R.id.btn_new_post);
         name = view.findViewById(R.id.person_name);
         email = view.findViewById(R.id.person_email);
         search = findViewById(R.id.image_search);
@@ -128,7 +128,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void setFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
 
     }

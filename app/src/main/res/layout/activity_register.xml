@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="600dp"
-                android:text="Register"
+                android:text="@string/register"
                 android:textColor="@color/white"
                 android:textSize="35sp"
                 android:textStyle="bold"
@@ -48,7 +48,7 @@
                 app:layout_constraintVertical_bias="0.218" />
 
             <EditText
-                android:id="@+id/inputUsernameForRegistration"
+                android:id="@+id/input_username_for_registration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -58,7 +58,7 @@
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Username"
+                android:hint="@string/username"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:paddingStart="20dp"
@@ -74,7 +74,7 @@
 
 
             <EditText
-                android:id="@+id/inputEmailForRegistration"
+                android:id="@+id/input_email_for_registration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -82,7 +82,7 @@
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="@string/email_register"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
                 android:paddingStart="20dp"
@@ -91,13 +91,13 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/inputPhoneForRegistration"
+                app:layout_constraintEnd_toEndOf="@+id/input_phone_for_registration"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/inputPhoneForRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/inputPhoneForRegistration" />
+                app:layout_constraintStart_toStartOf="@+id/input_phone_for_registration"
+                app:layout_constraintTop_toBottomOf="@+id/input_phone_for_registration" />
 
             <EditText
-                android:id="@+id/inputPhoneForRegistration"
+                android:id="@+id/input_phone_for_registration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -105,7 +105,7 @@
                 android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Phone"
+                android:hint="@string/phone_register"
                 android:inputType="phone"
                 android:minHeight="48dp"
                 android:paddingStart="20dp"
@@ -114,12 +114,12 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/inputUsernameForRegistration"
-                app:layout_constraintStart_toStartOf="@+id/inputUsernameForRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/inputUsernameForRegistration" />
+                app:layout_constraintEnd_toEndOf="@+id/input_username_for_registration"
+                app:layout_constraintStart_toStartOf="@+id/input_username_for_registration"
+                app:layout_constraintTop_toBottomOf="@+id/input_username_for_registration" />
 
             <EditText
-                android:id="@+id/inputPasswordForRegistration"
+                android:id="@+id/input_password_for_registration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -128,30 +128,8 @@
                 android:drawableStart="@drawable/ic_security"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/password_register"
                 android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:paddingStart="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/inputCityForRegistration"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/inputCityForRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/inputCityForRegistration" />
-
-            <EditText
-                android:id="@+id/inputCityForRegistration"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/transparent_white_stroke_bg"
-                android:drawableStart="@drawable/ic_city"
-                android:drawablePadding="10dp"
-                android:ems="10"
-                android:hint="City"
                 android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
@@ -159,12 +137,34 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/inputEmailForRegistration"
-                app:layout_constraintStart_toStartOf="@+id/inputEmailForRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/inputEmailForRegistration" />
+                app:layout_constraintEnd_toEndOf="@+id/input_city_for_registration"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/input_city_for_registration"
+                app:layout_constraintTop_toBottomOf="@+id/input_city_for_registration" />
 
             <EditText
-                android:id="@+id/inputConfirmPasswordForRegistration"
+                android:id="@+id/input_city_for_registration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/transparent_white_stroke_bg"
+                android:drawableStart="@drawable/ic_city"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="@string/city_register"
+                android:minHeight="48dp"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/input_email_for_registration"
+                app:layout_constraintStart_toStartOf="@+id/input_email_for_registration"
+                app:layout_constraintTop_toBottomOf="@+id/input_email_for_registration" />
+
+            <EditText
+                android:id="@+id/input_confirm_password_for_registration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -173,46 +173,46 @@
                 android:drawableStart="@drawable/ic_security"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Confirm Password"
+                android:hint="@string/confirm_password"
                 android:inputType="textPassword"
                 android:minHeight="48dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
-                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/inputPasswordForRegistration"
+                app:layout_constraintEnd_toEndOf="@+id/input_password_for_registration"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/inputPasswordForRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/inputPasswordForRegistration" />
+                app:layout_constraintStart_toStartOf="@+id/input_password_for_registration"
+                app:layout_constraintTop_toBottomOf="@+id/input_password_for_registration" />
 
 
             <Button
-                android:id="@+id/btnRegister"
+                android:id="@+id/btn_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
                 android:background="@drawable/btn_bg"
-                android:text="Register"
+                android:text="@string/register_btn"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/inputConfirmPasswordForRegistration"
+                app:layout_constraintEnd_toEndOf="@+id/input_confirm_password_for_registration"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/inputConfirmPasswordForRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/inputConfirmPasswordForRegistration" />
+                app:layout_constraintStart_toStartOf="@+id/input_confirm_password_for_registration"
+                app:layout_constraintTop_toBottomOf="@+id/input_confirm_password_for_registration" />
 
             <TextView
-                android:id="@+id/alreadyHaveAccount"
+                android:id="@+id/already_have_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:shadowColor="@color/white"
-                android:text="Already Have an Account?"
+                android:text="@string/already_have_an_account"
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/btnRegister"
+                app:layout_constraintEnd_toEndOf="@+id/btn_register"
                 app:layout_constraintHorizontal_bias="0.494"
-                app:layout_constraintStart_toStartOf="@+id/btnRegister"
-                app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+                app:layout_constraintStart_toStartOf="@+id/btn_register"
+                app:layout_constraintTop_toBottomOf="@+id/btn_register" />
 
 
 

@@ -86,12 +86,12 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
         setContentView(R.layout.activity_new_post);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_View);
+        navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
 
         postTags = findViewById(R.id.post_tags);
 
-        addNewPots = findViewById(R.id.btnAddPost);
+        addNewPots = findViewById(R.id.btn_add_post);
         postName = findViewById(R.id.post_name);
         btnLocation = findViewById(R.id.btn_location);
         postLocation = findViewById(R.id.post_location);
@@ -239,7 +239,7 @@ public class NewPostFoundActivity extends AppCompatActivity implements Navigatio
                             post.put("location", location);
                             post.put("tags", itemTags);
                             post.put("image", image);
-                            firebaseFirestore.collection("Found LostPost").add(post);
+                            firebaseFirestore.collection("Found Posts").add(post);
                             progressDialog.dismiss();
                         }
                     });

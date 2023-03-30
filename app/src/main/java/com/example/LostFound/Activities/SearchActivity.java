@@ -1,9 +1,6 @@
 package com.example.LostFound.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -16,9 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -27,9 +21,7 @@ import android.widget.TextView;
 import com.example.LostFound.Adapters.FoundPostAdapter;
 import com.example.LostFound.Adapters.LostPostAdapter;
 import com.example.LostFound.Database.PostViewModel;
-import com.example.LostFound.Fragments.FoundPostsFragment;
 import com.example.LostFound.Fragments.FoundSearchFragment;
-import com.example.LostFound.Fragments.LostPostsFragment;
 import com.example.LostFound.Fragments.LostSearchFragment;
 import com.example.LostFound.Helpers.SearchHelper;
 import com.example.LostFound.Models.FoundPost;
@@ -63,7 +55,7 @@ public class SearchActivity extends AppCompatActivity {
         back = findViewById(R.id.ic_back);
         search = findViewById(R.id.search);
         recyclerView = findViewById(R.id.posts_recycler_view);
-        bottomNavigationView = findViewById(R.id.btmNavView);
+        bottomNavigationView = findViewById(R.id.btm_nav_view);
 
         lostPostAdapter = new LostPostAdapter();
         foundPostAdapter = new FoundPostAdapter();
@@ -108,7 +100,7 @@ public class SearchActivity extends AppCompatActivity {
     private void setFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
 

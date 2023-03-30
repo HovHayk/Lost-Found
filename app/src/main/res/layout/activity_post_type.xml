@@ -12,7 +12,7 @@
 
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_View"
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -46,10 +46,10 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/toolbarTitle"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="New Post"
+                    android:text="@string/new_post_btn"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold"
@@ -70,7 +70,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/btnPostTypeLost"
+            android:id="@+id/btn_post_type_lost"
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:layout_marginBottom="300dp"
@@ -78,29 +78,29 @@
             android:gravity="start"
             android:hapticFeedbackEnabled="false"
             android:padding="20dp"
-            android:text="LOST"
+            android:text="@string/lost_type"
             android:textColor="@color/light_grey"
             android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnPostTypeFound"
-            app:layout_constraintStart_toStartOf="@+id/btnPostTypeFound"
+            app:layout_constraintEnd_toEndOf="@+id/btn_post_type_found"
+            app:layout_constraintStart_toStartOf="@+id/btn_post_type_found"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btnPostTypeFound"
+            android:id="@+id/btn_post_type_found"
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/btn_found_bg"
             android:gravity="end|bottom"
             android:padding="20dp"
-            android:text="FOUND"
+            android:text="@string/found_type"
             android:textColor="@color/light_grey"
             android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnPostTypeLost" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_post_type_lost" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

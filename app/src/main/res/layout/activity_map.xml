@@ -30,7 +30,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:src="@drawable/ic_magnify"/>
 
         <AutoCompleteTextView
@@ -40,7 +40,7 @@
             android:layout_centerVertical="true"
             android:singleLine="true"
             android:layout_toRightOf="@id/ic_magnify"
-            android:hint="Enter Address, City or Zip Code"
+            android:hint="@string/enter_address_city_or_zip_code"
             android:imeOptions="actionSearch"
             android:textColor="@color/black"
             android:textSize="15sp" />
@@ -52,9 +52,9 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_below="@+id/search_bar"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_gps"
         app:tint="@color/black" />

@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         about = findViewById(R.id.about);
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_View);
+        navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
 
         namePhoto = findViewById(R.id.persons_name);

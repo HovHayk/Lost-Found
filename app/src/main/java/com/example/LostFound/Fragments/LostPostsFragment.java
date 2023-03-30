@@ -9,18 +9,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 
 
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.LostFound.Adapters.LostPostAdapter;
 import com.example.LostFound.Database.PostViewModel;
@@ -63,7 +57,7 @@ public class LostPostsFragment extends Fragment {
 
         lostPosts = new ArrayList<>();
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

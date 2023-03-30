@@ -12,7 +12,7 @@
 
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_View"
+        android:id="@+id/nav_view"
         android:layout_width="@dimen/_170sdp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -23,7 +23,7 @@
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/navview_body"
+        android:id="@+id/nav_view_body_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -46,12 +46,12 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/toolbarTitle"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/almendra"
                     android:gravity="center"
-                    android:text="Profile"
+                    android:text="@string/profile"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold"
@@ -74,7 +74,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
+                android:id="@+id/constraint_layout_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg"
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:hint="Person's Name"
+                    android:hint="@string/person_s_name"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:hint="Person's Email"
+                    android:hint="@string/person_s_email"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="italic"
@@ -175,7 +175,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:text="Notifications"
+                                android:text="@string/notifications"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="13sp"
@@ -218,7 +218,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:text="About"
+                                android:text="@string/us_about"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="13sp"
@@ -240,7 +240,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Name"
+                            android:text="@string/name"
                             android:textColor="#182693"
                             android:textSize="18sp" />
 
@@ -249,7 +249,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Name"
+                            android:hint="@string/name"
                             android:textAlignment="viewEnd"
                             android:textColor="#5B5B5B"
                             android:textColorHint="@color/black"
@@ -275,7 +275,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Phone"
+                            android:text="@string/phone"
                             android:textColor="#182693"
                             android:textSize="18sp" />
 
@@ -284,7 +284,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="number"
+                            android:hint="@string/number"
                             android:textAlignment="viewEnd"
                             android:textColor="#5B5B5B"
                             android:textColorHint="@color/black"
@@ -310,7 +310,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="City"
+                            android:text="@string/city"
                             android:textColor="#182693"
                             android:textSize="18sp" />
 
@@ -319,7 +319,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="city"
+                            android:hint="@string/city"
                             android:textAlignment="viewEnd"
                             android:textColor="#5B5B5B"
                             android:textColorHint="@color/black"

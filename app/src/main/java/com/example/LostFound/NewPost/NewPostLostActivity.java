@@ -94,10 +94,10 @@ public class NewPostLostActivity extends AppCompatActivity implements Navigation
 
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_View);
+        navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
 
-        addNewPots = findViewById(R.id.btnAddPost);
+        addNewPots = findViewById(R.id.btn_add_post);
         postName = findViewById(R.id.post_name);
         postLocation = findViewById(R.id.post_location);
         btnLocation = findViewById(R.id.btn_location);

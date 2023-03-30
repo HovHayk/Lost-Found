@@ -11,7 +11,7 @@
     tools:openDrawer="start">
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_View"
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -45,10 +45,10 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/toolbarTitle"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Post Page"
+                    android:text="@string/post_page"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold"
@@ -132,7 +132,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingStart="@dimen/_5sdp"
-                                    android:text="Name:"
+                                    android:text="@string/name"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/_25ssp" />
 
@@ -141,7 +141,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:hint="name"
+                                    android:hint="@string/name_post"
                                     android:paddingEnd="@dimen/_5sdp"
                                     android:textAlignment="viewEnd"
                                     android:textColor="@color/white"
@@ -170,7 +170,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingStart="@dimen/_5sdp"
-                                    android:text="Location:"
+                                    android:text="@string/location_post"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/_25ssp" />
 
@@ -179,7 +179,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:hint="place"
+                                    android:hint="@string/place_post"
                                     android:paddingEnd="@dimen/_5sdp"
                                     android:textAlignment="viewEnd"
                                     android:textColor="@color/white"
@@ -209,7 +209,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:layout_marginBottom="@dimen/_10sdp"
-                                    android:text="Description:"
+                                    android:text="@string/description_post"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/_25ssp" />
 
@@ -220,7 +220,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:gravity="top"
-                                    android:hint="Post's Description"
+                                    android:hint="@string/post_s_description"
                                     android:paddingHorizontal="@dimen/_10sdp"
                                     android:paddingVertical="@dimen/_5sdp"
                                     android:textColor="@color/white"
@@ -243,7 +243,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginBottom="@dimen/_10sdp"
-                                android:text="Tags:"
+                                android:text="@string/tags"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_25ssp" />
 

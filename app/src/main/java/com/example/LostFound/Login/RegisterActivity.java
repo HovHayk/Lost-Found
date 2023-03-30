@@ -57,14 +57,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        userNameForRegistration = findViewById(R.id.inputUsernameForRegistration);
-        emailForRegistration = findViewById(R.id.inputEmailForRegistration);
-        phoneForRegistration = findViewById(R.id.inputPhoneForRegistration);
-        cityForRegistration = findViewById(R.id.inputCityForRegistration);
-        passwordForRegistration = findViewById(R.id.inputPasswordForRegistration);
-        confirmPassword = findViewById(R.id.inputConfirmPasswordForRegistration);
-        signUp = findViewById(R.id.btnRegister);
-        haveAcc = findViewById(R.id.alreadyHaveAccount);
+        userNameForRegistration = findViewById(R.id.input_username_for_registration);
+        emailForRegistration = findViewById(R.id.input_email_for_registration);
+        phoneForRegistration = findViewById(R.id.input_phone_for_registration);
+        cityForRegistration = findViewById(R.id.input_city_for_registration);
+        passwordForRegistration = findViewById(R.id.input_password_for_registration);
+        confirmPassword = findViewById(R.id.input_confirm_password_for_registration);
+        signUp = findViewById(R.id.btn_register);
+        haveAcc = findViewById(R.id.already_have_account);
 
         progressDialog = new ProgressDialog(RegisterActivity.this);
         auth = FirebaseAuth.getInstance();

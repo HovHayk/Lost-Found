@@ -63,18 +63,18 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
 
-        frameLayout = findViewById(R.id.frameLayout);
-        bottomNavigationView = findViewById(R.id.btmNavView);
+        frameLayout = findViewById(R.id.frame_layout);
+        bottomNavigationView = findViewById(R.id.btm_nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_View);
+        navigationView = findViewById(R.id.nav_view);
         view = navigationView.getHeaderView(0);
         toolbar = findViewById(R.id.toolbar);
         registerView = getLayoutInflater().inflate(R.layout.activity_register, null);
-        newPost = findViewById(R.id.btnNewPost);
-        recyclerView = findViewById(R.id.recyclerView);
+        newPost = findViewById(R.id.btn_new_post);
+        recyclerView = findViewById(R.id.recycler_view);
         name = view.findViewById(R.id.person_name);
         email = view.findViewById(R.id.person_email);
-        nameRegister = registerView.findViewById(R.id.inputUsernameForRegistration);
+        nameRegister = registerView.findViewById(R.id.input_username_for_registration);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -134,7 +134,7 @@ public class MyPostsActivity extends AppCompatActivity implements NavigationView
     private void setFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
 
     }

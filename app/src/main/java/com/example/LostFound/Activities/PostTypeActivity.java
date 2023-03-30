@@ -48,11 +48,11 @@ public class PostTypeActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_type);
 
-        btnLost = findViewById(R.id.btnPostTypeLost);
-        btnFound = findViewById(R.id.btnPostTypeFound);
+        btnLost = findViewById(R.id.btn_post_type_lost);
+        btnFound = findViewById(R.id.btn_post_type_found);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_View);
+        navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
         view = navigationView.getHeaderView(0);
         nameUser = view.findViewById(R.id.person_name);

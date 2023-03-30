@@ -66,12 +66,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        google = findViewById(R.id.btnGoogle);
-        emailForLogin = findViewById(R.id.inputEmail);
-        passwordForLogin = findViewById(R.id.inputPassword);
-        forgotPassword = findViewById(R.id.forgotPassword);
-        logIn = findViewById(R.id.btnLogin);
-        register = findViewById(R.id.textViewSignUp);
+        google = findViewById(R.id.btn_google);
+        emailForLogin = findViewById(R.id.input_email);
+        passwordForLogin = findViewById(R.id.input_password);
+        forgotPassword = findViewById(R.id.forgot_password);
+        logIn = findViewById(R.id.btn_login);
+        register = findViewById(R.id.text_view_sign_up);
         progressDialog = new ProgressDialog(LoginActivity.this);
 
 

@@ -25,7 +25,6 @@
                 android:id="@+id/ic_back"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_alignParentLeft="true"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
@@ -43,7 +42,7 @@
                 android:background="@drawable/search_bar"
                 android:drawableStart="@drawable/ic_magnify"
                 android:drawablePadding="@dimen/_6sdp"
-                android:hint="Search"
+                android:hint="@string/search"
                 android:inputType="textUri"
                 android:maxLength="30"
                 android:maxLines="1"
@@ -62,7 +61,7 @@
 
 
             <FrameLayout
-                android:id="@+id/frameLayout"
+                android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -102,7 +101,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_250sdp"
             android:gravity="center"
-            android:text="There are no such posts"
+            android:text="@string/there_are_no_such_posts"
             android:textColor="@color/red"
             android:textSize="@dimen/_12ssp"
             android:visibility="gone" />
@@ -117,7 +116,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_250sdp"
             android:gravity="center"
-            android:text="Please choose post type at the bottom first!"
+            android:text="@string/please_choose_post_type_at_the_bottom_first"
             android:textColor="@color/red"
             android:textSize="@dimen/_12ssp"
             android:visibility="gone" />
@@ -125,7 +124,7 @@
     </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/btmNavView"
+        android:id="@+id/btm_nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

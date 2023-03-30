@@ -10,7 +10,7 @@
     android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/personPhoto"
+        android:id="@+id/logo_header"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
         android:layout_marginTop="@dimen/_10sdp"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/almendra"
-        android:hint="Person's name will be placed here"
+        android:hint="@string/person_s_name_will_be_placed_here"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold" />
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/almendra"
-        android:hint="Person's email will be placed here"
+        android:hint="@string/person_s_email_will_be_placed_here"
         android:textColor="@color/light_grey"
         android:layout_marginTop="0dp"
         android:textSize="@dimen/_10ssp"

@@ -57,7 +57,7 @@ public class PostPage extends AppCompatActivity implements NavigationView.OnNavi
         setContentView(R.layout.activity_post_page);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_View);
+        navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
 
         view = navigationView.getHeaderView(0);
